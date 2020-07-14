@@ -1,0 +1,31 @@
+.date-picker, .date-picker * {
+  box-sizing: border-box;
+}
+
+.date-picker {
+  border: 1px solid red;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.date-picker.date-picker-open {
+  height: 100px;
+}
+
+.date-picker.date-picker-close {
+  height: 0px;
+}
+
+.date-picker-grid, .date-picker-list {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+}
+
+.date-picker-grid {
+  background-color: tomato;
+}
+
+.date-picker-list {
+  background-color: thistle
+}
