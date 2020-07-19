@@ -1,4 +1,4 @@
-import DatePickerModel from './DatePickerModel';
+import DatePickerModel from './models/DatePickerModel';
 import DatePickerControl from './DatePickerControl';
 
 import "./css/style.css"
@@ -13,7 +13,7 @@ let model = new DatePickerModel()
 let container = document.createElement('div')
 document.body.appendChild(container)
 
-const datePickerControl = new DatePickerControl(model, container, ["Month", "date", "week"])
+const datePickerControl = new DatePickerControl(model, container, 'Month')
 
 window.datePickerControl = datePickerControl
 

@@ -1,39 +1,38 @@
-import DatePickerModel from "./DatePickerModel";
-import { DateType } from "./model/DateType";
-import { ViewType } from "./model/ViewType";
-import DatePickerType from "./model/DatePickerType";
+import DatePickerModel from "./models/DatePickerModel";
+import DateType from "./enums/DateType";
+import DatePickerFactory from "./models/DatePickerFactory";
+import DatePickerBaseView from "./views/DatePickerBaseView";
+import DatePickerListView from "./views/DatePickerListView";
+import ViewConfiguration from "./enums/ViewConfiguration";
+import ViewConfigurationAdapter from "./models/ViewConfigurationAdapter";
 
 export default class DatePickerControl {
   datePickerModel: DatePickerModel;
 
   private viewOpenState: Boolean = false;
   private viewContainer: HTMLElement;
-  private views: DatePickerType[];
+  private viewConfigurations: ViewConfiguration[];
+  private views: DatePickerBaseView[];
+
+  private vcAdapter: ViewConfigurationAdapter = new ViewConfigurationAdapter();
 
   constructor(
     model: DatePickerModel,
     viewContainer: HTMLElement,
-    views: string[],
+    viewConfigurations: any[] | string,
     open = true
   ) {
     this.datePickerModel = model;
     this.viewContainer = viewContainer;
-    let viewTypes = this.sanitizeViewTypesArray(views);
-    this.views = this.viewTypes(viewTypes);
+    // check that views are viewConfigurations
+    const bob = this.vcAdapter.sanitizeConfigObj(viewConfigurations);
+    console.log(bob, "I AM BOB")
 
-    this.initViewContainer(viewContainer, this.views);
-    this.toggleView(open);
+    this.views = this.initViewContainer(viewContainer, bob);
+    // this.toggleView(open);
   }
 
-  private initViewContainer(container: HTMLElement, views: DatePickerType[]) {
-    container.className = "date-picker";
-    views.forEach((view:DatePickerType) => {
-      container.appendChild(view.viewContainer)
-    })
-  }
-
-  // Container
-
+  // Container - do this with CSS later
   private openView() {
     this.viewContainer.className = "date-picker date-picker-open";
   }
@@ -42,20 +41,29 @@ export default class DatePickerControl {
     this.viewContainer.className = "date-picker date-picker-close";
   }
 
-  // Views
+  // generic enum type sanitizer - move to static utilities 
+  private sanitizeTypeArray = <T>(arr: string[], expectedEnum: T): any[] => {
+    // TODO all strings should be properly cased before they get here.
+    return arr
+      .map((caseString: string) => caseString.toUpperCase())
+      .filter((caseString: string) => caseString in expectedEnum)
+      .map((caseString: string) => expectedEnum[caseString]);
+  };
 
-  private viewTypes(views: DateType[]): DatePickerType[] {
-    return views.map((viewType: DateType) => {
-      const dpt = new DatePickerType(viewType, ViewType.LIST);
-      dpt.selectionView();
-      return dpt;
-    });
-  }
+  // Views - create factory injectable
+  private initViewContainer(
+    container: HTMLElement,
+    viewConfigurations: ViewConfiguration[]
+  ): DatePickerBaseView[] {
+    container.className = "date-picker";
+    
+    return viewConfigurations.map((viewConfiguration: ViewConfiguration) => {
+      const {viewType} = viewConfiguration
+      const viewModel = new DatePickerFactory(viewConfiguration)
 
-  private sanitizeViewTypesArray(views: string[]): DateType[] {
-    return views.map((viewString: string) => {
-      viewString = viewString.toUpperCase();
-      return DateType[viewString];
+      const view = new DatePickerListView(viewModel);
+      container.appendChild(view.view);
+      return view;
     });
   }
 

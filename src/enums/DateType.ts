@@ -1,6 +1,6 @@
 /*
   Month is Jan, Feb, etc
-  Date is calendar in grid, but dd/mm/yy in list
+  Date is a series of days
   Day is Monday, Tuesday, etc
   Year is 1999, 2000, etc
   Week is 7 days back from current date
@@ -9,7 +9,7 @@
   Calendar is year/month/date
 */
 
-export enum DateType {
+enum DateType {
   MONTH,
   DATE,
   DAY,
@@ -19,3 +19,5 @@ export enum DateType {
   HOUR24,
   CALENDAR,
 }
+
+export default DateType

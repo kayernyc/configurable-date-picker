@@ -16,10 +16,14 @@
   height: 0px;
 }
 
-.date-picker-grid, .date-picker-list {
+.date-picker-view, .date-picker-grid, .date-picker-list {
   display: inline-block;
   width: 100px;
   height: 100px;
+}
+
+.date-picker-view {
+  background-color: yellow;
 }
 
 .date-picker-grid {
