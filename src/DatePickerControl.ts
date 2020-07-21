@@ -1,5 +1,4 @@
 import DatePickerModel from "./models/DatePickerModel";
-import DateType from "./enums/DateType";
 import DatePickerFactory from "./models/DatePickerFactory";
 import DatePickerBaseView from "./views/DatePickerBaseView";
 import DatePickerListView from "./views/DatePickerListView";
@@ -25,11 +24,10 @@ export default class DatePickerControl {
     this.datePickerModel = model;
     this.viewContainer = viewContainer;
     // check that views are viewConfigurations
-    const bob = this.vcAdapter.sanitizeConfigObj(viewConfigurations);
-    console.log(bob, "I AM BOB")
+    const vcArr = this.vcAdapter.sanitizeConfigObj(viewConfigurations);
 
-    this.views = this.initViewContainer(viewContainer, bob);
-    // this.toggleView(open);
+    this.views = this.initViewContainer(viewContainer, vcArr);
+    this.toggleView(open);
   }
 
   // Container - do this with CSS later
@@ -41,14 +39,14 @@ export default class DatePickerControl {
     this.viewContainer.className = "date-picker date-picker-close";
   }
 
-  // generic enum type sanitizer - move to static utilities 
-  private sanitizeTypeArray = <T>(arr: string[], expectedEnum: T): any[] => {
-    // TODO all strings should be properly cased before they get here.
-    return arr
-      .map((caseString: string) => caseString.toUpperCase())
-      .filter((caseString: string) => caseString in expectedEnum)
-      .map((caseString: string) => expectedEnum[caseString]);
-  };
+  // // generic enum type sanitizer - move to static utilities 
+  // private sanitizeTypeArray = <T>(arr: string[], expectedEnum: T): any[] => {
+  //   // TODO all strings should be properly cased before they get here.
+  //   return arr
+  //     .map((caseString: string) => caseString.toUpperCase())
+  //     .filter((caseString: string) => caseString in expectedEnum)
+  //     .map((caseString: string) => expectedEnum[caseString]);
+  // };
 
   // Views - create factory injectable
   private initViewContainer(
@@ -72,7 +70,6 @@ export default class DatePickerControl {
 
   toggleView(desiredState: Boolean): Boolean {
     if (desiredState !== this.viewOpenState) {
-      // trigger view change
       desiredState ? this.openView() : this.closeView();
     }
 

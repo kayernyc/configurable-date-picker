@@ -53,6 +53,22 @@ export default class DatePickerFactory {
     }
   }
 
+  private sequence(quantity: number = 1): AtomicDateObject[] {
+    
+    let arr = [];
+
+    for (let i: number = 0; i < quantity; i++) {
+      const date = new Date();
+      date.setDate(1);
+      date.setMonth(i);
+
+      const atomicDate = new AtomicDateObject(date, undefined, this.dateTimeFormat)
+
+      arr.push(atomicDate);
+    }
+    return []
+  }
+
   // API
   dateArray(quantity: number = 1): AtomicDateObject[] {
     switch (this.dateType) {
@@ -66,22 +82,16 @@ export default class DatePickerFactory {
         console.log(`I am hour`);
         break;
       case DateType.MONTH:
-        // retunns localized months
-        // update for internationalization
-        const length = Math.min(12, quantity);
-        let arr = [];
-
-        for (let i: number = 0; i < length; i++) {
+        let requestedQuantity = Math.min(12, quantity)
+        const monthSeriesFunction = (index: number) => {
           const date = new Date();
           date.setDate(1);
-          date.setMonth(i);
+          date.setMonth(index);
 
           const atomicDate = new AtomicDateObject(date, undefined, this.dateTimeFormat)
-
-          arr.push(atomicDate);
         }
 
-        return arr;
+        return this.sequence(requestedQuantity);
 
       case DateType.YEAR:
         console.log("I am YEAR");
