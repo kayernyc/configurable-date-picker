@@ -13,7 +13,7 @@ let model = new DatePickerModel()
 let container = document.createElement('div')
 document.body.appendChild(container)
 
-const datePickerControl = new DatePickerControl(model, container, 'Month')
+const datePickerControl = new DatePickerControl(model, container, [{dateType: 0, viewType: 0}])
 
 window.datePickerControl = datePickerControl
 

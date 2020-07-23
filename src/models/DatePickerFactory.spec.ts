@@ -23,6 +23,5 @@ describe("DatePickerFactory dateArray", () => {
     const arr = datePickerFactory.dateArray(1)
 
     expect(Array.isArray(arr)).toBe(true);
-
   });
 });

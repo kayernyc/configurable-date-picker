@@ -54,7 +54,6 @@ export default class DatePickerFactory {
   }
 
   private sequence(quantity: number = 1): AtomicDateObject[] {
-    
     let arr = [];
 
     for (let i: number = 0; i < quantity; i++) {
