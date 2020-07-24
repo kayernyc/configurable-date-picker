@@ -123,9 +123,41 @@ describe("ViewConfigurationAdapter dateArray", () => {
     expect(matchObjectToViewConfiguration(resultArr[0])).toBe(true);
   });
 
-  it("turns a valid string into a View Configuration", () => {
+
+});
+
+describe("ViewConfigurationAdapter string configuration", () => {
+  const viewConfigurationAdapter = new ViewConfigurationAdapter(
+    seedViewConfiguration
+  );
+
+  it("turns a valid date string into a View Configuration", () => {
     const arr = viewConfigurationAdapter.sanitizeConfigObj("Month");
 
     expect(Array.isArray(arr)).toBe(true);
+  });
+
+  it("turns a valid view string into a View Configuration", () => {
+    const arr = viewConfigurationAdapter.sanitizeConfigObj("grid");
+
+    expect(Array.isArray(arr)).toBe(true);
+  });
+});
+
+describe("ViewConfigurationAdapter invalid configuration", () => {
+  const viewConfigurationAdapter = new ViewConfigurationAdapter(
+    seedViewConfiguration
+  );
+
+  it("rejects an empty array", () => {
+    expect(() => {
+      viewConfigurationAdapter.sanitizeConfigObj([]);
+    }).toThrow(`: [] is not an acceptable configuration parameter.`);
+  });
+
+  it("rejects an invalid string", () => {
+    expect(() => {
+      viewConfigurationAdapter.sanitizeConfigObj('jelly');
+    }).toThrow(": string jelly not a valid member or DateType or ViewType.");
   });
 });

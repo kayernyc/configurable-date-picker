@@ -16,21 +16,28 @@ export default class ViewConfigurationAdapter {
 
   sanitizeConfigObj(configObj: any): ViewConfiguration[] {
     // convert all incoming to valid configObj arrays
-    console.log(
-      `${JSON.stringify(configObj)} testing TYPE OF ${
-        configObj as ViewConfiguration
-      }`
-    );
 
     switch (true) {
       case this.matchObjectToViewConfiguration(configObj):
         return [configObj];
+
       case Array.isArray(configObj):
-        console.log("am in array tester");
-        return configObj.reduce((acc: ViewConfiguration[], obj: any) => {
-          console.log(JSON.stringify(obj));
-          return [...acc, ...this.sanitizeConfigObj(obj)];
-        }, []);
+        const arrCandidate: ViewConfiguration[] = configObj.reduce(
+          (acc: ViewConfiguration[], obj: any) => {
+            return [...acc, ...this.sanitizeConfigObj(obj)];
+          },
+          []
+        );
+        if (arrCandidate.length < 1) {
+          throw new Error(
+            `: ${JSON.stringify(
+              configObj
+            )} is not an acceptable configuration parameter.`
+          );
+        }
+
+        return arrCandidate;
+
       case typeof configObj === "string":
         const vC = this.convertStringToViewConfiguration(configObj);
         return [vC];
@@ -60,7 +67,7 @@ export default class ViewConfigurationAdapter {
     if (
       obj["dateType"] !== undefined &&
       [0, 1, 2, 3, 4, 5, 6, 7].includes(obj["dateType"]) &&
-      obj["viewType"] !== undefined  &&
+      obj["viewType"] !== undefined &&
       [0, 1, 2, 3, 4, 5, 6, 7].includes(obj["viewType"])
     ) {
       return true;
@@ -84,6 +91,7 @@ export default class ViewConfigurationAdapter {
   private convertStringToViewConfiguration(str: String): ViewConfiguration {
     const testString = str.toUpperCase();
     let vc: ViewConfiguration;
+
     if (testString in DateType) {
       vc = this.seedViewConfigurationWithEnum(DateType[testString]);
     } else if (testString in ViewType) {
