@@ -9,7 +9,7 @@ export default class DatePickerListView extends DatePickerBaseView
 
   constructor(model: DatePickerFactory, continuousScroll = true) {
     super();
-    console.log(' I Got CALLED')
+
     this.continuousScroll = continuousScroll;
     this.model = model;
     this.containerView = this.initContainerView();
@@ -17,7 +17,7 @@ export default class DatePickerListView extends DatePickerBaseView
   }
 
   populateView(model: DatePickerFactory = this.model, containerView: HTMLElement = this.containerView) {
-    console.log('populate view ', model)
+
     const arr = model.dateArray(12)
     
     arr.forEach((date: AtomicDateObject) => {
