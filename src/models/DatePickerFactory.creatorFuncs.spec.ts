@@ -10,8 +10,8 @@ const seedViewConfiguration: ViewConfiguration = {
 };
 
 const datePickerFactory = new DatePickerFactory(seedViewConfiguration);
-const seedDate = new Date('August 1, 1975 23:15:30');
 const format: DateTimeFormat = { day: "numeric", month: "numeric", year: "numeric" }
+const seedDate = new Date('August 1, 1975 23:15:30');
 
 describe("dateHandlerCreator function", () => {
   describe("seeded with a date", () => {
@@ -91,6 +91,7 @@ describe("monthHandlerCreator function", () => {
 
 describe("yearHandlerCreator function", () => {
   describe("seeded with a date", () => {
+
     const yearFunction = datePickerFactory.yearHandlerCreator(format, seedDate);
     expect(typeof yearFunction).toBe("function")
   

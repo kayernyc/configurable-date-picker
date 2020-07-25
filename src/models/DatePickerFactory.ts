@@ -45,10 +45,11 @@ export default class DatePickerFactory {
   ): AtomicDateObjectCreator => {
     // DANGER WILL ROBERTSON this changes seed date!!!
     const dateTimeFormat = this.dateTimeFormat || format;
+    const seedDate = new Date(date.getTime())
 
     return (index: number): AtomicDateObject => {
-      date.setDate(date.getDate() + index);
-      const newDate = new Date(date.getTime());
+      seedDate.setDate(seedDate.getDate() + index);
+      const newDate = new Date(seedDate.getTime());
       return new AtomicDateObject(newDate, undefined, dateTimeFormat);
     };
   };
@@ -59,13 +60,14 @@ export default class DatePickerFactory {
   ): AtomicDateObjectCreator => {
     // sets day to first of month
     const dateTimeFormat = this.dateTimeFormat || format;
+    const seedDate = new Date(date.getTime())
 
-    if (date.getMonth() !== 0) {
-      date.setMonth(0);
+    if (seedDate.getMonth() !== 0) {
+      seedDate.setMonth(0);
     }
 
     return (index: number): AtomicDateObject => {
-      const newDate = new Date(date.getTime());
+      const newDate = new Date(seedDate.getTime());
       newDate.setMonth(newDate.getMonth() + index);
       return new AtomicDateObject(newDate, undefined, dateTimeFormat);
     };
@@ -77,15 +79,22 @@ export default class DatePickerFactory {
   ): AtomicDateObjectCreator => {
     // sets series to 0/sunday
     const dateTimeFormat = this.dateTimeFormat || format;
-    if (date.getDay() != 0) {
-      date.setDate(date.getDate() - date.getDay());
-    }
+    const seedDate = new Date(date.getTime())
 
+    if (seedDate.getUTCDay() !== 0) {
+      const delta = seedDate.getDate() - seedDate.getDay()
+      const timeDifference = seedDate.getTimezoneOffset()/60
+      
+      seedDate.setDate(delta);
+      seedDate.setHours(seedDate.getHours() - timeDifference)
+    }
+    
     const hander: AtomicDateObjectCreator = (
       index: number
     ): AtomicDateObject => {
-      const newDate = new Date(date.getTime());
-      newDate.setDate(date.getDate() + index);
+      const newDate = new Date(seedDate.getTime());
+      
+      newDate.setDate(seedDate.getDate() + index);
       return new AtomicDateObject(newDate, undefined, dateTimeFormat);
     };
 
@@ -99,6 +108,7 @@ export default class DatePickerFactory {
     // sets day to jan 1
     const dateTimeFormat = this.dateTimeFormat || format;
     const seedDate = new Date(date.getTime());
+
     seedDate.setMonth(0);
     seedDate.setDate(1);
 
@@ -119,11 +129,13 @@ export default class DatePickerFactory {
   ): AtomicDateObjectCreator => {
     // business logic has to determine if it starts from current or midnight
     const dateTimeFormat = this.dateTimeFormat || format;
-    date.setMinutes(1);
+    const seedDate = new Date(date.getTime())
+
+    seedDate.setMinutes(1);
 
     return (index: number): AtomicDateObject => {
-      const newDate = new Date(date.getTime());
-      newDate.setHours(date.getHours() + index);
+      const newDate = new Date(seedDate.getTime());
+      newDate.setHours(seedDate.getHours() + index);
       return new AtomicDateObject(newDate, undefined, dateTimeFormat);
     };
   };
