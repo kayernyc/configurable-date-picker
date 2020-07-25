@@ -2,6 +2,7 @@ import DatePickerFactory from "./DatePickerFactory";
 import ViewConfiguration from "../enums/ViewConfiguration";
 import DateType from "../enums/DateType";
 import ViewType from "../enums/ViewType";
+import DateTimeFormat from "../enums/DateTimeFormat";
 
 const seedViewConfiguration: ViewConfiguration = {
   dateType: DateType.CALENDAR,
@@ -9,10 +10,12 @@ const seedViewConfiguration: ViewConfiguration = {
 };
 
 const datePickerFactory = new DatePickerFactory(seedViewConfiguration);
+const seedDate = new Date('August 1, 1975 23:15:30');
+const format: DateTimeFormat = { day: "numeric", month: "numeric", year: "numeric" }
 
 describe("dateHandlerCreator function", () => {
   describe("seeded with a date", () => {
-    const dateFunction = datePickerFactory.dateHandlerCreator(new Date('August 1, 1975 23:15:30'));
+    const dateFunction = datePickerFactory.dateHandlerCreator(format, seedDate);
     expect(typeof dateFunction).toBe("function")
 
     let counter = 1
@@ -30,7 +33,7 @@ describe("dateHandlerCreator function", () => {
 
 describe("dayHandlerCreator function", () => {
   describe("seeded with a date", () => {
-    const dayFunction = datePickerFactory.dayHandlerCreator(new Date('August 1, 1975 23:15:30'));
+    const dayFunction = datePickerFactory.dayHandlerCreator(format, seedDate);
     expect(typeof dayFunction).toBe("function")
   
     for(let i = 0; i < 7; i ++) {
@@ -43,7 +46,7 @@ describe("dayHandlerCreator function", () => {
   });
 
   describe("seeded without a date", () => {
-    const dayFunction = datePickerFactory.dayHandlerCreator(new Date());
+    const dayFunction = datePickerFactory.dayHandlerCreator(format);
     expect(typeof dayFunction).toBe("function")
   
     for(let i = 0; i < 7; i ++) {
@@ -58,7 +61,7 @@ describe("dayHandlerCreator function", () => {
 
 describe("hourHandlerCreator function", () => {
   describe("seeded with a date", () => {
-    const hourFunction = datePickerFactory.hourHandlerCreator(new Date('August 1, 1975 23:15:30'));
+    const hourFunction = datePickerFactory.hourHandlerCreator(format, seedDate);
     expect(typeof hourFunction).toBe("function")
   
     for(let i = 0; i < 24; i ++) {
@@ -73,7 +76,7 @@ describe("hourHandlerCreator function", () => {
 
 describe("monthHandlerCreator function", () => {
   describe("seeded with a date", () => {
-    const monthFunction = datePickerFactory.monthHandlerCreator(new Date('August 1, 1975 23:15:30'));
+    const monthFunction = datePickerFactory.monthHandlerCreator(format, seedDate);
     expect(typeof monthFunction).toBe("function")
   
     for(let i = 0; i < 12; i ++) {
@@ -88,7 +91,7 @@ describe("monthHandlerCreator function", () => {
 
 describe("yearHandlerCreator function", () => {
   describe("seeded with a date", () => {
-    const yearFunction = datePickerFactory.yearHandlerCreator(new Date('August 1, 1975 23:15:30'));
+    const yearFunction = datePickerFactory.yearHandlerCreator(format, seedDate);
     expect(typeof yearFunction).toBe("function")
   
     for(let i = 0; i < 7; i ++) {
