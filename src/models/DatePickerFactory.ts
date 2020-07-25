@@ -45,9 +45,13 @@ export default class DatePickerFactory {
   ): AtomicDateObjectCreator => {
     // DANGER WILL ROBERTSON this changes seed date!!!
     const dateTimeFormat = this.dateTimeFormat || format;
+    console.log(`SEED DATE FROM ABOVE ${date}`)
 
     return (index: number): AtomicDateObject => {
+      console.log(`SEED DATE ${date}`)
+
       date.setDate(date.getDate() + index);
+      console.log(` newDate ${date.getHours()} day ${date.getDay()} index ${index}`)
       const newDate = new Date(date.getTime());
       return new AtomicDateObject(newDate, undefined, dateTimeFormat);
     };
@@ -77,14 +81,20 @@ export default class DatePickerFactory {
   ): AtomicDateObjectCreator => {
     // sets series to 0/sunday
     const dateTimeFormat = this.dateTimeFormat || format;
-    if (date.getDay() != 0) {
-      date.setDate(date.getDate() - date.getDay());
-    }
 
+    if (date.getUTCDay() !== 0) {
+      const delta = date.getDate() - date.getDay()
+      const timeDifference = date.getTimezoneOffset()/60
+      
+      date.setDate(delta);
+      date.setHours(date.getHours() - timeDifference)
+    }
+    
     const hander: AtomicDateObjectCreator = (
       index: number
     ): AtomicDateObject => {
       const newDate = new Date(date.getTime());
+      
       newDate.setDate(date.getDate() + index);
       return new AtomicDateObject(newDate, undefined, dateTimeFormat);
     };

@@ -10,11 +10,11 @@ const seedViewConfiguration: ViewConfiguration = {
 };
 
 const datePickerFactory = new DatePickerFactory(seedViewConfiguration);
-const seedDate = new Date('August 1, 1975 23:15:30');
 const format: DateTimeFormat = { day: "numeric", month: "numeric", year: "numeric" }
 
 describe("dateHandlerCreator function", () => {
   describe("seeded with a date", () => {
+    const seedDate = new Date('August 1, 1975 23:15:30');
     const dateFunction = datePickerFactory.dateHandlerCreator(format, seedDate);
     expect(typeof dateFunction).toBe("function")
 
@@ -33,6 +33,7 @@ describe("dateHandlerCreator function", () => {
 
 describe("dayHandlerCreator function", () => {
   describe("seeded with a date", () => {
+    const seedDate = new Date('August 1, 1975 23:15:30');
     const dayFunction = datePickerFactory.dayHandlerCreator(format, seedDate);
     expect(typeof dayFunction).toBe("function")
   
@@ -46,6 +47,7 @@ describe("dayHandlerCreator function", () => {
   });
 
   describe("seeded without a date", () => {
+    const seedDate = new Date('August 1, 1975 23:15:30');
     const dayFunction = datePickerFactory.dayHandlerCreator(format);
     expect(typeof dayFunction).toBe("function")
   
@@ -61,6 +63,7 @@ describe("dayHandlerCreator function", () => {
 
 describe("hourHandlerCreator function", () => {
   describe("seeded with a date", () => {
+    const seedDate = new Date('August 1, 1975 23:15:30');
     const hourFunction = datePickerFactory.hourHandlerCreator(format, seedDate);
     expect(typeof hourFunction).toBe("function")
   
@@ -76,6 +79,7 @@ describe("hourHandlerCreator function", () => {
 
 describe("monthHandlerCreator function", () => {
   describe("seeded with a date", () => {
+    const seedDate = new Date('August 1, 1975 23:15:30');
     const monthFunction = datePickerFactory.monthHandlerCreator(format, seedDate);
     expect(typeof monthFunction).toBe("function")
   
@@ -91,6 +95,7 @@ describe("monthHandlerCreator function", () => {
 
 describe("yearHandlerCreator function", () => {
   describe("seeded with a date", () => {
+    const seedDate = new Date('August 1, 1975 23:15:30');
     const yearFunction = datePickerFactory.yearHandlerCreator(format, seedDate);
     expect(typeof yearFunction).toBe("function")
   
