@@ -169,11 +169,11 @@ export default class DatePickerFactory {
           this.dateHandlerCreator(format),
         ];
       case (DateType.HOUR, DateType.HOUR24):
-        format = { hour: "2-digit" };
-        return [format, this.monthHandlerCreator(format)];
+        format = { hour: "numeric" };
+        return [format, this.hourHandlerCreator(format)];
       default:
         format = { day: "numeric", month: "numeric", year: "numeric" };
-        return [format, this.hourHandlerCreator(format)];
+        return [format, this.dateHandlerCreator(format)];
     }
   };
 
@@ -182,6 +182,8 @@ export default class DatePickerFactory {
     quantity = Math.max(quantity, 1);
 
     const returnValue = [];
+
+    console.log(this.atomicDateObjectFunction)
 
     for (let i = 0; i < quantity; i++) {
       const newADO = this.atomicDateObjectFunction(i);

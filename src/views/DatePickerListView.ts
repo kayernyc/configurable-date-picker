@@ -1,3 +1,7 @@
+/**
+ *  if continuous scroll is true or number of dates is more than 12 init virtual dom.
+ *  if there is a virtual dom, then normal scrolling is disabled.
+ */
 import DatePickerFactory from "../models/DatePickerFactory";
 import DatePickerBaseView from "./DatePickerBaseView";
 import DatePickerView from "./DatePickerViewInterface";
@@ -9,22 +13,39 @@ export default class DatePickerListView extends DatePickerBaseView
 
   constructor(model: DatePickerFactory, continuousScroll = true) {
     super();
-
     this.continuousScroll = continuousScroll;
     this.model = model;
-    this.containerView = this.initContainerView();
-    this.populateView();
+    // initFrameView is in the super
+    this.frameElement = this.initFrameView(continuousScroll);
+    this.frameElement.className += " date-picker-list";
+
   }
 
-  populateView(model: DatePickerFactory = this.model, containerView: HTMLElement = this.containerView) {
+  protected populateView(
+    model: DatePickerFactory,
+    containerView: HTMLElement,
+    frameElement: HTMLElement
+  ) {
+    throw new Error("Override populateView");
+  }
 
-    const arr = model.dateArray(12)
-    
-    arr.forEach((date: AtomicDateObject) => {
-      const el = document.createElement('div')
-      el.innerHTML = date.viewString
-      containerView.appendChild(el)
-    })
-
+  /**
+   * 
+   * @param arr AtomicDateObject[]
+   * @param frameElement HTMLElement
+   * 
+   * When the list view does not continuously scroll
+   * and has more than the dom limit, this function
+   * appends the elements directly to the dom.
+   */
+  protected buildDateView(
+    atomicDateObjectArr: AtomicDateObject[],
+    frameElement: HTMLElement = this.frameElement
+  ) {
+    atomicDateObjectArr.forEach((date: AtomicDateObject) => {
+      const el = document.createElement("div");
+      el.innerHTML = date.viewString;
+      frameElement.appendChild(el);
+    });
   }
 }

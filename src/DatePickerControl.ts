@@ -4,6 +4,7 @@ import DatePickerBaseView from "./views/DatePickerBaseView";
 import DatePickerListView from "./views/DatePickerListView";
 import ViewConfiguration from "./enums/ViewConfiguration";
 import ViewConfigurationAdapter from "./models/ViewConfigurationAdapter";
+import Hour12View from "./views/Hour12View";
 
 export default class DatePickerControl {
   datePickerModel: DatePickerModel;
@@ -56,10 +57,18 @@ export default class DatePickerControl {
     container.className = "date-picker";
     
     return viewConfigurations.map((viewConfiguration: ViewConfiguration) => {
-      const {viewType} = viewConfiguration
+      const {dateType, viewType} = viewConfiguration
       const viewModel = new DatePickerFactory(viewConfiguration)
+      let view: DatePickerBaseView;
+      console.log(dateType, viewType)
 
-      const view = new DatePickerListView(viewModel);
+      switch (dateType && viewType) {
+        case (0 && 6):
+          view = new Hour12View(viewModel);
+          break;
+        default:
+          view = new DatePickerListView(viewModel)
+      }
       container.appendChild(view.view);
       return view;
     });

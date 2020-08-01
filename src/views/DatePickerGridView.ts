@@ -9,6 +9,6 @@ export default class DatePickerGridView extends DatePickerBaseView
   constructor(model: DatePickerType, continuousScroll = false) {
     super();
     this.model = model;
-    this.initContainerView();
+    this.initFrameView();
   }
 }
