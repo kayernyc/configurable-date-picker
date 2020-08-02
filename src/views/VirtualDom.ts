@@ -7,6 +7,10 @@ import AtomicDateObject from "../models/AtomicDateObject";
 export default class VirtualDom {
   // If a class type can have more than the
   // limit, then there may still be a default virtual dom.
+  static last<T>(arr: T[]): T {
+    return arr[arr.length - 1];
+  }
+
   static numElementsLimit = 12;
   private vdFrameElement: HTMLElement;
   private elementArray: HTMLElement[];
@@ -15,29 +19,43 @@ export default class VirtualDom {
   private contentHeight: number;
   private frameHeight: number;
 
-  private last<T>(arr: T[]): T {
-    return arr[arr.length - 1];
-  }
-
   private wheelHander = (evt: WheelEvent) => {
     const childrenArr = Array.from(
       this.vdFrameElement.children
     ) as HTMLElement[];
     const unshiftLimit = childrenArr[0].offsetHeight;
-    const popLimit = this.last(childrenArr).offsetHeight;
+    const lastElementHeight = VirtualDom.last(childrenArr).offsetHeight;
+    const popLimit = this.contentHeight - lastElementHeight;
+    const parentFrameHeight = this.vdFrameElement.parentElement.offsetHeight;
 
     const top = parseInt(this.vdFrameElement.style.top || "0px", 10);
 
     let { deltaY } = evt;
     const valence = Math.abs(deltaY) / deltaY;
     deltaY = Math.max(Math.abs(deltaY), 3) * valence;
+<<<<<<< HEAD
     const newTop = top + deltaY;
 
     this.vdFrameElement.style.top = newTop + "px";
 
     if (newTop > 0) {
       // add to beginning
+=======
+    let newTop = top + deltaY;
+
+    if (newTop > 0) {
+      // add to beginning
+      const unshiftElement = childrenArr.pop() as HTMLElement;
+      this.vdFrameElement.prepend(unshiftElement);
+      newTop -= unshiftElement.offsetHeight;
+    } else if (this.contentHeight + newTop < parentFrameHeight) {
+      const pushElement = childrenArr.shift() as HTMLElement;
+      this.vdFrameElement.appendChild(pushElement);
+      newTop += pushElement.offsetHeight;
+>>>>>>> basic looping
     }
+
+    this.vdFrameElement.style.top = newTop + "px";
   };
 
   private initializeListeners = (
@@ -109,14 +127,12 @@ export default class VirtualDom {
 
     buildElementSetForVirtualDom(atomicDateObjectArr);
 
-    contentHeight = calculateContentHeight(atomicDateObjectArr);
+    this.contentHeight = calculateContentHeight(atomicDateObjectArr);
+    console.log(this.contentHeight, "***");
 
-    if (contentHeight > frameHeight) {
+    if (this.contentHeight > frameHeight) {
       // init virtual dom behavior
-      console.log("am i here");
       initializeListeners();
-    } else {
-      console.log("WTF");
     }
   }
 
