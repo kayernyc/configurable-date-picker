@@ -114,7 +114,6 @@ export default class VirtualDom {
 
     if (contentHeight > frameHeight) {
       // init virtual dom behavior
-      console.log("am i here");
       initializeListeners();
     } else {
       console.log("WTF");
