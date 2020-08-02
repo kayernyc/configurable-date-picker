@@ -21,7 +21,7 @@
 .date-picker-grid,
 .date-picker-list {
   display: inline-block;
-  width: 100px;
+  width: 200px;
   height: 100px;
 }
 
@@ -36,6 +36,19 @@
 .date-picker-list {
   background-color: thistle;
   position: relative;
+}
+
+.date-picker-grid, .date-picker-grid >.vd-container{
+  background-color: slateblue;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.date-picker-grid > * {
+  display: flex;
 }
 
 .continuous-scroll {

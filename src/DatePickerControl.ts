@@ -5,6 +5,9 @@ import DatePickerListView from "./views/DatePickerListView";
 import ViewConfiguration from "./enums/ViewConfiguration";
 import ViewConfigurationAdapter from "./models/ViewConfigurationAdapter";
 import Hour12View from "./views/Hour12View";
+import MonthGridView from "./views/MonthGridView";
+import DateType from "./enums/DateType";
+import ViewType from "./enums/ViewType";
 
 export default class DatePickerControl {
   datePickerModel: DatePickerModel;
@@ -63,11 +66,18 @@ export default class DatePickerControl {
       // tslint:disable-next-line: no-console
       console.log(dateType, viewType)
 
-      switch (dateType && viewType) {
-        case (0 && 6):
+      switch (true) {
+        case (dateType === DateType.HOUR && viewType === ViewType.LIST):
+        case (dateType === DateType.HOUR && viewType === ViewType.GRID):
           view = new Hour12View(viewModel);
           break;
+
+        case (dateType === DateType.MONTH && viewType === ViewType.GRID):
+          view = new MonthGridView(viewModel)
+          break;
+
         default:
+          console.log('default')
           view = new DatePickerListView(viewModel)
       }
       // container.appendChild(view.view);
