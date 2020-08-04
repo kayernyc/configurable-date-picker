@@ -19,7 +19,7 @@ describe("dateHandlerCreator function", () => {
     expect(typeof dateFunction).toBe("function")
 
     let counter = 1
-  
+
     for(let i = 0; i < 7; i ++) {
       it(`returns August ${1 + counter} when initialized with a seed date and passed an index`, () => {
         const testDay = dateFunction(1)
@@ -35,7 +35,7 @@ describe("dayHandlerCreator function", () => {
   describe("seeded with a date", () => {
     const dayFunction = datePickerFactory.dayHandlerCreator(format, seedDate);
     expect(typeof dayFunction).toBe("function")
-  
+
     for(let i = 0; i < 7; i ++) {
       it(`returns ${i} when initialized with a seed date and passed an index`, () => {
         const testDay = dayFunction(i)
@@ -48,7 +48,7 @@ describe("dayHandlerCreator function", () => {
   describe("seeded without a date", () => {
     const dayFunction = datePickerFactory.dayHandlerCreator(format);
     expect(typeof dayFunction).toBe("function")
-  
+
     for(let i = 0; i < 7; i ++) {
       it(`returns ${i} when passed an index`, () => {
         const testDay = dayFunction(i)
@@ -63,7 +63,7 @@ describe("hourHandlerCreator function", () => {
   describe("seeded with a date", () => {
     const hourFunction = datePickerFactory.hourHandlerCreator(format, seedDate);
     expect(typeof hourFunction).toBe("function")
-  
+
     for(let i = 0; i < 24; i ++) {
       it(`returns August ${i} when initialized with a seed date and passed an index`, () => {
         const testDay = hourFunction(i)
@@ -78,7 +78,7 @@ describe("monthHandlerCreator function", () => {
   describe("seeded with a date", () => {
     const monthFunction = datePickerFactory.monthHandlerCreator(format, seedDate);
     expect(typeof monthFunction).toBe("function")
-  
+
     for(let i = 0; i < 12; i ++) {
       it(`returns ${i} when initialized with a seed date and passed an index`, () => {
         const testDay = monthFunction(i)
@@ -94,7 +94,7 @@ describe("yearHandlerCreator function", () => {
 
     const yearFunction = datePickerFactory.yearHandlerCreator(format, seedDate);
     expect(typeof yearFunction).toBe("function")
-  
+
     for(let i = 0; i < 7; i ++) {
       it(`returns ${1975 + i} when initialized with a seed date and passed an index`, () => {
         const testDay = yearFunction(i)

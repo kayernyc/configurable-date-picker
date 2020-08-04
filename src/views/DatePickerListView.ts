@@ -31,10 +31,10 @@ export default class DatePickerListView extends DatePickerBaseView
   }
 
   /**
-   * 
+   *
    * @param arr AtomicDateObject[]
    * @param frameElement HTMLElement
-   * 
+   *
    * When the list view does not continuously scroll
    * and has more than the dom limit, this function
    * appends the elements directly to the dom.

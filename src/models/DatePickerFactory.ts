@@ -4,7 +4,7 @@
 */
 
 /*
-  Month is Jan, Feb, etc  
+  Month is Jan, Feb, etc
   Date is a series of days
   Day is Monday, Tuesday, etc
   Year is 1999, 2000, etc
@@ -84,16 +84,16 @@ export default class DatePickerFactory {
     if (seedDate.getUTCDay() !== 0) {
       const delta = seedDate.getDate() - seedDate.getDay()
       const timeDifference = seedDate.getTimezoneOffset()/60
-      
+
       seedDate.setDate(delta);
       seedDate.setHours(seedDate.getHours() - timeDifference)
     }
-    
+
     const hander: AtomicDateObjectCreator = (
       index: number
     ): AtomicDateObject => {
       const newDate = new Date(seedDate.getTime());
-      
+
       newDate.setDate(seedDate.getDate() + index);
       return new AtomicDateObject(newDate, undefined, dateTimeFormat);
     };
@@ -168,7 +168,8 @@ export default class DatePickerFactory {
           { weekday: "long", day: "numeric", month: "long" },
           this.dateHandlerCreator(format),
         ];
-      case (DateType.HOUR, DateType.HOUR24):
+      case DateType.HOUR:
+      case DateType.HOUR24:
         format = { hour: "numeric" };
         return [format, this.hourHandlerCreator(format)];
       default:

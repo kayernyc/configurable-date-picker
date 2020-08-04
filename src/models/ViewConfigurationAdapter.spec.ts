@@ -9,7 +9,7 @@ const seedViewConfiguration: ViewConfiguration = {
 };
 
 // TODO take this from utilities in future
-const matchObjectToViewConfiguration = (obj: Object) => {
+const matchObjectToViewConfiguration = (obj: ViewConfiguration) => {
   const objKeys = Object.keys(obj);
   const vCKeys = ["dateType", "viewType"];
 
@@ -22,10 +22,10 @@ const matchObjectToViewConfiguration = (obj: Object) => {
   }
 
   if (
-    obj["dateType"] !== undefined &&
-    [0, 1, 2, 3, 4, 5, 6, 7].includes(obj["dateType"]) &&
-    obj["viewType"] !== undefined  &&
-    [0, 1, 2, 3, 4, 5, 6, 7].includes(obj["viewType"])
+    obj.dateType !== undefined &&
+    [0, 1, 2, 3, 4, 5, 6, 7].includes(obj.dateType) &&
+    obj.viewType !== undefined  &&
+    [0, 1, 2, 3, 4, 5, 6, 7].includes(obj.viewType)
   ) {
     return true;
   }
@@ -78,7 +78,7 @@ describe("ViewConfigurationAdapter type checker", () => {
   });
 
   it("returns false if the object has the correct keys but the values are invalid", () => {
-    const objArray = [
+    const objArray: ViewConfiguration | any[] = [
       {"dateType":1,"viewType":undefined},
       {"dateType":2,"viewType":null},
       {"dateType":8,"viewType":1},

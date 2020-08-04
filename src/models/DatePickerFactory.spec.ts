@@ -52,7 +52,7 @@ describe("DatePickerFactory dateArray", () => {
     it("should return an array", () => {
       const datePickerFactory = new DatePickerFactory(config);
       const arr = datePickerFactory.dateArray(1);
-  
+
       expect(Array.isArray(arr)).toBe(true);
     });
   })

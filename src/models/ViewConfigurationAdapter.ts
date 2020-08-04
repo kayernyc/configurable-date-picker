@@ -52,7 +52,7 @@ export default class ViewConfigurationAdapter {
 
   // TODO: Abstract and move to utilities
 
-  matchObjectToViewConfiguration(obj: Object): Boolean {
+  matchObjectToViewConfiguration(obj: object): boolean {
     const objKeys = Object.keys(obj);
     const vCKeys = ["dateType", "viewType"];
 
@@ -65,10 +65,10 @@ export default class ViewConfigurationAdapter {
     }
 
     if (
-      obj["dateType"] !== undefined &&
-      [0, 1, 2, 3, 4, 5, 6, 7].includes(obj["dateType"]) &&
-      obj["viewType"] !== undefined &&
-      [0, 1, 2, 3, 4, 5, 6, 7].includes(obj["viewType"])
+      obj.dateType !== undefined &&
+      [0, 1, 2, 3, 4, 5, 6, 7].includes(obj.dateType) &&
+      obj.viewType !== undefined &&
+      [0, 1, 2, 3, 4, 5, 6, 7].includes(obj.viewType)
     ) {
       return true;
     }
@@ -88,7 +88,7 @@ export default class ViewConfigurationAdapter {
     });
   }
 
-  private convertStringToViewConfiguration(str: String): ViewConfiguration {
+  private convertStringToViewConfiguration(str: string): ViewConfiguration {
     const testString = str.toUpperCase();
     let vc: ViewConfiguration;
 
