@@ -9,7 +9,7 @@ import Hour12View from "./views/Hour12View";
 export default class DatePickerControl {
   datePickerModel: DatePickerModel;
 
-  private viewOpenState: Boolean = false;
+  private viewOpenState = false;
   private viewContainer: HTMLElement;
   private viewConfigurations: ViewConfiguration[];
   private views: DatePickerBaseView[];
@@ -69,7 +69,8 @@ export default class DatePickerControl {
         default:
           view = new DatePickerListView(viewModel)
       }
-      container.appendChild(view.view);
+      // container.appendChild(view.view);
+      view.append(container)
       return view;
     });
   }
@@ -77,7 +78,7 @@ export default class DatePickerControl {
   // API
   updateViews(views: string[]) {}
 
-  toggleView(desiredState: Boolean): Boolean {
+  toggleView(desiredState: boolean): boolean {
     if (desiredState !== this.viewOpenState) {
       desiredState ? this.openView() : this.closeView();
     }

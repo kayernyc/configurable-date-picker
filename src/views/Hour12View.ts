@@ -1,4 +1,3 @@
-
 /**
  * Owns both the top nav (AM/PM) and the list
  */
@@ -11,18 +10,18 @@ import VirtualDom from "./VirtualDom";
 
 export default class Hour12View extends DatePickerListView
   implements DatePickerView {
-  continuousScroll: Boolean;
-  virtualDom: VirtualDom
+  continuousScroll: boolean;
+  virtualDom: VirtualDom;
 
   constructor(model: DatePickerFactory, continuousScroll = true) {
     super(model, (continuousScroll = true));
+  }
 
-    if (this.virtualDom) {
-      // DatePickerBaseView determines if a virtualDom is needed
-      this.buildDateView = this.virtualDom.buildView.bind(this.virtualDom)
-    }
-
-    this.populateView()
+  append(parentElement: HTMLElement): void {
+    this.frameElement = this.initFrameView(this.continuousScroll);
+    this.frameElement.className += " date-picker-list";
+    parentElement.appendChild(this.frameElement)
+    this.populateView();
   }
 
   populateView(
@@ -30,6 +29,13 @@ export default class Hour12View extends DatePickerListView
     frameElement: HTMLElement = this.frameElement
   ) {
     const arr = model.dateArray(12);
+    
+    if (this.virtualDom) {
+      // DatePickerBaseView has determined that a virtualDom is needed
+      this.virtualDom.buildView(arr);
+      return
+    } 
+
     this.buildDateView(arr);
   }
 }
