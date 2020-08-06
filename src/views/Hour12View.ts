@@ -34,7 +34,7 @@ export default class Hour12View extends DatePickerListView
       // DatePickerBaseView has determined that a virtualDom is needed
       this.virtualDom.buildView(arr);
       return
-    } 
+    }
 
     this.buildDateView(arr);
   }
