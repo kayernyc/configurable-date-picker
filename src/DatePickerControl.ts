@@ -4,11 +4,15 @@ import DatePickerBaseView from "./views/DatePickerBaseView";
 import DatePickerListView from "./views/DatePickerListView";
 import ViewConfiguration from "./enums/ViewConfiguration";
 import ViewConfigurationAdapter from "./models/ViewConfigurationAdapter";
+import Hour12View from "./views/Hour12View";
 
 export default class DatePickerControl {
   datePickerModel: DatePickerModel;
 
-  private viewOpenState: Boolean = false;
+
+  private viewOpenState = false;
+
+  private viewOpenState: boolean = false;
   private viewContainer: HTMLElement;
   private viewConfigurations: ViewConfiguration[];
   private views: DatePickerBaseView[];
@@ -39,7 +43,7 @@ export default class DatePickerControl {
     this.viewContainer.className = "date-picker date-picker-close";
   }
 
-  // // generic enum type sanitizer - move to static utilities 
+  // // generic enum type sanitizer - move to static utilities
   // private sanitizeTypeArray = <T>(arr: string[], expectedEnum: T): any[] => {
   //   // TODO all strings should be properly cased before they get here.
   //   return arr
@@ -54,21 +58,32 @@ export default class DatePickerControl {
     viewConfigurations: ViewConfiguration[]
   ): DatePickerBaseView[] {
     container.className = "date-picker";
-    
-    return viewConfigurations.map((viewConfiguration: ViewConfiguration) => {
-      const {viewType} = viewConfiguration
-      const viewModel = new DatePickerFactory(viewConfiguration)
 
-      const view = new DatePickerListView(viewModel);
-      container.appendChild(view.view);
+    return viewConfigurations.map((viewConfiguration: ViewConfiguration) => {
+      const {dateType, viewType} = viewConfiguration
+      const viewModel = new DatePickerFactory(viewConfiguration)
+      let view: DatePickerBaseView;
+      // tslint:disable-next-line: no-console
+      console.log(dateType, viewType)
+
+      switch (dateType && viewType) {
+        case (0 && 6):
+          view = new Hour12View(viewModel);
+          break;
+        default:
+          view = new DatePickerListView(viewModel)
+      }
+      // container.appendChild(view.view);
+      view.append(container)
       return view;
     });
   }
 
   // API
+  // tslint:disable-next-line: no-empty
   updateViews(views: string[]) {}
 
-  toggleView(desiredState: Boolean): Boolean {
+  toggleView(desiredState: boolean): boolean {
     if (desiredState !== this.viewOpenState) {
       desiredState ? this.openView() : this.closeView();
     }

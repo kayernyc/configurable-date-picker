@@ -15,7 +15,7 @@ class AtomicDateObject {
   constructor(
     date: Date,
     locale: string[] = ["en-US"],
-    options: DateTypeFormat
+    options: DateTypeFormat,
   ) {
     this.date = date;
     this.viewString = date.toLocaleString(locale, options);
