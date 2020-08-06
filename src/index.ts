@@ -9,8 +9,8 @@ declare global {
   }
 }
 
-let model = new DatePickerModel()
-let container = document.createElement('div')
+const model = new DatePickerModel()
+const container = document.createElement('div')
 document.body.appendChild(container)
 
 const datePickerControl = new DatePickerControl(model, container, [{dateType: 6, viewType: 0}])

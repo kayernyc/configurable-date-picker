@@ -26,18 +26,17 @@ export default class VirtualDom {
     const unshiftLimit = childrenArr[0].offsetHeight;
     const popLimit = this.last(childrenArr).offsetHeight;
 
-    let top = parseInt(this.vdFrameElement.style.top || "0px");
+    const top = parseInt(this.vdFrameElement.style.top || "0px", 10);
 
     let { deltaY } = evt;
-    let valence = Math.abs(deltaY) / deltaY;
+    const valence = Math.abs(deltaY) / deltaY;
     deltaY = Math.max(Math.abs(deltaY), 3) * valence;
-    const newTop = top + deltaY
-    
+    const newTop = top + deltaY;
+
     this.vdFrameElement.style.top = newTop + "px";
 
     if (newTop > 0) {
       // add to beginning
-
     }
   };
 
@@ -98,13 +97,13 @@ export default class VirtualDom {
   ) {
     // clear out previous children
     // TODO: remove event listeners
-    let {
+    const {
       buildElementSetForVirtualDom,
       frameHeight,
-      contentHeight,
       calculateContentHeight,
       initializeListeners,
     } = this;
+    let { contentHeight } = this;
 
     frameElement.innerHTML = "";
 
@@ -114,6 +113,7 @@ export default class VirtualDom {
 
     if (contentHeight > frameHeight) {
       // init virtual dom behavior
+      console.log("am i here");
       initializeListeners();
     } else {
       console.log("WTF");

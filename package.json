@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config ./webpack.config.js",
+    "lint": "tslint --project \"./tsconfig.json\"",
     "start": "cross-env NODE_ENV=development webpack-dev-server --hot --config webpack.config.js",
     "test": "jest --coverage"
   },
