@@ -16,12 +16,9 @@ export default abstract class DatePickerBaseView {
     if (continuousScroll) {
       this.virtualDom = new VirtualDom()
       this.frameElement.appendChild(this.virtualDom.frameElement)
-<<<<<<< HEAD
       console.log('---- VIRTUAL DOM')
     } else {
       console.log('no virtual dom')
-=======
->>>>>>> added tslint config and cleaned or disabled rules as appropriate
     }
 
     this.frameElement.className += " date-picker-view";
