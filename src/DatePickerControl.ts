@@ -9,11 +9,10 @@ import Hour12View from "./views/Hour12View";
 export default class DatePickerControl {
   datePickerModel: DatePickerModel;
 
-<<<<<<< HEAD
+
   private viewOpenState = false;
-=======
+
   private viewOpenState: boolean = false;
->>>>>>> added tslint config and cleaned or disabled rules as appropriate
   private viewContainer: HTMLElement;
   private viewConfigurations: ViewConfiguration[];
   private views: DatePickerBaseView[];
