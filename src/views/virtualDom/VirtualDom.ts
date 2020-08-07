@@ -2,7 +2,7 @@ type EventListenerFunction = (evt: MouseEvent) => void;
 
 // https://stackoverflow.com/questions/58036689/using-mutationobserver-to-detect-when-a-node-is-added-to-document
 // { (options?: ScrollToOptions): void; (x: number, y: number): void; }
-import AtomicDateObject from "../models/AtomicDateObject";
+import AtomicDateObject from "../../models/AtomicDateObject";
 
 export default class VirtualDom {
   // If a class type can have more than the
@@ -12,12 +12,17 @@ export default class VirtualDom {
   }
 
   static numElementsLimit = 12;
+
+  private beginningBuffer = 40;
+  private endingBuffer = 40;
   private vdFrameElement: HTMLElement;
   private elementArray: HTMLElement[];
 
   private eventListeners: EventListenerFunction[];
+
   private contentHeight: number;
   private frameHeight: number;
+  private containerHeight: number;
 
   private wheelHander = (evt: WheelEvent) => {
     const childrenArr = Array.from(
@@ -33,14 +38,6 @@ export default class VirtualDom {
     let { deltaY } = evt;
     const valence = Math.abs(deltaY) / deltaY;
     deltaY = Math.max(Math.abs(deltaY), 3) * valence;
-<<<<<<< HEAD
-    const newTop = top + deltaY;
-
-    this.vdFrameElement.style.top = newTop + "px";
-
-    if (newTop > 0) {
-      // add to beginning
-=======
     let newTop = top + deltaY;
 
     if (newTop > 0) {
@@ -52,7 +49,6 @@ export default class VirtualDom {
       const pushElement = childrenArr.shift() as HTMLElement;
       this.vdFrameElement.appendChild(pushElement);
       newTop += pushElement.offsetHeight;
->>>>>>> basic looping
     }
 
     this.vdFrameElement.style.top = newTop + "px";
@@ -82,15 +78,37 @@ export default class VirtualDom {
    *
    * builds initial set of containers.
    */
-  private buildElementSetForVirtualDom = (arr: AtomicDateObject[]) => {
-    // populate view with elements
-    // subset arr to be max limit long
-    arr.forEach((ado: AtomicDateObject) => {
-      const el = document.createElement("div");
-      el.innerHTML = ado.viewString;
+  private buildElementSetForVirtualDom = (arr: AtomicDateObject[], frameElement:HTMLElement = this.frameElement) => {
+    const {beginningBuffer, endingBuffer} = this
+    const targetHeight = this.containerHeight + beginningBuffer + endingBuffer;
+    const workingArr = [...arr];
+    let offset = 0;
 
-      this.frameElement.appendChild(el);
-    });
+    function addElement(ado: AtomicDateObject): HTMLElement {
+      const el = document.createElement("div");
+      el.innerHTML = ado.viewString
+      return el
+    }
+
+    while (frameElement.offsetHeight < targetHeight) {
+      let ado: AtomicDateObject
+      if (frameElement.offsetHeight < this.beginningBuffer) {
+        // tslint:disable-next-line: no-unused-expression
+        workingArr.unshift(workingArr.pop())[0]
+        ado = workingArr[0]
+        const el = addElement(ado)
+        frameElement.appendChild(el);
+        frameElement.style.top = ((parseInt(frameElement.style.top, 10) || 0) - el.offsetHeight) + 'px'
+        offset ++;
+        continue;
+      }
+
+      ado = workingArr[offset]
+      frameElement.appendChild(addElement(ado));
+      offset ++;
+    }
+
+
   };
 
   // PUBLIC API
@@ -111,6 +129,7 @@ export default class VirtualDom {
    */
   buildView(
     atomicDateObjectArr: AtomicDateObject[],
+    containerElement: HTMLElement,
     frameElement: HTMLElement = this.frameElement
   ) {
     // clear out previous children
@@ -121,8 +140,8 @@ export default class VirtualDom {
       calculateContentHeight,
       initializeListeners,
     } = this;
-    let { contentHeight } = this;
 
+    this.containerHeight = containerElement.offsetHeight;
     frameElement.innerHTML = "";
 
     buildElementSetForVirtualDom(atomicDateObjectArr);

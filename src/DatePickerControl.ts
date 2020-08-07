@@ -9,10 +9,7 @@ import Hour12View from "./views/Hour12View";
 export default class DatePickerControl {
   datePickerModel: DatePickerModel;
 
-
   private viewOpenState = false;
-
-  private viewOpenState: boolean = false;
   private viewContainer: HTMLElement;
   private viewConfigurations: ViewConfiguration[];
   private views: DatePickerBaseView[];

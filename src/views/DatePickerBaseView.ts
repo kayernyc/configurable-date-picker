@@ -3,7 +3,7 @@
  */
 
 import DatePickerFactory from "../models/DatePickerFactory";
-import VirtualDom from "./VirtualDom";
+import VirtualDom from "./virtualDom/VirtualDom";
 
 export default abstract class DatePickerBaseView {
   protected frameElement: HTMLElement;

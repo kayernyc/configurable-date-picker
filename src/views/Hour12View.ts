@@ -6,7 +6,7 @@ import DatePickerFactory from "../models/DatePickerFactory";
 import DatePickerListView from "./DatePickerListView";
 import DatePickerView from "./DatePickerViewInterface";
 
-import VirtualDom from "./VirtualDom";
+import VirtualDom from "./virtualDom/VirtualDom";
 
 export default class Hour12View extends DatePickerListView
   implements DatePickerView {
@@ -32,7 +32,7 @@ export default class Hour12View extends DatePickerListView
 
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
-      this.virtualDom.buildView(arr);
+      this.virtualDom.buildView(arr, this.frameElement);
       return
     }
 
