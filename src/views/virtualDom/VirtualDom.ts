@@ -1,5 +1,14 @@
 type EventListenerFunction = (evt: MouseEvent) => void;
 
+interface BuildConfiguration {
+  arr: AtomicDateObject[];
+  continuousScroll: boolean;
+  frameElement:HTMLElement;
+  beginningBuffer: number;
+  endingBuffer: number;
+  targetHeight: number;
+}
+
 // https://stackoverflow.com/questions/58036689/using-mutationobserver-to-detect-when-a-node-is-added-to-document
 // { (options?: ScrollToOptions): void; (x: number, y: number): void; }
 import AtomicDateObject from "../../models/AtomicDateObject";
@@ -78,9 +87,17 @@ export default class VirtualDom {
    *
    * builds initial set of containers.
    */
-  private buildElementSetForVirtualDom = (arr: AtomicDateObject[], frameElement:HTMLElement = this.frameElement) => {
-    const {beginningBuffer, endingBuffer} = this
-    const targetHeight = this.containerHeight + beginningBuffer + endingBuffer;
+  private buildElementSetForVirtualDom = (config: BuildConfiguration) => {
+    // will be different if continuous scroll
+    // will need to determine if content is euqal to or longer than frame height.
+    const {
+      arr,
+      continuousScroll,
+      frameElement,
+      beginningBuffer,
+      endingBuffer,
+      targetHeight} = config;
+
     const workingArr = [...arr];
     let offset = 0;
 
@@ -92,7 +109,7 @@ export default class VirtualDom {
 
     while (frameElement.offsetHeight < targetHeight) {
       let ado: AtomicDateObject
-      if (frameElement.offsetHeight < this.beginningBuffer) {
+      if (continuousScroll && frameElement.offsetHeight < this.beginningBuffer) {
         // tslint:disable-next-line: no-unused-expression
         workingArr.unshift(workingArr.pop())[0]
         ado = workingArr[0]
@@ -135,7 +152,9 @@ export default class VirtualDom {
     // clear out previous children
     // TODO: remove event listeners
     const {
+      beginningBuffer,
       buildElementSetForVirtualDom,
+      endingBuffer,
       frameHeight,
       calculateContentHeight,
       initializeListeners,
@@ -143,8 +162,15 @@ export default class VirtualDom {
 
     this.containerHeight = containerElement.offsetHeight;
     frameElement.innerHTML = "";
-
-    buildElementSetForVirtualDom(atomicDateObjectArr);
+    const config: BuildConfiguration = {
+      arr: atomicDateObjectArr,
+      continuousScroll: true,
+      frameElement,
+      beginningBuffer,
+      endingBuffer,
+      targetHeight: containerElement.offsetHeight + beginningBuffer + endingBuffer
+    }
+    buildElementSetForVirtualDom(config);
 
     this.contentHeight = calculateContentHeight(atomicDateObjectArr);
     console.log(this.contentHeight, "***");
