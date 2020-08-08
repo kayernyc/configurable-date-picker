@@ -1,17 +1,13 @@
 type EventListenerFunction = (evt: MouseEvent) => void;
 
-interface BuildConfiguration {
-  arr: AtomicDateObject[];
-  continuousScroll: boolean;
-  frameElement:HTMLElement;
-  beginningBuffer: number;
-  endingBuffer: number;
-  targetHeight: number;
-}
+import AtomicDateObject from "../../models/AtomicDateObject";
+import BuildConfiguration from "./BuildConfiguration";
+import ContinuousScrollHandler from "./ContinuousScrollHandler";
+
+import { addElement } from "./VirtualDomConst"
 
 // https://stackoverflow.com/questions/58036689/using-mutationobserver-to-detect-when-a-node-is-added-to-document
 // { (options?: ScrollToOptions): void; (x: number, y: number): void; }
-import AtomicDateObject from "../../models/AtomicDateObject";
 
 export default class VirtualDom {
   // If a class type can have more than the
@@ -20,65 +16,50 @@ export default class VirtualDom {
     return arr[arr.length - 1];
   }
 
-  static numElementsLimit = 12;
-
-  private beginningBuffer = 40;
-  private endingBuffer = 40;
+  private buffer = 20;
   private vdFrameElement: HTMLElement;
-  private elementArray: HTMLElement[];
-
-  private eventListeners: EventListenerFunction[];
 
   private contentHeight: number;
-  private frameHeight: number;
   private containerHeight: number;
+
+  private continuousScrollHandler: ContinuousScrollHandler;
+
+  constructor (continuousScrollHandler: ContinuousScrollHandler) {
+    this.continuousScrollHandler = continuousScrollHandler
+  }
 
   private wheelHander = (evt: WheelEvent) => {
     const childrenArr = Array.from(
-      this.vdFrameElement.children
+      this.frameElement.children
     ) as HTMLElement[];
-    const unshiftLimit = childrenArr[0].offsetHeight;
     const lastElementHeight = VirtualDom.last(childrenArr).offsetHeight;
-    const popLimit = this.contentHeight - lastElementHeight;
-    const parentFrameHeight = this.vdFrameElement.parentElement.offsetHeight;
 
-    const top = parseInt(this.vdFrameElement.style.top || "0px", 10);
+    const top = parseInt(this.frameElement.style.top || "0px", 10);
 
     let { deltaY } = evt;
     const valence = Math.abs(deltaY) / deltaY;
-    deltaY = Math.max(Math.abs(deltaY), 3) * valence;
+    deltaY = Math.min(Math.abs(deltaY), 3) * valence;
     let newTop = top + deltaY;
 
     if (newTop > 0) {
-      // add to beginning
-      const unshiftElement = childrenArr.pop() as HTMLElement;
-      this.vdFrameElement.prepend(unshiftElement);
-      newTop -= unshiftElement.offsetHeight;
-    } else if (this.contentHeight + newTop < parentFrameHeight) {
-      const pushElement = childrenArr.shift() as HTMLElement;
-      this.vdFrameElement.appendChild(pushElement);
-      newTop += pushElement.offsetHeight;
+      newTop -= this.continuousScrollHandler.unshift();
+    } else if (newTop < -(this.buffer)) {
+      newTop += this.continuousScrollHandler.push();
     }
 
-    this.vdFrameElement.style.top = newTop + "px";
+    this.frameElement.style.top = newTop + "px";
   };
 
   private initializeListeners = (
     frameElement: HTMLElement = this.frameElement
   ) => {
-    frameElement.addEventListener("wheel", this.wheelHander);
+    frameElement.addEventListener("wheel", this.wheelHander, { passive: true });
   };
 
   private initVirtualDomFrameElement() {
     this.vdFrameElement = document.createElement("div");
     this.vdFrameElement.style.top = "0px";
     this.vdFrameElement.className = "vd-container";
-    this.frameHeight = this.vdFrameElement.offsetHeight;
-  }
-
-  private calculateContentHeight(elementArray: AtomicDateObject[]) {
-    // run this when view is added to dom and calculate real height
-    return 20 * elementArray.length;
   }
 
   /**
@@ -88,44 +69,32 @@ export default class VirtualDom {
    * builds initial set of containers.
    */
   private buildElementSetForVirtualDom = (config: BuildConfiguration) => {
-    // will be different if continuous scroll
     // will need to determine if content is euqal to or longer than frame height.
     const {
-      arr,
+      dataArr,
       continuousScroll,
       frameElement,
-      beginningBuffer,
-      endingBuffer,
-      targetHeight} = config;
+      buffer,
+      targetHeight,
+    } = config;
 
-    const workingArr = [...arr];
-    let offset = 0;
-
-    function addElement(ado: AtomicDateObject): HTMLElement {
-      const el = document.createElement("div");
-      el.innerHTML = ado.viewString
-      return el
-    }
-
-    while (frameElement.offsetHeight < targetHeight) {
-      let ado: AtomicDateObject
-      if (continuousScroll && frameElement.offsetHeight < this.beginningBuffer) {
-        // tslint:disable-next-line: no-unused-expression
-        workingArr.unshift(workingArr.pop())[0]
-        ado = workingArr[0]
-        const el = addElement(ado)
-        frameElement.appendChild(el);
-        frameElement.style.top = ((parseInt(frameElement.style.top, 10) || 0) - el.offsetHeight) + 'px'
-        offset ++;
-        continue;
+    for (let i = 0; i < dataArr.length; i++) {
+      const ado = dataArr[i];
+      frameElement.appendChild(addElement(ado, i));
+      if (frameElement.offsetHeight > targetHeight) {
+        break;
       }
-
-      ado = workingArr[offset]
-      frameElement.appendChild(addElement(ado));
-      offset ++;
     }
 
+    /**
+     * if final frameElement height is less than
+     * the container height, then no continuous scroll
+     */
 
+    if (continuousScroll && frameElement.offsetHeight > this.containerHeight) {
+      this.continuousScrollHandler.initFrame(dataArr, frameElement)
+      this.initializeListeners();
+    }
   };
 
   // PUBLIC API
@@ -138,7 +107,7 @@ export default class VirtualDom {
 
   /**
    *
-   * @param arr AtomicDateObject[]
+   * @param dataArr AtomicDateObject[]
    * @param frameElement HTMLElement
    *
    * When the view scrolls continuously
@@ -152,33 +121,21 @@ export default class VirtualDom {
     // clear out previous children
     // TODO: remove event listeners
     const {
-      beginningBuffer,
+      buffer,
       buildElementSetForVirtualDom,
-      endingBuffer,
-      frameHeight,
-      calculateContentHeight,
-      initializeListeners,
     } = this;
 
     this.containerHeight = containerElement.offsetHeight;
     frameElement.innerHTML = "";
     const config: BuildConfiguration = {
-      arr: atomicDateObjectArr,
+      dataArr: atomicDateObjectArr,
       continuousScroll: true,
       frameElement,
-      beginningBuffer,
-      endingBuffer,
-      targetHeight: containerElement.offsetHeight + beginningBuffer + endingBuffer
-    }
+      buffer,
+      targetHeight: containerElement.offsetHeight + 2 * buffer,
+    };
+
     buildElementSetForVirtualDom(config);
-
-    this.contentHeight = calculateContentHeight(atomicDateObjectArr);
-    console.log(this.contentHeight, "***");
-
-    if (this.contentHeight > frameHeight) {
-      // init virtual dom behavior
-      initializeListeners();
-    }
   }
 
   deallocate() {

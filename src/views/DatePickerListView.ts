@@ -10,15 +10,17 @@ import AtomicDateObject from "../models/AtomicDateObject";
 export default class DatePickerListView extends DatePickerBaseView
   implements DatePickerView {
   continuousScroll: boolean;
+  looping: boolean;
 
-  constructor(model: DatePickerFactory, continuousScroll = true) {
+  constructor(model: DatePickerFactory, continuousScroll = true, looping = true) {
     super();
     this.continuousScroll = continuousScroll;
+    this.looping = true;
     this.model = model;
   }
 
   append (parentElement: HTMLElement): void {
-    this.frameElement = this.initFrameView(this.continuousScroll);
+    this.frameElement = this.initFrameView(this.continuousScroll, this.looping);
     this.frameElement.className += " date-picker-list";
   }
 
