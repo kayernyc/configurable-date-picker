@@ -15,7 +15,7 @@ export default class DatePickerListView extends DatePickerBaseView
   constructor(model: DatePickerFactory, continuousScroll = true, looping = true) {
     super();
     this.continuousScroll = continuousScroll;
-    this.looping = true;
+    this.looping = looping;
     this.model = model;
   }
 
