@@ -13,14 +13,10 @@ export default abstract class DatePickerBaseView {
 
   protected initFrameView(continuousScroll = true, looping = false): HTMLElement {
     this.frameElement = document.createElement("div");
-    console.log('GRAND SUPER')
     if (continuousScroll) {
       // init ContinuousScrollHandler
       this.virtualDom = new VirtualDom(new ContinuousScrollHandler(this.model))
       this.frameElement.appendChild(this.virtualDom.frameElement)
-      console.log('---- VIRTUAL DOM')
-    } else {
-      console.log('no virtual dom')
     }
 
     this.frameElement.className += " date-picker-view";

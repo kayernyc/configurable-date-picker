@@ -17,8 +17,47 @@ export default class ContinuousScrollHandler {
 
   private adoElDictionary: { [id: string]: AtomicDateObject } = {};
 
+  static initDataArr(
+    dataArr: AtomicDateObject[],
+    looping: boolean
+  ): AtomicDateObject[] {
+    let ado: AtomicDateObject;
+    for (let i = 0; i < dataArr.length; i++) {
+      ado = dataArr[i];
+      if (i > 0) {
+        const prevAdo = dataArr[i - 1];
+        ado.prev = prevAdo;
+        prevAdo.next = ado;
+      }
+    }
+
+    if (looping) {
+      ado.next = dataArr[0];
+      dataArr[0].prev = ado;
+    }
+
+    return dataArr;
+  }
+
+  static initAdoElDictionary(
+    dataArr: AtomicDateObject[],
+    frameElement: HTMLElement
+  ): { [id: string]: AtomicDateObject } {
+    const adoElDictionary: { [id: string]: AtomicDateObject } = {};
+    const elArray = Array.from(frameElement.children);
+
+    for (let i = 0; i < elArray.length; i++) {
+      const ado = dataArr[i];
+      const el = elArray[i];
+      const key = el.getAttribute(DATA_TAG_STRING);
+      adoElDictionary[key] = ado;
+    }
+
+    return adoElDictionary;
+  }
+
   constructor(model: DatePickerFactory, continuous = true, looping = true) {
-    console.log("continuous is here");
+    console.log(`ContinuousScroll looping ${looping}`);
 
     if (looping) {
       this.handler = this.loop;
@@ -93,55 +132,18 @@ export default class ContinuousScrollHandler {
     return newEl.offsetHeight;
   }
 
-  private initDataArr(
-    dataArr: AtomicDateObject[],
-    looping: boolean
-  ): AtomicDateObject[] {
-    let ado: AtomicDateObject;
-    for (let i = 0; i < dataArr.length; i++) {
-      ado = dataArr[i];
-      if (i > 0) {
-        const prevAdo = dataArr[i - 1];
-        ado.prev = prevAdo;
-        prevAdo.next = ado;
-      }
-    }
-
-    if (looping) {
-      console.log(dataArr[0], "what hers");
-      ado.next = dataArr[0];
-      dataArr[0].prev = ado;
-    }
-
-    return dataArr;
-  }
-
-  private initAdoElDictionary(
-    dataArr: AtomicDateObject[],
-    frameElement: HTMLElement
-  ): { [id: string]: AtomicDateObject } {
-    const adoElDictionary: { [id: string]: AtomicDateObject } = {};
-    const elArray = Array.from(frameElement.children);
-
-    for (let i = 0; i < elArray.length; i++) {
-      const ado = dataArr[i];
-      const el = elArray[i];
-      const key = el.getAttribute(DATA_TAG_STRING);
-      adoElDictionary[key] = ado;
-    }
-
-    return adoElDictionary;
-  }
-
   // API
 
   initFrame(dataArr: AtomicDateObject[], frameElement: HTMLElement) {
-    console.log(" WHATS MY LOOP", this.looping);
-    this.dataArr = this.initDataArr([...dataArr], this.looping);
+    this.dataArr = ContinuousScrollHandler.initDataArr(
+      [...dataArr],
+      this.looping
+    );
     this.frameElement = frameElement;
-    this.adoElDictionary = this.initAdoElDictionary(this.dataArr, frameElement);
-
-    console.table(this.adoElDictionary);
+    this.adoElDictionary = ContinuousScrollHandler.initAdoElDictionary(
+      this.dataArr,
+      frameElement
+    );
   }
 
   unshift(): number {
