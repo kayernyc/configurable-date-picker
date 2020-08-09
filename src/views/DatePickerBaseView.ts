@@ -3,7 +3,7 @@
  */
 
 import ContinuousScrollHandler from "./virtualDom/ContinuousScrollHandler";
-import DatePickerFactory from "../models/DatePickerFactory";
+import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 import VirtualDom from "./virtualDom/VirtualDom";
 
 export default abstract class DatePickerBaseView {

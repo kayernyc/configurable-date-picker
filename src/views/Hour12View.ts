@@ -2,7 +2,7 @@
  * Owns both the top nav (AM/PM) and the list
  */
 
-import DatePickerFactory from "../models/DatePickerFactory";
+import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 import DatePickerListView from "./DatePickerListView";
 import DatePickerView from "./DatePickerViewInterface";
 

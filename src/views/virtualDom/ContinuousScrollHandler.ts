@@ -1,5 +1,5 @@
 import AtomicDateObject from "../../models/AtomicDateObject";
-import DatePickerFactory from "../../models/DatePickerFactory";
+import DatePickerFactory from "../../models/datePickerFactory/DatePickerFactory";
 import BuildConfiguration from "./BuildConfiguration";
 
 import { DATA_TAG_STRING, addElement } from "./VirtualDomConst";
@@ -72,14 +72,22 @@ export default class ContinuousScrollHandler {
   }
 
   private firstElement(frameElement = this.frameElement): HTMLElement {
-    return this.frameElement.removeChild(
-      this.frameElement.children[0]
+    if (frameElement.children.length < 1) {
+      throw Error(' frameElement has no children')
+    }
+
+    return frameElement.removeChild(
+      frameElement.children[0]
     ) as HTMLElement;
   }
 
   private lastElement(frameElement = this.frameElement): HTMLElement {
-    return this.frameElement.removeChild(
-      this.frameElement.children[this.frameElement.children.length - 1]
+    if (frameElement.children.length < 1) {
+      throw Error(' frameElement has no children')
+    }
+
+    return frameElement.removeChild(
+      frameElement.children[frameElement.children.length - 1]
     ) as HTMLElement;
   }
 
@@ -103,20 +111,20 @@ export default class ContinuousScrollHandler {
     return el.offsetHeight;
   }
 
-  private loop(valence: boolean): number {
+  private loop(valence: boolean, frameElement = this.frameElement): number {
     let currentEl: HTMLElement;
     let newEl: HTMLElement;
     let newAdo: AtomicDateObject;
 
     if (valence) {
-      currentEl = this.frameElement.children[0] as HTMLElement;
+      currentEl = frameElement.children[0] as HTMLElement;
       // last el goes to beginning
       newEl = this.lastElement();
       newAdo = this.adoElDictionary[currentEl.getAttribute(DATA_TAG_STRING)]
         .prev as AtomicDateObject;
     } else {
-      currentEl = this.frameElement.children[
-        this.frameElement.children.length - 1
+      currentEl = frameElement.children[
+        frameElement.children.length - 1
       ] as HTMLElement;
       // first el goes to end
       newAdo = this.adoElDictionary[currentEl.getAttribute(DATA_TAG_STRING)]
@@ -127,8 +135,8 @@ export default class ContinuousScrollHandler {
     this.adoElDictionary[newEl.getAttribute(DATA_TAG_STRING)] = newAdo;
     newEl.innerHTML = newAdo.viewString;
     valence
-      ? this.frameElement.prepend(newEl)
-      : this.frameElement.appendChild(newEl);
+      ? frameElement.prepend(newEl)
+      : frameElement.appendChild(newEl);
     return newEl.offsetHeight;
   }
 
