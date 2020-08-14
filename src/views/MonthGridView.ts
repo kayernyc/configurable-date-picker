@@ -20,13 +20,13 @@ export default class MonthGridView extends DatePickerGridView
       // DatePickerBaseView determines if a virtualDom is needed
       this.buildDateView = this.virtualDom.buildView.bind(this.virtualDom)
     }
-
-    this.populateView()
   }
 
   append (parentElement: HTMLElement): void {
     this.frameElement = this.initFrameView(this.continuousScroll);
-    this.frameElement.className += " date-picker-list";
+    this.frameElement.className += " date-picker-grid";
+    parentElement.appendChild(this.frameElement)
+    this.populateView()
   }
 
   populateView(
@@ -34,6 +34,13 @@ export default class MonthGridView extends DatePickerGridView
     frameElement: HTMLElement = this.frameElement
   ) {
     const arr = model.dateArray(12);
+
+    if (this.virtualDom) {
+      // DatePickerBaseView has determined that a virtualDom is needed
+      this.virtualDom.buildView(arr);
+      return
+    }
+
     this.buildDateView(arr);
   }
 }

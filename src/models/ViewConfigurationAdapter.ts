@@ -65,10 +65,12 @@ export default class ViewConfigurationAdapter {
     }
 
     if (
-      obj.dateType !== undefined &&
-      [0, 1, 2, 3, 4, 5, 6, 7].includes(obj.dateType) &&
-      obj.viewType !== undefined &&
-      [0, 1, 2, 3, 4, 5, 6, 7].includes(obj.viewType)
+      // tslint:disable: no-string-literal
+      obj["dateType"] !== undefined &&
+      [0, 1, 2, 3, 4, 5, 6, 7].includes(obj["dateType"]) &&
+      obj["viewType"] !== undefined &&
+      [0, 1, 2, 3, 4, 5, 6, 7].includes(obj["viewType"])
+      // tslint:enable: no-string-literal
     ) {
       return true;
     }
@@ -80,7 +82,8 @@ export default class ViewConfigurationAdapter {
     configDate?: DateType,
     configView?: ViewType,
     defaultDateType: DateType = this.configDefaults.dateType,
-    defaultViewType: ViewType = this.configDefaults.viewType
+    // tslint:disable-next-line: no-string-literal
+    defaultViewType: ViewType = this.configDefaults["viewType"]
   ): ViewConfiguration {
     return new ViewConfiguration({
       dateType: configDate === undefined ? defaultDateType : configDate,
