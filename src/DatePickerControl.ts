@@ -70,9 +70,11 @@ export default class DatePickerControl {
         case (dateType === DateType.HOUR && viewType === ViewType.LIST):
         case (dateType === DateType.HOUR && viewType === ViewType.GRID):
           view = new Hour12View(viewModel);
+          console.log('HOURS')
           break;
 
         case (dateType === DateType.MONTH && viewType === ViewType.GRID):
+          console.log('Month Grid')
           view = new MonthGridView(viewModel)
           break;
 

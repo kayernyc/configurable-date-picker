@@ -1,18 +1,29 @@
-import DatePickerType from "../models/datePickerFactory/DatePickerFactory";
+import AtomicDateObject from "../models/AtomicDateObject";
 import DatePickerBaseView from "./DatePickerBaseView";
 import DatePickerView from "./DatePickerViewInterface";
+import DatePickerFactory from "../models/DatePickerFactory";
 
 export default class DatePickerGridView extends DatePickerBaseView
   implements DatePickerView {
-
   continuousScroll = false;
 
-  constructor(model: DatePickerType, continuousScroll = false) {
+  constructor(model: DatePickerFactory, continuousScroll = false) {
     super();
+    this.continuousScroll = continuousScroll;
     this.model = model;
-    // initFrameView is in the super
-    this.frameElement = this.initFrameView(continuousScroll);
+  }
+
+  append(parentElement: HTMLElement): void {
+    this.frameElement = this.initFrameView(this.continuousScroll);
     this.frameElement.className += " date-picker-grid";
+  }
+
+  protected populateView(
+    model: DatePickerFactory,
+    containerView: HTMLElement,
+    frameElement: HTMLElement
+  ) {
+    throw new Error("Override populateView");
   }
 
   /**
@@ -33,9 +44,5 @@ export default class DatePickerGridView extends DatePickerBaseView
       el.innerHTML = date.viewString;
       frameElement.appendChild(el);
     });
-  }
-
-  append(parentElement: HTMLElement): void {
-    throw new Error("Method not implemented.");
   }
 }

@@ -13,8 +13,13 @@ export default class Hour12View extends DatePickerListView
   continuousScroll: boolean;
   virtualDom: VirtualDom;
 
-  constructor(model: DatePickerFactory, continuousScroll = true, looping = true) {
-    super(model, continuousScroll, looping);
+  constructor(model: DatePickerFactory, continuousScroll = true) {
+    super(model, (continuousScroll = true));
+
+    if (this.virtualDom) {
+      // DatePickerBaseView determines if a virtualDom is needed
+      this.buildDateView = this.virtualDom.buildView.bind(this.virtualDom)
+    }
   }
 
   append(parentElement: HTMLElement): void {

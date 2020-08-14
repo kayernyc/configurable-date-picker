@@ -2,10 +2,10 @@
  *  if continuous scroll is true or number of dates is more than 12 init virtual dom.
  *  if there is a virtual dom, then normal scrolling is disabled.
  */
-import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
+import AtomicDateObject from "../models/AtomicDateObject";
+import DatePickerFactory from "../models/DatePickerFactory";
 import DatePickerBaseView from "./DatePickerBaseView";
 import DatePickerView from "./DatePickerViewInterface";
-import AtomicDateObject from "../models/AtomicDateObject";
 
 export default class DatePickerListView extends DatePickerBaseView
   implements DatePickerView {
