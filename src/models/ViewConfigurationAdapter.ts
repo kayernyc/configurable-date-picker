@@ -52,7 +52,7 @@ export default class ViewConfigurationAdapter {
 
   // TODO: Abstract and move to utilities
 
-  matchObjectToViewConfiguration(obj: object): boolean {
+  matchObjectToViewConfiguration(obj: ViewConfiguration): boolean {
     const objKeys = Object.keys(obj);
     const vCKeys = ["dateType", "viewType"];
 

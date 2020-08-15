@@ -2,7 +2,7 @@
  *  if continuous scroll is true or number of dates is more than 12 init virtual dom.
  *  if there is a virtual dom, then normal scrolling is disabled.
  */
-import DatePickerFactory from "../models/DatePickerFactory";
+import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 import DatePickerBaseView from "./DatePickerBaseView";
 import DatePickerView from "./DatePickerViewInterface";
 import AtomicDateObject from "../models/AtomicDateObject";
@@ -10,15 +10,17 @@ import AtomicDateObject from "../models/AtomicDateObject";
 export default class DatePickerListView extends DatePickerBaseView
   implements DatePickerView {
   continuousScroll: boolean;
+  looping: boolean;
 
-  constructor(model: DatePickerFactory, continuousScroll = true) {
+  constructor(model: DatePickerFactory, continuousScroll = true, looping = true) {
     super();
     this.continuousScroll = continuousScroll;
+    this.looping = looping;
     this.model = model;
   }
 
   append (parentElement: HTMLElement): void {
-    this.frameElement = this.initFrameView(this.continuousScroll);
+    this.frameElement = this.initFrameView(this.continuousScroll, this.looping);
     this.frameElement.className += " date-picker-list";
   }
 

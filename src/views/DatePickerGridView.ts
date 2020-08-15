@@ -1,4 +1,4 @@
-import DatePickerType from "../models/DatePickerFactory";
+import DatePickerType from "../models/datePickerFactory/DatePickerFactory";
 import DatePickerBaseView from "./DatePickerBaseView";
 import DatePickerView from "./DatePickerViewInterface";
 

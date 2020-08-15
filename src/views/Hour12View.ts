@@ -2,19 +2,19 @@
  * Owns both the top nav (AM/PM) and the list
  */
 
-import DatePickerFactory from "../models/DatePickerFactory";
+import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 import DatePickerListView from "./DatePickerListView";
 import DatePickerView from "./DatePickerViewInterface";
 
-import VirtualDom from "./VirtualDom";
+import VirtualDom from "./virtualDom/VirtualDom";
 
 export default class Hour12View extends DatePickerListView
   implements DatePickerView {
   continuousScroll: boolean;
   virtualDom: VirtualDom;
 
-  constructor(model: DatePickerFactory, continuousScroll = true) {
-    super(model, (continuousScroll = true));
+  constructor(model: DatePickerFactory, continuousScroll = true, looping = true) {
+    super(model, continuousScroll, looping);
   }
 
   append(parentElement: HTMLElement): void {
@@ -32,7 +32,7 @@ export default class Hour12View extends DatePickerListView
 
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
-      this.virtualDom.buildView(arr);
+      this.virtualDom.buildView(arr, this.frameElement);
       return
     }
 

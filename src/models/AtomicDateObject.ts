@@ -9,6 +9,8 @@ import DateTypeFormat from "../enums/DateTimeFormat";
 interface AtomicDateObject {
   date: Date;
   viewString: string;
+  next?: AtomicDateObject;
+  prev?: AtomicDateObject;
 }
 
 class AtomicDateObject {

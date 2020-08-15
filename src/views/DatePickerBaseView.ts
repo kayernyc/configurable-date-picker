@@ -2,23 +2,21 @@
  These views only present dates, not navigation
  */
 
-import DatePickerFactory from "../models/DatePickerFactory";
-import VirtualDom from "./VirtualDom";
+import ContinuousScrollHandler from "./virtualDom/ContinuousScrollHandler";
+import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
+import VirtualDom from "./virtualDom/VirtualDom";
 
 export default abstract class DatePickerBaseView {
   protected frameElement: HTMLElement;
   protected model: DatePickerFactory;
   protected virtualDom: VirtualDom;
 
-  protected initFrameView(continuousScroll = true): HTMLElement {
+  protected initFrameView(continuousScroll = true, looping = false): HTMLElement {
     this.frameElement = document.createElement("div");
-    console.log('GRAND SUPER')
     if (continuousScroll) {
-      this.virtualDom = new VirtualDom()
+      // init ContinuousScrollHandler
+      this.virtualDom = new VirtualDom(new ContinuousScrollHandler(this.model))
       this.frameElement.appendChild(this.virtualDom.frameElement)
-      console.log('---- VIRTUAL DOM')
-    } else {
-      console.log('no virtual dom')
     }
 
     this.frameElement.className += " date-picker-view";
