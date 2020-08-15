@@ -5,26 +5,36 @@
 import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 import DatePickerListView from "./DatePickerListView";
 import DatePickerView from "./DatePickerViewInterface";
+import ToggleView, { ToggleSwitchProxy } from "./uicomponents/ToggleSwitch";
 
 import VirtualDom from "./virtualDom/VirtualDom";
 
 export default class Hour12View extends DatePickerListView
-  implements DatePickerView {
+  implements ToggleSwitchProxy {
   continuousScroll: boolean;
 
-  constructor(model: DatePickerFactory, continuousScroll = true) {
-    super(model, (continuousScroll = true));
+  amPmToggleSwitch: ToggleView = new ToggleView(["AM", "PM"]);
 
-    if (this.virtualDom) {
-      // DatePickerBaseView determines if a virtualDom is needed
-      this.buildDateView = this.virtualDom.buildView.bind(this.virtualDom)
-    }
+  constructor(
+    model: DatePickerFactory,
+    continuousScroll = true,
+    looping = true
+  ) {
+    super(model, continuousScroll, looping);
+    this.amPmToggleSwitch.proxy = this;
+  }
+
+  selectValue(index: number, value: string): boolean {
+    console.log(`heard it from here ${value} ${index}`);
+    return true;
   }
 
   append(parentElement: HTMLElement): void {
+    // attach switch
+    this.amPmToggleSwitch.append(parentElement);
     this.frameElement = this.initFrameView(this.continuousScroll);
     this.frameElement.className += " date-picker-list";
-    parentElement.appendChild(this.frameElement)
+    parentElement.appendChild(this.frameElement);
     this.populateView();
   }
 
@@ -37,7 +47,7 @@ export default class Hour12View extends DatePickerListView
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
       this.virtualDom.buildView(arr, this.frameElement);
-      return
+      return;
     }
 
     this.buildDateView(arr);
