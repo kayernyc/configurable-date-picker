@@ -29,7 +29,9 @@
     "eslint-plugin-unicorn": "^21.0.0",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "husky": "^4.2.5",
     "jest": "^26.1.0",
+    "lint-staged": "^10.2.11",
     "source-map": "^0.7.3",
     "source-map-loader": "^1.0.1",
     "source-map-support": "^0.5.19",
@@ -39,6 +41,17 @@
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./src/*.{js, jsx, ts, tsx}": [
+      "npx prettier --write",
+      "eslint src/*.js --fix-dry-run",
+    ]
   },
   "jest": {
     "transform": {
