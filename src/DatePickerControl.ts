@@ -1,5 +1,5 @@
 import DatePickerModel from "./models/DatePickerModel";
-import DatePickerFactory from "./models/DatePickerFactory";
+import DatePickerFactory from "./models/datePickerFactory/DatePickerFactory";
 import DatePickerBaseView from "./views/DatePickerBaseView";
 import DatePickerListView from "./views/DatePickerListView";
 import ViewConfiguration from "./enums/ViewConfiguration";
@@ -13,7 +13,6 @@ export default class DatePickerControl {
   datePickerModel: DatePickerModel;
 
   private viewOpenState = false;
-
   private viewContainer: HTMLElement;
   private viewConfigurations: ViewConfiguration[];
   private views: DatePickerBaseView[];

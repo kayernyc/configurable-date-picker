@@ -1,4 +1,5 @@
-.date-picker, .date-picker * {
+.date-picker,
+.date-picker * {
   box-sizing: border-box;
 }
 
@@ -16,7 +17,9 @@
   height: 0px;
 }
 
-.date-picker-view, .date-picker-grid, .date-picker-list {
+.date-picker-view,
+.date-picker-grid,
+.date-picker-list {
   display: inline-block;
   width: 200px;
   height: 100px;

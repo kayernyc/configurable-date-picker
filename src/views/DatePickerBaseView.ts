@@ -2,7 +2,7 @@
  These views only present dates, not navigation
  */
 import AtomicDateObject from "../models/AtomicDateObject";
-import DatePickerFactory from "../models/DatePickerFactory";
+import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 import VirtualDom from "./VirtualDom";
 
 export default abstract class DatePickerBaseView {

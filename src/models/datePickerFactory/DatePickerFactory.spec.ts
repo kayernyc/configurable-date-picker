@@ -1,7 +1,7 @@
 import DatePickerFactory from "./DatePickerFactory";
-import ViewConfiguration from "../enums/ViewConfiguration";
-import DateType from "../enums/DateType";
-import ViewType from "../enums/ViewType";
+import ViewConfiguration from "../../enums/ViewConfiguration";
+import DateType from "../../enums/DateType";
+import ViewType from "../../enums/ViewType";
 
 const configs = [
   {
