@@ -76,7 +76,7 @@ describe("hourHandlerCreator function", () => {
       it(`returns August ${i} when initialized with a seed date and passed an index`, () => {
         const testDay = hourFunction(i);
         expect(typeof testDay).toBe("object");
-        expect(testDay.date.getHours()).toBe((12 + i) % 24);
+        expect(testDay.date.getHours()).toBe((24 + i) % 24);
       });
     }
   });

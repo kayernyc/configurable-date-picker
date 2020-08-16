@@ -1,3 +1,5 @@
+import { RandomString } from "../../utils/RandomString";
+
 interface ToggleSwitchProxy {
   selectValue: (index: number, value: string) => boolean;
 }
@@ -22,31 +24,53 @@ export default class ToggleSwitch {
     const context = (this as unknown) as ValueContext;
     const { index, value, proxy } = context;
     if (proxy) {
-      const switchSelected = this.proxy.selectValue(index, value);
-      console.log(switchSelected);
+      console.log(" I AM CALLLLLLLLED")
+      this.proxy.selectValue(index, value);
     }
   }
 
-  append(parentElement: HTMLElement): void {
+  private createRadioLabelPair(
+    index: number,
+    value: string,
+    formName: string
+  ): [HTMLInputElement, HTMLLabelElement] {
+    const radioButton = document.createElement("input");
+    radioButton.type = "radio";
+    radioButton.id = value;
+    radioButton.name = formName;
+    radioButton.hidden = true;
+    radioButton.value = value;
+    radioButton.className = "toggle-switch-value";
+
+    const radioLabel = document.createElement("label");
+    radioLabel.htmlFor = value;
+    radioLabel.innerHTML = value;
+    radioLabel.onmousedown = this.select.bind({
+      index,
+      value,
+      proxy: this.proxy,
+    });
+
+    return [radioButton, radioLabel];
+  }
+
+  append(parentElement: HTMLElement, startIndex = 0, formName?: string): void {
     const frame = document.createElement("form");
+    const _formName = formName || RandomString(10);
     frame.className = "toggle-switch";
+    startIndex = Math.min(this.valuesArray.length, startIndex);
 
     for (const [index, value] of this.valuesArray.entries()) {
-      const radioButton = document.createElement("input");
-      radioButton.type = "radio";
-      radioButton.id = value;
-      radioButton.name = "bob";
-      radioButton.hidden = true;
-      radioButton.value = value;
-      radioButton.className = "toggle-switch-value";
-      const radioLabel = document.createElement("label");
-      radioLabel.htmlFor = value;
-      radioLabel.innerHTML = value;
-      radioLabel.onmousedown = this.select.bind({
+      const [radioButton, radioLabel] = this.createRadioLabelPair(
         index,
         value,
-        proxy: this.proxy,
-      });
+        formName
+      );
+
+      if (index === startIndex) {
+        radioButton.checked = true;
+      }
+
       frame.appendChild(radioButton);
       frame.appendChild(radioLabel);
     }

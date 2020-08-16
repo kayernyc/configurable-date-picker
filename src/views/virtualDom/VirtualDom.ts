@@ -115,7 +115,7 @@ export default class VirtualDom {
    */
   buildView(
     atomicDateObjectArr: AtomicDateObject[],
-    containerElement: HTMLElement,
+    containerElement?: HTMLElement,
     frameElement: HTMLElement = this.frameElement
   ) {
     // clear out previous children
@@ -125,7 +125,12 @@ export default class VirtualDom {
       buildElementSetForVirtualDom,
     } = this;
 
-    this.containerHeight = containerElement.offsetHeight;
+    if (!containerElement && this.containerHeight === undefined) {
+      throw new Error('BuildView called without initialization. Initialize container element first.')
+    } else if (containerElement) {
+      this.containerHeight = containerElement.offsetHeight;
+    }
+
     frameElement.innerHTML = "";
     const config: BuildConfiguration = {
       dataArr: atomicDateObjectArr,
