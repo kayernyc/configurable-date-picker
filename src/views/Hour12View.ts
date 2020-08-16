@@ -12,6 +12,7 @@ import VirtualDom from "./virtualDom/VirtualDom";
 export default class Hour12View extends DatePickerListView
   implements ToggleSwitchProxy {
   continuousScroll: boolean;
+  currentSet: number = 0;
 
   amPmToggleSwitch: ToggleView = new ToggleView(["AM", "PM"]);
 
@@ -20,12 +21,14 @@ export default class Hour12View extends DatePickerListView
     continuousScroll = true,
     looping = true
   ) {
-    super(model, continuousScroll, looping);
+    super(model, continuousScroll);
     this.amPmToggleSwitch.proxy = this;
   }
 
   selectValue(index: number, value: string): boolean {
-    console.log(`heard it from here ${value} ${index}`);
+    if (this.currentSet !== index) {
+      this.currentSet = index;
+    }
     return true;
   }
 

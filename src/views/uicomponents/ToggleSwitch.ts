@@ -22,20 +22,33 @@ export default class ToggleSwitch {
     const context = (this as unknown) as ValueContext;
     const { index, value, proxy } = context;
     if (proxy) {
-      this.proxy.selectValue(index, value);
+      const switchSelected = this.proxy.selectValue(index, value);
+      console.log(switchSelected);
     }
   }
 
   append(parentElement: HTMLElement): void {
-    const frame = document.createElement("div");
+    const frame = document.createElement("form");
     frame.className = "toggle-switch";
 
     for (const [index, value] of this.valuesArray.entries()) {
-      const el = document.createElement("div");
-      el.onmousedown = this.select.bind({ index, value, proxy: this.proxy });
-      el.innerHTML = value;
-      el.className = "toggle-switch-value";
-      frame.appendChild(el);
+      const radioButton = document.createElement("input");
+      radioButton.type = "radio";
+      radioButton.id = value;
+      radioButton.name = "bob";
+      radioButton.hidden = true;
+      radioButton.value = value;
+      radioButton.className = "toggle-switch-value";
+      const radioLabel = document.createElement("label");
+      radioLabel.htmlFor = value;
+      radioLabel.innerHTML = value;
+      radioLabel.onmousedown = this.select.bind({
+        index,
+        value,
+        proxy: this.proxy,
+      });
+      frame.appendChild(radioButton);
+      frame.appendChild(radioLabel);
     }
 
     parentElement.appendChild(frame);

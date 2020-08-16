@@ -72,3 +72,12 @@
   justify-content: space-around;
   text-align: center;
 }
+
+.toggle-switch > input[type="radio"] {
+  /* display: none; */
+  background: green;
+}
+
+.toggle-switch > input[type="radio"]:checked + label {
+  background: red;
+}
