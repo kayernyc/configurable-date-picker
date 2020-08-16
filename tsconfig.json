@@ -1,4 +1,5 @@
 {
+    "baseUrl": "./",
     "compileOnSave": true,
     "compilerOptions": {
         "downlevelIteration": true,
