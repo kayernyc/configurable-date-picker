@@ -1,7 +1,7 @@
 import AtomicDateObject from "../models/AtomicDateObject";
 import DatePickerBaseView from "./DatePickerBaseView";
 import DatePickerView from "./DatePickerViewInterface";
-import DatePickerFactory from "../models/DatePickerFactory";
+import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 
 export default class DatePickerGridView extends DatePickerBaseView
   implements DatePickerView {

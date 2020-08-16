@@ -2,7 +2,7 @@
  * Only months in a grid
  */
 
-import DatePickerFactory from "../models/DatePickerFactory";
+import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 import DatePickerGridView from "./DatePickerGridView";
 import DatePickerView from "./DatePickerViewInterface";
 
@@ -11,7 +11,6 @@ import VirtualDom from "./VirtualDom";
 export default class MonthGridView extends DatePickerGridView
   implements DatePickerView {
   continuousScroll: boolean;
-  virtualDom: VirtualDom
 
   constructor(model: DatePickerFactory, continuousScroll = true) {
     super(model, (continuousScroll = true));
@@ -37,7 +36,7 @@ export default class MonthGridView extends DatePickerGridView
 
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
-      this.virtualDom.buildView(arr);
+      this.virtualDom.buildView(arr, frameElement);
       return
     }
 

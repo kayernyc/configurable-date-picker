@@ -3,7 +3,7 @@
  *  if there is a virtual dom, then normal scrolling is disabled.
  */
 import AtomicDateObject from "../models/AtomicDateObject";
-import DatePickerFactory from "../models/DatePickerFactory";
+import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 import DatePickerBaseView from "./DatePickerBaseView";
 import DatePickerView from "./DatePickerViewInterface";
 
