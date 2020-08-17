@@ -1,0 +1,13 @@
+.date-picker {
+  border: 1px solid red;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.date-picker.date-picker-open {
+  height: 100px;
+}
+
+.date-picker.date-picker-close {
+  height: 0px;
+}
