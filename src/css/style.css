@@ -1,29 +1,7 @@
-.date-picker,
-.date-picker * {
-  box-sizing: border-box;
-}
-
-.date-picker {
-  border: 1px solid red;
-  display: inline-block;
-  overflow: hidden;
-}
-
-.date-picker.date-picker-open {
-  height: 100px;
-}
-
-.date-picker.date-picker-close {
-  height: 0px;
-}
-
-.date-picker-view,
-.date-picker-grid,
-.date-picker-list {
-  display: inline-block;
-  width: 200px;
-  height: 100px;
-}
+@import "./_defaults.css";
+@import "./_structure.css";
+@import "./_datePickerFrame.css";
+@import "./_virtualDOM.css";
 
 .date-picker-view {
   background-color: yellow;
@@ -38,7 +16,8 @@
   position: relative;
 }
 
-.date-picker-grid, .date-picker-grid >.vd-container{
+.date-picker-grid,
+.date-picker-grid > .vd-container {
   background-color: slateblue;
   color: white;
   display: flex;
@@ -51,16 +30,4 @@
   display: flex;
 }
 
-.continuous-scroll {
-  background-color: turquoise;
-}
 
-.vd-container {
-  background-color: tomato;
-  position: relative;
-  top: 0;
-}
-
-.vd-container > * {
-  border: 1px solid blue;
-}

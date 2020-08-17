@@ -1,0 +1,7 @@
+.date-picker-view,
+.date-picker-grid,
+.date-picker-list {
+  display: inline-block;
+  width: 200px;
+  height: 100px;
+}
