@@ -30,12 +30,13 @@ export default abstract class DatePickerBaseView {
     }
 
     this.frameElement.className += " date-picker-view";
+
     return this.frameElement;
   }
 
   append(parentElement: HTMLElement): void {
     this.frameElement = this.initFrameView(this.continuousScroll);
-    const classNames = this.frameElement.className.split("");
+    const classNames = this.frameElement.className.split(" ");
     classNames.push(this.frameElementClassName);
     this.frameElement.className = classNames.join(" ");
   }
