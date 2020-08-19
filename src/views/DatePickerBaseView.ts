@@ -2,8 +2,9 @@
  These views only present dates, not navigation
  */
 import AtomicDateObject from "../models/AtomicDateObject";
+import ContinuousScrollHandler from "./virtualDom/ContinuousScrollHandler";
 import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
-import VirtualDom from "./VirtualDom";
+import VirtualDom from "./virtualDom/VirtualDom";
 
 export default abstract class DatePickerBaseView {
   continuousScroll: boolean;
@@ -22,7 +23,8 @@ export default abstract class DatePickerBaseView {
     this.frameElement = document.createElement("div");
     console.log("GRAND SUPER");
     if (continuousScroll) {
-      this.virtualDom = new VirtualDom();
+      // init ContinuousScrollHandler
+      this.virtualDom = new VirtualDom(new ContinuousScrollHandler(this.model))
       this.frameElement.appendChild(this.virtualDom.frameElement);
       console.log("---- VIRTUAL DOM");
     } else {

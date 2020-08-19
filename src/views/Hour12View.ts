@@ -6,7 +6,6 @@ import AtomicDateObject from "../models/AtomicDateObject";
 import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 import DatePickerListView from "./DatePickerListView";
 import ToggleView, { ToggleSwitchProxy } from "./uicomponents/ToggleSwitch";
-import VirtualDom from "./virtualDom/VirtualDom";
 
 export default class Hour12View extends DatePickerListView
   implements ToggleSwitchProxy {
@@ -20,7 +19,6 @@ export default class Hour12View extends DatePickerListView
   constructor(
     model: DatePickerFactory,
     continuousScroll = true,
-    looping = true
   ) {
     super(model, continuousScroll);
     this.amPmToggleSwitch.proxy = this;

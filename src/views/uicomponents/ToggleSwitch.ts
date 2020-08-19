@@ -24,7 +24,6 @@ export default class ToggleSwitch {
     const context = (this as unknown) as ValueContext;
     const { index, value, proxy } = context;
     if (proxy) {
-      console.log(" I AM CALLLLLLLLED")
       this.proxy.selectValue(index, value);
     }
   }
