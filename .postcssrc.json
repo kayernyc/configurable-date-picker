@@ -1,7 +1,3 @@
 {
-  "parser": "sugarss",
-  "map": false,
-  "plugins": {
-    "postcss-plugin": {}
-  }
+  "map": false
 }

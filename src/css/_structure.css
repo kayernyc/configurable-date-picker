@@ -2,6 +2,7 @@
 .date-picker-grid,
 .date-picker-list {
   display: inline-block;
-  width: 200px;
   height: 100px;
+  overflow: hidden;
+  width: 200px;
 }

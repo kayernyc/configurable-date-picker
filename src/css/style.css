@@ -1,6 +1,7 @@
 @import "./_defaults.css";
 @import "./_structure.css";
 @import "./_datePickerFrame.css";
+@import "./_toggleSwitch.css";
 @import "./_virtualDOM.css";
 
 .date-picker-view {
@@ -29,3 +30,4 @@
 .date-picker-grid > * {
   display: flex;
 }
+
