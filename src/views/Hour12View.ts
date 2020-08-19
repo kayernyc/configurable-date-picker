@@ -11,7 +11,6 @@ import VirtualDom from "./virtualDom/VirtualDom";
 export default class Hour12View extends DatePickerListView
   implements DatePickerView {
   continuousScroll: boolean;
-  virtualDom: VirtualDom;
 
   constructor(model: DatePickerFactory, continuousScroll = true) {
     super(model, (continuousScroll = true));

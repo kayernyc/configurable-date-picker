@@ -6,8 +6,6 @@ import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 import DatePickerGridView from "./DatePickerGridView";
 import DatePickerView from "./DatePickerViewInterface";
 
-import VirtualDom from "./VirtualDom";
-
 export default class MonthGridView extends DatePickerGridView
   implements DatePickerView {
   continuousScroll: boolean;
