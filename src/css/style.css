@@ -21,8 +21,9 @@
 .date-picker-grid,
 .date-picker-list {
   display: inline-block;
-  width: 200px;
   height: 100px;
+  overflow: hidden;
+  width: 100px;
 }
 
 .date-picker-view {
@@ -63,4 +64,20 @@
 
 .vd-container > * {
   border: 1px solid blue;
+}
+
+.toggle-switch {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.toggle-switch > input[type="radio"] {
+  /* display: none; */
+  background: green;
+}
+
+.toggle-switch > input[type="radio"]:checked + label {
+  background: red;
 }

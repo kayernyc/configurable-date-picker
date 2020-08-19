@@ -95,7 +95,7 @@ export const DatePickerCreatorFuncs = {
     const dateTimeFormat = format;
     const seedDate = new Date(date.getTime());
 
-    seedDate.getHours() < 12 ? seedDate.setHours(0) : seedDate.setHours(12)
+    seedDate.setHours(0);
     seedDate.setMinutes(1);
 
     return (index: number): AtomicDateObject => {

@@ -57,8 +57,6 @@ export default class ContinuousScrollHandler {
   }
 
   constructor(model: DatePickerFactory, continuous = true, looping = true) {
-    console.log(`ContinuousScroll looping ${looping}`);
-
     if (looping) {
       this.handler = this.loop;
       this.looping = looping;

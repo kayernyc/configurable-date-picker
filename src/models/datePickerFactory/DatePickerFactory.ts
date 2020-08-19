@@ -83,8 +83,6 @@ export default class DatePickerFactory {
 
     const returnValue = [];
 
-    console.log(this.atomicDateObjectFunction);
-
     for (let i = 0; i < quantity; i++) {
       const newADO = this.atomicDateObjectFunction(i);
       returnValue.push(newADO);

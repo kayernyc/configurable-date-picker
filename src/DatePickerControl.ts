@@ -63,8 +63,6 @@ export default class DatePickerControl {
       const {dateType, viewType} = viewConfiguration
       const viewModel = new DatePickerFactory(viewConfiguration)
       let view: DatePickerBaseView;
-      // tslint:disable-next-line: no-console
-      console.log(dateType, viewType)
 
       switch (true) {
         case (dateType === DateType.HOUR && viewType === ViewType.LIST):
