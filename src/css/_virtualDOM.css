@@ -1,0 +1,13 @@
+.continuous-scroll {
+  background-color: turquoise;
+}
+
+.vd-container {
+  background-color: tomato;
+  position: relative;
+  top: 0;
+}
+
+.vd-container > * {
+  border: 1px solid blue;
+}
