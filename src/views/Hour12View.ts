@@ -45,9 +45,10 @@ export default class Hour12View extends DatePickerListView
   append(parentElement: HTMLElement): void {
     // attach switch
     this.amPmToggleSwitch.append(parentElement);
-    this.frameElement = this.initFrameView(this.continuousScroll);
-    this.frameElement.className += " date-picker-list";
-    parentElement.appendChild(this.frameElement);
+    const frameElmeent = this.initFrameView(this.continuousScroll);
+    frameElement.className = this.appendClassName(frameElement.className)
+    parentElement.appendChild(frameElement);
+    this.frameElement = frameElmeent
     this.populateView();
   }
 

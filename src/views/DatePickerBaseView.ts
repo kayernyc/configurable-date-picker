@@ -19,12 +19,18 @@ export default abstract class DatePickerBaseView {
     this.model = model;
   }
 
+  protected appendClassName(className: string): string {
+    const classNames = className.split(" ");
+    classNames.push(this.frameElementClassName);
+    return classNames.join(" ");
+  }
+
   protected initFrameView(continuousScroll = true): HTMLElement {
     this.frameElement = document.createElement("div");
     console.log("GRAND SUPER");
     if (continuousScroll) {
       // init ContinuousScrollHandler
-      this.virtualDom = new VirtualDom(new ContinuousScrollHandler(this.model))
+      this.virtualDom = new VirtualDom(new ContinuousScrollHandler(this.model));
       this.frameElement.appendChild(this.virtualDom.frameElement);
       console.log("---- VIRTUAL DOM");
     } else {
@@ -38,10 +44,18 @@ export default abstract class DatePickerBaseView {
 
   append(parentElement: HTMLElement): void {
     this.frameElement = this.initFrameView(this.continuousScroll);
-    const classNames = this.frameElement.className.split(" ");
-    classNames.push(this.frameElementClassName);
-    this.frameElement.className = classNames.join(" ");
+    this.frameElement.className = this.appendClassName(this.frameElement.className)
+    parentElement.appendChild(this.frameElement);
+
+    if (this.populateView && typeof this.populateView === "function") {
+      this.populateView(this.model, this.frameElement);
+    }
   }
+
+  protected abstract populateView(
+    model: DatePickerFactory,
+    frameElement: HTMLElement
+  ): void;
 
   /**
    *

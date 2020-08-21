@@ -5,6 +5,7 @@ import DatePickerListView from "./views/DatePickerListView";
 import ViewConfiguration from "./enums/ViewConfiguration";
 import ViewConfigurationAdapter from "./models/ViewConfigurationAdapter";
 import Hour12View from "./views/Hour12View";
+import Hour24View from "./views/Hour24View";
 import MonthGridView from "./views/MonthGridView";
 import DateType from "./enums/DateType";
 import ViewType from "./enums/ViewType";
@@ -60,25 +61,30 @@ export default class DatePickerControl {
     container.className = "date-picker";
 
     return viewConfigurations.map((viewConfiguration: ViewConfiguration) => {
-      const {dateType, viewType} = viewConfiguration
-      const viewModel = new DatePickerFactory(viewConfiguration)
+      const { dateType, viewType } = viewConfiguration;
+      const viewModel = new DatePickerFactory(viewConfiguration);
       let view: DatePickerBaseView;
 
       switch (true) {
-        case (dateType === DateType.HOUR && viewType === ViewType.LIST):
-        case (dateType === DateType.HOUR && viewType === ViewType.GRID):
+        case dateType === DateType.HOUR && viewType === ViewType.LIST:
+        case dateType === DateType.HOUR && viewType === ViewType.GRID:
           view = new Hour12View(viewModel);
           break;
 
-        case (dateType === DateType.MONTH && viewType === ViewType.GRID):
-          view = new MonthGridView(viewModel)
+        case dateType === DateType.HOUR24 && viewType === ViewType.LIST:
+        case dateType === DateType.HOUR24 && viewType === ViewType.GRID:
+          view = new Hour24View(viewModel);
+          break;
+
+        case dateType === DateType.MONTH && viewType === ViewType.GRID:
+          view = new MonthGridView(viewModel);
           break;
 
         default:
-          view = new DatePickerListView(viewModel)
+          view = new DatePickerListView(viewModel);
       }
       // container.appendChild(view.view);
-      view.append(container)
+      view.append(container);
       return view;
     });
   }
