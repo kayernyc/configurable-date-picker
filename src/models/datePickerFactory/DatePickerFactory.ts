@@ -1,18 +1,25 @@
-/*
-  Data model for dates
-  Supplies date objects for view
-*/
+/**
+ * Data model for dates
+ * Supplies date objects for view
+ */
 
-/*
-  Month is Jan, Feb, etc
-  Date is a series of days
-  Day is Monday, Tuesday, etc
-  Year is 1999, 2000, etc
-  Week is 7 days back from current date
-  Hour is Hour + AM/PM
-  Hour24 is military time
-  Calendar is year/month/date
-*/
+/**
+ * continuous is whether the view has a beginning or end
+ * looping is whether the dates cycle. if looping is false
+ * and the view is continuous, then dates are added to
+ * the beginning or end
+ */
+
+/**
+ * Month is Jan, Feb, etc
+ * Date is a series of days
+ * Day is Monday, Tuesday, etc
+ * Year is 1999, 2000, etc
+ * Week is 7 days back from current date
+ * Hour is Hour + AM/PM
+ * Hour24 is military time
+ * Calendar is year/month/date
+ */
 
 import DateType from "../../enums/DateType";
 import ViewConfiguration from "../../enums/ViewConfiguration";
@@ -48,7 +55,6 @@ export default class DatePickerFactory {
     this.maxDate = maxDate;
     this.minDate = minDate;
     this.looping = config.looping || dataTypeDefaultLooping[dateType];
-    console.log(this.looping);
 
     [this.dateTimeFormat, this.atomicDateObjectFunction] = this.setFormats();
   }
@@ -92,6 +98,10 @@ export default class DatePickerFactory {
   };
 
   // API
+  /**
+   *
+   * @param quantity: number
+   */
   dateArray(quantity: number = 1): AtomicDateObject[] {
     quantity = Math.max(quantity, 1);
 
