@@ -25,7 +25,6 @@ module.exports = {
     "plugin:unicorn/recommended",
   ],
   parser: "@typescript-eslint/parser",
-
   plugins: ["@typescript-eslint", "jsdoc", "import", "prefer-arrow", "unicorn"],
   rules: {
     "unicorn/filename-case": [

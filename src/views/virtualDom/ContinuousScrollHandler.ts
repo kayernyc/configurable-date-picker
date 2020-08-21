@@ -56,10 +56,10 @@ export default class ContinuousScrollHandler {
     return adoElDictionary;
   }
 
-  constructor(model: DatePickerFactory, continuous = true, looping = true) {
-    if (looping) {
+  constructor(model: DatePickerFactory, continuous = true) {
+    if (model.looping) {
       this.handler = this.loop;
-      this.looping = looping;
+      this.looping = model.looping;
       return;
     }
 

@@ -6,6 +6,7 @@ interface ViewConfiguration {
   viewType: ViewType;
   maxDate?: Date;
   minDate?: Date;
+  looping?: boolean;
 }
 
 class ViewConfiguration {
@@ -13,11 +14,11 @@ class ViewConfiguration {
   viewType: ViewType;
   maxDate?: Date;
   minDate?: Date;
+  looping?: boolean;
 
   constructor(config: ViewConfiguration) {
     Object.assign(this, config)
   }
 }
-
 
 export default ViewConfiguration;
