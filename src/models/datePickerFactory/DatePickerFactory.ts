@@ -21,7 +21,19 @@ import AtomicDateObject from "../AtomicDateObject";
 import { AtomicDateObjectCreator } from "./DatePickerFactoryTypes";
 import { DatePickerCreatorFuncs } from "./DatePickerCreatorFuncs";
 
+const dataTypeDefaultLooping = {
+  [DateType.CALENDAR]: false,
+  [DateType.DATE]: false,
+  [DateType.DAY]: true,
+  [DateType.HOUR]: true,
+  [DateType.HOUR24]: true,
+  [DateType.MONTH]: true,
+  [DateType.WEEK]: true,
+  [DateType.YEAR]: false
+}
+
 export default class DatePickerFactory {
+  looping: boolean;
   private dateType: DateType;
   private maxDate?: Date;
   private minDate?: Date;
@@ -35,6 +47,8 @@ export default class DatePickerFactory {
     this.dateType = dateType;
     this.maxDate = maxDate;
     this.minDate = minDate;
+    this.looping = config.looping || dataTypeDefaultLooping[dateType];
+    console.log(this.looping);
 
     [this.dateTimeFormat, this.atomicDateObjectFunction] = this.setFormats();
   }
