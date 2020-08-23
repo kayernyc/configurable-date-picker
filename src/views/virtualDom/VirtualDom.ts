@@ -97,7 +97,9 @@ export default class VirtualDom {
       this.initNormalScroll(config)
     }
 
-    this.continuousScrollHandler.initFrame(config)
+    if (this.continuousScrollHandler.initFrame(config)) {
+      this.initializeListeners()
+    }
   };
 
   // PUBLIC API

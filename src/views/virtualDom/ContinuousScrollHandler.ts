@@ -6,6 +6,15 @@ import { DATA_TAG_STRING, addElement } from "./VirtualDomConst";
 
 type ScrollHandlingFunction = (valence: boolean) => number;
 
+interface AdoElDictionaryFactoryConfig {
+  buffer: number;
+  dataArr: AtomicDateObject[];
+  frameElement: HTMLElement;
+  looping: boolean;
+  model: DatePickerFactory;
+  targetHeight: number;
+}
+
 export default class ContinuousScrollHandler {
   private dataArr: AtomicDateObject[];
   private frameElement: HTMLElement;
@@ -49,32 +58,23 @@ export default class ContinuousScrollHandler {
    * @param buffer
    */
   static initAdoElDictionary(
-    dataArr: AtomicDateObject[],
-    frameElement: HTMLElement,
-    targetHeight: number,
-    buffer: number,
-    model: DatePickerFactory
+    config: AdoElDictionaryFactoryConfig
   ): { [id: string]: AtomicDateObject } {
     const adoElDictionary: { [id: string]: AtomicDateObject } = {};
-    // const elArray = Array.from(frameElement.children);
+    const { dataArr, frameElement, looping, model, targetHeight } = config;
 
-    // for (let i = 0; i < elArray.length; i++) {
-    //   const ado = dataArr[i];
-    //   const el = elArray[i];
-    //   const key = el.getAttribute(DATA_TAG_STRING);
-    //   adoElDictionary[key] = ado;
-    // }
     let index = 0;
     while (frameElement.offsetHeight < targetHeight) {
       if (index >= dataArr.length) {
-        const newIndex = dataArr[dataArr.length - 1].index + 1
-        const newAdo = model.getAtomicDateObjectByIndex(newIndex)
-        console.table(newAdo)
-        dataArr.push(newAdo)
+        if (looping) {
+          throw new Error("Looping view doesn't have enough dates");
+        }
+        const newIndex = dataArr[dataArr.length - 1].index + 1;
+        const newAdo = model.getAtomicDateObjectByIndex(newIndex);
+        dataArr.push(newAdo);
       }
 
       const ado = dataArr[index];
-      console.table(ado)
       const el = addElement(ado, index);
       const key = el.getAttribute(DATA_TAG_STRING);
       adoElDictionary[key] = ado;
@@ -123,24 +123,36 @@ export default class ContinuousScrollHandler {
     ) as HTMLElement;
   }
 
-  private continuousScroll(valence: boolean): number {
-    const el: HTMLElement = valence ? this.lastElement() : this.firstElement();
-    const key: string = el.getAttribute(DATA_TAG_STRING);
+  private continuousScroll(valence: boolean, frameElement = this.frameElement): number {
+    // true = need a new first element
+    // false = need a new last element
+    const tailEl = valence ? this.frameElement.firstChild as HTMLElement : this.frameElement.lastChild as HTMLElement
+    const key = tailEl.getAttribute(DATA_TAG_STRING)
+    const tailAdo = this.adoElDictionary[key]
+    let newAdo: AtomicDateObject
+    let newEl: HTMLElement
 
-    const ado = this.adoElDictionary[key] as AtomicDateObject;
-    const newIndex = this.dataArr.indexOf(ado) + (valence ? 1 : -1);
-    const newAdo: AtomicDateObject | undefined = this.dataArr[newIndex];
-
-    if (newAdo === undefined) {
-      // create new record
+    if (valence) {
+      if (tailAdo.prev === undefined) {
+        tailAdo.prev = this.model.getAtomicDateObjectByIndex(tailAdo.index - 1)
+        tailAdo.prev.next = tailAdo
+      }
+      newAdo = tailAdo.prev
+      newEl = this.lastElement()
     } else {
-      // get existing record
-      this.adoElDictionary[key] = newAdo;
-      el.innerHTML = newAdo.viewString;
+      if (tailAdo.next === undefined) {
+        tailAdo.next = this.model.getAtomicDateObjectByIndex(tailAdo.index + 1)
+        tailAdo.next.prev = tailAdo
+      }
+      newAdo = tailAdo.next
+      newEl = this.firstElement()
     }
 
-    valence ? this.frameElement.prepend(el) : this.frameElement.appendChild(el);
-    return el.offsetHeight;
+    this.adoElDictionary[newEl.getAttribute(DATA_TAG_STRING)] = newAdo;
+    newEl.innerHTML = newAdo.viewString;
+
+    valence ? frameElement.prepend(newEl) : frameElement.appendChild(newEl);
+    return newEl.offsetHeight;
   }
 
   private loop(valence: boolean, frameElement = this.frameElement): number {
@@ -189,7 +201,7 @@ export default class ContinuousScrollHandler {
     this.firstAdo = ado;
   }
 
-  initFrame(config: BuildConfiguration) {
+  initFrame(config: BuildConfiguration): boolean {
     const { buffer, dataArr, frameElement, targetHeight } = config;
     frameElement.style.top = `${-buffer}px`;
     // inits linked list
@@ -200,11 +212,14 @@ export default class ContinuousScrollHandler {
 
     // populates frameElement and creates dictionary of nodes: ado
     this.adoElDictionary = ContinuousScrollHandler.initAdoElDictionary(
-      this.dataArr,
-      frameElement,
-      targetHeight,
-      buffer,
-      this.model
+      {
+        buffer,
+        dataArr: this.dataArr,
+        frameElement,
+        looping: this.looping,
+        targetHeight,
+        model: this.model
+      }
     );
 
     this.frameElement = frameElement;
@@ -214,6 +229,8 @@ export default class ContinuousScrollHandler {
       this.firstAdo = this.dataArr[0];
       this.lastAdo = this.dataArr[this.dataArr.length - 1];
     }
+
+    return true;
   }
 
   unshift(): number {
