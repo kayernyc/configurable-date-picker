@@ -15,6 +15,9 @@ export default class ContinuousScrollHandler {
   private looping = false;
   private handler: ScrollHandlingFunction;
 
+  private firstAdo: AtomicDateObject;
+  private lastAdo: AtomicDateObject;
+
   private adoElDictionary: { [id: string]: AtomicDateObject } = {};
 
   static initDataArr(
@@ -39,24 +42,50 @@ export default class ContinuousScrollHandler {
     return dataArr;
   }
 
+  /**
+   *
+   * @param dataArr
+   * @param frameElement
+   * @param buffer
+   */
   static initAdoElDictionary(
     dataArr: AtomicDateObject[],
-    frameElement: HTMLElement
+    frameElement: HTMLElement,
+    targetHeight: number,
+    buffer: number
   ): { [id: string]: AtomicDateObject } {
     const adoElDictionary: { [id: string]: AtomicDateObject } = {};
-    const elArray = Array.from(frameElement.children);
+    // const elArray = Array.from(frameElement.children);
 
-    for (let i = 0; i < elArray.length; i++) {
-      const ado = dataArr[i];
-      const el = elArray[i];
-      const key = el.getAttribute(DATA_TAG_STRING);
-      adoElDictionary[key] = ado;
+    // for (let i = 0; i < elArray.length; i++) {
+    //   const ado = dataArr[i];
+    //   const el = elArray[i];
+    //   const key = el.getAttribute(DATA_TAG_STRING);
+    //   adoElDictionary[key] = ado;
+    // }
+    let index = 0;
+    while (frameElement.offsetHeight < targetHeight) {
+      if (index >= dataArr.length) {
+        // append to dataArr
+        dataArr.push(dataArr[0])
+      }
+
+      const ado = dataArr[index];
+
+      frameElement.appendChild(addElement(ado, index));
+      index++;
     }
 
     return adoElDictionary;
   }
 
-  constructor(model: DatePickerFactory, continuous = true) {
+  constructor(
+    model: DatePickerFactory,
+    frameElement: HTMLElement,
+    continuous = true
+  ) {
+    // determine if there are enough members
+
     if (model.looping) {
       this.handler = this.loop;
       this.looping = model.looping;
@@ -71,17 +100,15 @@ export default class ContinuousScrollHandler {
 
   private firstElement(frameElement = this.frameElement): HTMLElement {
     if (frameElement.children.length < 1) {
-      throw Error(' frameElement has no children')
+      throw Error(" frameElement has no children");
     }
 
-    return frameElement.removeChild(
-      frameElement.children[0]
-    ) as HTMLElement;
+    return frameElement.removeChild(frameElement.children[0]) as HTMLElement;
   }
 
   private lastElement(frameElement = this.frameElement): HTMLElement {
     if (frameElement.children.length < 1) {
-      throw Error(' frameElement has no children')
+      throw Error(" frameElement has no children");
     }
 
     return frameElement.removeChild(
@@ -132,24 +159,53 @@ export default class ContinuousScrollHandler {
 
     this.adoElDictionary[newEl.getAttribute(DATA_TAG_STRING)] = newAdo;
     newEl.innerHTML = newAdo.viewString;
-    valence
-      ? frameElement.prepend(newEl)
-      : frameElement.appendChild(newEl);
+    valence ? frameElement.prepend(newEl) : frameElement.appendChild(newEl);
     return newEl.offsetHeight;
   }
 
   // API
 
-  initFrame(dataArr: AtomicDateObject[], frameElement: HTMLElement) {
+  addMember(ado: AtomicDateObject, append: boolean = true) {
+    if (this.looping) {
+      throw new Error("can't modify looping set");
+    }
+
+    if (append) {
+      this.lastAdo.next = ado;
+      ado.prev = this.lastAdo;
+      this.lastAdo = ado;
+      return;
+    }
+
+    this.firstAdo.prev = ado;
+    ado.next = this.firstAdo;
+    this.firstAdo = ado;
+  }
+
+  initFrame(config: BuildConfiguration) {
+    const { buffer, dataArr, frameElement, targetHeight } = config;
+    frameElement.style.top = `${-buffer}px`;
+    // inits linked list
     this.dataArr = ContinuousScrollHandler.initDataArr(
       [...dataArr],
       this.looping
     );
-    this.frameElement = frameElement;
+
+    // populates frameElement and creates dictionary of nodes: ado
     this.adoElDictionary = ContinuousScrollHandler.initAdoElDictionary(
       this.dataArr,
-      frameElement
+      frameElement,
+      targetHeight,
+      buffer
     );
+
+    this.frameElement = frameElement;
+
+    // for continuous, don't search the linked list
+    if (!this.looping) {
+      this.firstAdo = this.dataArr[0];
+      this.lastAdo = this.dataArr[this.dataArr.length - 1];
+    }
   }
 
   unshift(): number {

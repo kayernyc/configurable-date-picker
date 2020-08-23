@@ -1,10 +1,19 @@
+/**
+ * Continuous means there is no fixed first or last element
+ * Looping means that members pop or shift but the array doesn't get extended.
+ *
+ * If continuous (not looping) virtual dom insures there are enough points
+ * above and below.
+ * If looping, checks that full set is enough for looping.
+ */
+
 type EventListenerFunction = (evt: MouseEvent) => void;
 
 import AtomicDateObject from "../../models/AtomicDateObject";
 import BuildConfiguration from "./BuildConfiguration";
 import ContinuousScrollHandler from "./ContinuousScrollHandler";
 
-import { addElement } from "./VirtualDomConst"
+import { addElement } from "./VirtualDomConst";
 
 // https://stackoverflow.com/questions/58036689/using-mutationobserver-to-detect-when-a-node-is-added-to-document
 // { (options?: ScrollToOptions): void; (x: number, y: number): void; }
@@ -24,14 +33,18 @@ export default class VirtualDom {
 
   private continuousScrollHandler: ContinuousScrollHandler;
 
-  constructor (continuousScrollHandler: ContinuousScrollHandler) {
-    this.continuousScrollHandler = continuousScrollHandler
+  static initNormalScroll(config: BuildConfiguration): boolean {
+
+    return true
+  }
+
+  constructor(continuousScrollHandler: ContinuousScrollHandler) {
+    console.log({ continuousScrollHandler });
+    this.continuousScrollHandler = continuousScrollHandler;
   }
 
   private wheelHander = (evt: WheelEvent) => {
-    const childrenArr = Array.from(
-      this.frameElement.children
-    ) as HTMLElement[];
+    const childrenArr = Array.from(this.frameElement.children) as HTMLElement[];
     const lastElementHeight = VirtualDom.last(childrenArr).offsetHeight;
 
     const top = parseInt(this.frameElement.style.top || "0px", 10);
@@ -43,7 +56,7 @@ export default class VirtualDom {
 
     if (newTop > 0) {
       newTop -= this.continuousScrollHandler.unshift();
-    } else if (newTop < -(this.buffer)) {
+    } else if (newTop < -this.buffer) {
       newTop += this.continuousScrollHandler.push();
     }
 
@@ -62,22 +75,8 @@ export default class VirtualDom {
     this.vdFrameElement.className = "vd-container";
   }
 
-  /**
-   *
-   * @param arr
-   *
-   * builds initial set of containers.
-   */
-  private buildElementSetForVirtualDom = (config: BuildConfiguration) => {
-    // will need to determine if content is euqal to or longer than frame height.
-    const {
-      dataArr,
-      continuousScroll,
-      frameElement,
-      buffer,
-      targetHeight,
-    } = config;
-
+  private initNormalScroll(config: BuildConfiguration) {
+    const { dataArr, frameElement, targetHeight } = config;
     for (let i = 0; i < dataArr.length; i++) {
       const ado = dataArr[i];
       frameElement.appendChild(addElement(ado, i));
@@ -85,16 +84,27 @@ export default class VirtualDom {
         break;
       }
     }
+  }
 
-    /**
-     * if final frameElement height is less than
-     * the container height, then no continuous scroll
-     */
-
-    if (continuousScroll && frameElement.offsetHeight > this.containerHeight) {
-      this.continuousScrollHandler.initFrame(dataArr, frameElement)
-      this.initializeListeners();
+  /**
+   *
+   * @param arr
+   *
+   * builds initial set of containers.
+   */
+  private buildElementSetForVirtualDom = (config: BuildConfiguration) => {
+    if (!config.continuousScroll) {
+      this.initNormalScroll(config)
     }
+
+    this.continuousScrollHandler.initFrame(config)
+
+    // if (continuousScroll && frameElement.offsetHeight > this.containerHeight) {
+    //   this.continuousScrollHandler.initFrame(dataArr, frameElement);
+    //   this.initializeListeners();
+    // } else if(continuousScroll) {
+    //   // add members
+    // }
   };
 
   // PUBLIC API
@@ -120,23 +130,22 @@ export default class VirtualDom {
   ) {
     // clear out previous children
     // TODO: remove event listeners
-    const {
-      buffer,
-      buildElementSetForVirtualDom,
-    } = this;
+    const { buffer, buildElementSetForVirtualDom } = this;
 
     if (!containerElement && this.containerHeight === undefined) {
-      throw new Error('BuildView called without initialization. Initialize container element first.')
+      throw new Error(
+        "BuildView called without initialization. Initialize container element first."
+      );
     } else if (containerElement) {
       this.containerHeight = containerElement.offsetHeight;
     }
 
     frameElement.innerHTML = "";
     const config: BuildConfiguration = {
+      buffer,
       dataArr: atomicDateObjectArr,
       continuousScroll: true,
       frameElement,
-      buffer,
       targetHeight: containerElement.offsetHeight + 2 * buffer,
     };
 
