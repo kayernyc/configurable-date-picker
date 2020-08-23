@@ -13,9 +13,8 @@ export default class DatePickerGridView extends DatePickerBaseView
 
   protected populateView(
     model: DatePickerFactory,
-    containerView: HTMLElement,
     frameElement: HTMLElement
-  ) {
+  ): void {
     throw new Error("Override populateView");
   }
 }

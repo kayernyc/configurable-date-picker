@@ -14,11 +14,10 @@ export default class DatePickerListView extends DatePickerBaseView
     this.frameElementClassName = "date-picker-list";
   }
 
-  protected populateView(
+  populateView(
     model: DatePickerFactory,
-    containerView: HTMLElement,
     frameElement: HTMLElement
-  ) {
+  ): void {
     throw new Error("Override populateView");
   }
 }
