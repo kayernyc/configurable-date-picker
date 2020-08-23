@@ -91,8 +91,6 @@ export default class ContinuousScrollHandler {
     frameElement: HTMLElement,
     continuous = true
   ) {
-    // determine if there are enough members
-
     if (model.looping) {
       this.handler = this.loop;
       this.looping = model.looping;
@@ -115,7 +113,7 @@ export default class ContinuousScrollHandler {
 
   private lastElement(frameElement = this.frameElement): HTMLElement {
     if (frameElement.children.length < 1) {
-      throw Error(" frameElement has no children");
+      throw Error("FrameElement has no children");
     }
 
     return frameElement.removeChild(

@@ -38,7 +38,6 @@ export default class DateView extends DatePickerListView {
     frameElement: HTMLElement = this.frameElement
   ) {
     const arr = model.dateArray(3);
-    console.log(`DATE arr ${arr}`);
     this.updateView(arr, frameElement);
   }
 }

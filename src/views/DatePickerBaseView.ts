@@ -33,9 +33,6 @@ export default abstract class DatePickerBaseView {
         new ContinuousScrollHandler(this.model, this.frameElement)
       );
       this.frameElement.appendChild(this.virtualDom.frameElement);
-      console.log("---- VIRTUAL DOM");
-    } else {
-      console.log("no virtual dom");
     }
 
     return this.frameElement;
@@ -47,6 +44,7 @@ export default abstract class DatePickerBaseView {
     const classNames = this.frameElement.className.split(" ");
     classNames.push(this.frameElementClassName);
     this.frameElement.className = classNames.join(" ");
+    parentElement.appendChild(this.frameElement);
   }
 
   protected abstract populateView(

@@ -27,8 +27,6 @@ export default class VirtualDom {
 
   private buffer = 20;
   private vdFrameElement: HTMLElement;
-
-  private contentHeight: number;
   private containerHeight: number;
 
   private continuousScrollHandler: ContinuousScrollHandler;
@@ -39,7 +37,6 @@ export default class VirtualDom {
   }
 
   constructor(continuousScrollHandler: ContinuousScrollHandler) {
-    console.log({ continuousScrollHandler });
     this.continuousScrollHandler = continuousScrollHandler;
   }
 
