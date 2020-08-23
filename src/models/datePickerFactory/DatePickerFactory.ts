@@ -114,4 +114,8 @@ export default class DatePickerFactory {
 
     return returnValue;
   }
+
+  getAtomicDateObjectByIndex(index: number): AtomicDateObject {
+    return this.atomicDateObjectFunction(index);
+  }
 }

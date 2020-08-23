@@ -98,13 +98,6 @@ export default class VirtualDom {
     }
 
     this.continuousScrollHandler.initFrame(config)
-
-    // if (continuousScroll && frameElement.offsetHeight > this.containerHeight) {
-    //   this.continuousScrollHandler.initFrame(dataArr, frameElement);
-    //   this.initializeListeners();
-    // } else if(continuousScroll) {
-    //   // add members
-    // }
   };
 
   // PUBLIC API

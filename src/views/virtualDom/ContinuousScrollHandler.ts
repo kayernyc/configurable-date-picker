@@ -52,7 +52,8 @@ export default class ContinuousScrollHandler {
     dataArr: AtomicDateObject[],
     frameElement: HTMLElement,
     targetHeight: number,
-    buffer: number
+    buffer: number,
+    model: DatePickerFactory
   ): { [id: string]: AtomicDateObject } {
     const adoElDictionary: { [id: string]: AtomicDateObject } = {};
     // const elArray = Array.from(frameElement.children);
@@ -66,13 +67,19 @@ export default class ContinuousScrollHandler {
     let index = 0;
     while (frameElement.offsetHeight < targetHeight) {
       if (index >= dataArr.length) {
-        // append to dataArr
-        dataArr.push(dataArr[0])
+        const newIndex = dataArr[dataArr.length - 1].index + 1
+        const newAdo = model.getAtomicDateObjectByIndex(newIndex)
+        console.table(newAdo)
+        dataArr.push(newAdo)
       }
 
       const ado = dataArr[index];
+      console.table(ado)
+      const el = addElement(ado, index);
+      const key = el.getAttribute(DATA_TAG_STRING);
+      adoElDictionary[key] = ado;
 
-      frameElement.appendChild(addElement(ado, index));
+      frameElement.appendChild(el);
       index++;
     }
 
@@ -196,7 +203,8 @@ export default class ContinuousScrollHandler {
       this.dataArr,
       frameElement,
       targetHeight,
-      buffer
+      buffer,
+      this.model
     );
 
     this.frameElement = frameElement;
