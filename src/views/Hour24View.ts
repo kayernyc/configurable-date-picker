@@ -22,7 +22,6 @@ export default class Hour24View extends DatePickerListView {
   ) {
     const arr = model.dateArray(24);
     if (this.virtualDom) {
-      console.log({arr, frameElement})
       // DatePickerBaseView has determined that a virtualDom is needed
       this.virtualDom.buildView(arr, frameElement);
       return;
