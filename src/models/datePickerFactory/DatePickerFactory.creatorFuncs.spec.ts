@@ -20,16 +20,19 @@ const seedDate = new Date("August 1, 1975 23:15:30");
 
 describe("dateHandlerCreator function", () => {
   describe("seeded with a date", () => {
-    const dateFunction = DatePickerCreatorFuncs.dateHandlerCreator(format, seedDate);
+    const dateFunction = DatePickerCreatorFuncs.dateHandlerCreator(
+      format,
+      seedDate
+    );
     expect(typeof dateFunction).toBe("function");
 
-    let counter = 1;
+    let counter = 0;
 
     for (let i = 0; i < 7; i++) {
       it(`returns August ${
-        1 + counter
+        counter + i
       } when initialized with a seed date and passed an index`, () => {
-        const testDay = dateFunction(1);
+        const testDay = dateFunction(i);
         counter++;
         expect(typeof testDay).toBe("object");
         expect(testDay.date.getDate()).toBe(counter);
@@ -40,7 +43,10 @@ describe("dateHandlerCreator function", () => {
 
 describe("dayHandlerCreator function", () => {
   describe("seeded with a date", () => {
-    const dayFunction = DatePickerCreatorFuncs.dayHandlerCreator(format, seedDate);
+    const dayFunction = DatePickerCreatorFuncs.dayHandlerCreator(
+      format,
+      seedDate
+    );
     expect(typeof dayFunction).toBe("function");
 
     for (let i = 0; i < 7; i++) {
@@ -69,7 +75,10 @@ describe("dayHandlerCreator function", () => {
 describe("hourHandlerCreator function", () => {
   describe("seeded with a PM date", () => {
     // Date is PM, count should start at 12
-    const hourFunction = DatePickerCreatorFuncs.hourHandlerCreator(format, seedDate);
+    const hourFunction = DatePickerCreatorFuncs.hourHandlerCreator(
+      format,
+      seedDate
+    );
     expect(typeof hourFunction).toBe("function");
 
     for (let i = 0; i < 24; i++) {
@@ -83,16 +92,19 @@ describe("hourHandlerCreator function", () => {
 
   describe("seeded with a AM date", () => {
     // Date is PM, count should start at 12
-    const newSeedDate = new Date(seedDate.getTime())
+    const newSeedDate = new Date(seedDate.getTime());
     newSeedDate.setHours(1);
-    const hourFunction = DatePickerCreatorFuncs.hourHandlerCreator(format, newSeedDate);
+    const hourFunction = DatePickerCreatorFuncs.hourHandlerCreator(
+      format,
+      newSeedDate
+    );
     expect(typeof hourFunction).toBe("function");
 
     for (let i = 0; i < 24; i++) {
       it(`returns August ${i} when initialized with a seed date and passed an index`, () => {
         const testDay = hourFunction(i);
         expect(typeof testDay).toBe("object");
-        expect(testDay.date.getHours()).toBe((i) % 24);
+        expect(testDay.date.getHours()).toBe(i % 24);
       });
     }
   });
@@ -122,8 +134,8 @@ describe("monthHandlerCreator function", () => {
     );
     expect(typeof monthFunction).toBe("function");
 
-    const newSeedDate = new Date(seedDate.getTime())
-    newSeedDate.setMonth(0)
+    const newSeedDate = new Date(seedDate.getTime());
+    newSeedDate.setMonth(0);
 
     for (let i = 0; i < 12; i++) {
       it(`returns ${i} when initialized with a seed date and passed an index`, () => {
@@ -137,7 +149,10 @@ describe("monthHandlerCreator function", () => {
 
 describe("yearHandlerCreator function", () => {
   describe("seeded with a date", () => {
-    const yearFunction = DatePickerCreatorFuncs.yearHandlerCreator(format, seedDate);
+    const yearFunction = DatePickerCreatorFuncs.yearHandlerCreator(
+      format,
+      seedDate
+    );
     expect(typeof yearFunction).toBe("function");
 
     for (let i = 0; i < 7; i++) {
@@ -150,4 +165,4 @@ describe("yearHandlerCreator function", () => {
       });
     }
   });
-})
+});

@@ -8,6 +8,7 @@ import DateTypeFormat from "../enums/DateTimeFormat";
 
 interface AtomicDateObject {
   date: Date;
+  index: number;
   viewString: string;
   next?: AtomicDateObject;
   prev?: AtomicDateObject;
@@ -18,7 +19,9 @@ class AtomicDateObject {
     date: Date,
     locale: string[] = ["en-US"],
     options: DateTypeFormat,
+    index: number
   ) {
+    this.index = index;
     this.date = date;
     this.viewString = date.toLocaleString(locale, options);
   }

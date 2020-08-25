@@ -7,14 +7,14 @@ export const DatePickerCreatorFuncs = {
     format: DateTimeFormat,
     date: Date = new Date()
   ): AtomicDateObjectCreator => {
-    // DANGER WILL ROBERTSON this changes seed date!!!
     const dateTimeFormat = format;
     const seedDate = new Date(date.getTime());
 
     return (index: number): AtomicDateObject => {
-      seedDate.setDate(seedDate.getDate() + index);
       const newDate = new Date(seedDate.getTime());
-      return new AtomicDateObject(newDate, undefined, dateTimeFormat);
+      newDate.setDate(seedDate.getDate() + index);
+
+      return new AtomicDateObject(newDate, undefined, dateTimeFormat, index);
     };
   },
 
@@ -33,7 +33,7 @@ export const DatePickerCreatorFuncs = {
     return (index: number): AtomicDateObject => {
       const newDate = new Date(seedDate.getTime());
       newDate.setMonth(newDate.getMonth() + index);
-      return new AtomicDateObject(newDate, undefined, dateTimeFormat);
+      return new AtomicDateObject(newDate, undefined, dateTimeFormat, index);
     };
   },
 
@@ -59,7 +59,7 @@ export const DatePickerCreatorFuncs = {
       const newDate = new Date(seedDate.getTime());
 
       newDate.setDate(seedDate.getDate() + index);
-      return new AtomicDateObject(newDate, undefined, dateTimeFormat);
+      return new AtomicDateObject(newDate, undefined, dateTimeFormat, index);
     };
 
     return hander;
@@ -81,7 +81,7 @@ export const DatePickerCreatorFuncs = {
     ): AtomicDateObject => {
       const newDate = new Date(seedDate.getTime());
       newDate.setFullYear(seedDate.getFullYear() + index);
-      return new AtomicDateObject(newDate, undefined, dateTimeFormat);
+      return new AtomicDateObject(newDate, undefined, dateTimeFormat, index);
     };
 
     return hander;
@@ -101,7 +101,7 @@ export const DatePickerCreatorFuncs = {
     return (index: number): AtomicDateObject => {
       const newDate = new Date(seedDate.getTime());
       newDate.setHours(seedDate.getHours() + index);
-      return new AtomicDateObject(newDate, undefined, dateTimeFormat);
+      return new AtomicDateObject(newDate, undefined, dateTimeFormat, index);
     };
   },
 };

@@ -16,10 +16,7 @@ export default class Hour12View extends DatePickerListView
 
   amPmToggleSwitch: ToggleView = new ToggleView(["AM", "PM"]);
 
-  constructor(
-    model: DatePickerFactory,
-    continuousScroll = true,
-  ) {
+  constructor(model: DatePickerFactory, continuousScroll = true) {
     super(model, continuousScroll);
     this.amPmToggleSwitch.proxy = this;
   }
@@ -27,7 +24,7 @@ export default class Hour12View extends DatePickerListView
   selectValue(index: number, value: string): boolean {
     if (this.currentSet !== index) {
       this.currentSet = index;
-      index === 0 ? this.updateView(this.amArr) : this.updateView(this.pmArr)
+      index === 0 ? this.updateView(this.amArr) : this.updateView(this.pmArr);
     }
     return true;
   }
@@ -45,10 +42,9 @@ export default class Hour12View extends DatePickerListView
   append(parentElement: HTMLElement): void {
     // attach switch
     this.amPmToggleSwitch.append(parentElement);
-    const frameElmeent = this.initFrameView(this.continuousScroll);
-    frameElement.className = this.appendClassName(frameElement.className)
-    parentElement.appendChild(frameElement);
-    this.frameElement = frameElmeent
+    this.initFrameView(true);
+    this.frameElement.className = this.appendClassName("");
+    parentElement.appendChild(this.frameElement);
     this.populateView();
   }
 
@@ -57,8 +53,8 @@ export default class Hour12View extends DatePickerListView
     frameElement: HTMLElement = this.frameElement
   ) {
     const arr = model.dateArray(24);
-    this.amArr = arr.slice(0, 12)
-    this.pmArr = arr.slice(12)
-    this.updateView(this.amArr, frameElement)
+    this.amArr = arr.slice(0, 12);
+    this.pmArr = arr.slice(12);
+    this.updateView(this.amArr, frameElement);
   }
 }
