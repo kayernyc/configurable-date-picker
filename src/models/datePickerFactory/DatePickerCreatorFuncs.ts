@@ -1,6 +1,7 @@
 import AtomicDateObject from "../AtomicDateObject";
 import { AtomicDateObjectCreator } from "./DatePickerFactoryTypes";
 import DateTimeFormat from "../../enums/DateTimeFormat";
+import WeekDateObject from "../WeekDateObject";
 
 export const DatePickerCreatorFuncs = {
   dateHandlerCreator: (
@@ -55,11 +56,21 @@ export const DatePickerCreatorFuncs = {
 
     const hander: AtomicDateObjectCreator = (
       index: number
-    ): AtomicDateObject => {
+    ): WeekDateObject => {
+      index = 7 * index
       const newDate = new Date(seedDate.getTime());
 
       newDate.setDate(seedDate.getDate() + index);
-      return new AtomicDateObject(newDate, undefined, dateTimeFormat, index);
+      console.log(newDate.getDate())
+      const newWeek: Date[] = []
+      for (let i = 0; i < 7; i ++) {
+
+        const weekDate = new Date(newDate.getTime())
+        weekDate.setDate(newDate.getDate() + i)
+        newWeek.push(weekDate)
+      }
+
+      return new WeekDateObject(newWeek, undefined, dateTimeFormat, index);
     };
 
     return hander;

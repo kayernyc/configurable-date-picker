@@ -3,6 +3,7 @@
 @import "./_datePickerFrame.css";
 @import "./_toggleSwitch.css";
 @import "./_virtualDOM.css";
+@import "./_calendar.css";
 
 .date-picker {
   overscroll-behavior: none;

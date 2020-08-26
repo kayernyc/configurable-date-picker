@@ -1,8 +1,8 @@
-/*
-  The AtomicDate object takes the date it has been given
-  and refines the date based on its type,
-  then returns label and date based on that model.
-  It is used to represent a single point in time.
+/**
+ * The AtomicDate object takes the date it has been given
+ * and refines the date based on its type,
+ * then returns label and date based on that model.
+ * It is used to represent a single point in time.
 */
 import DateTypeFormat from "../enums/DateTimeFormat";
 

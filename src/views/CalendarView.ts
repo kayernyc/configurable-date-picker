@@ -5,6 +5,7 @@
 import AtomicDateObject from "../models/AtomicDateObject";
 import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 import DatePickerListView from "./DatePickerListView";
+import WeekDateObject from "../models/WeekDateObject";
 
 export default class CalendarView extends DatePickerListView {
   continuousScroll: boolean;
@@ -14,16 +15,25 @@ export default class CalendarView extends DatePickerListView {
   }
 
   updateView(arr: AtomicDateObject[], frameElement = this.frameElement) {
-    if (this.virtualDom) {
-      // DatePickerBaseView has determined that a virtualDom is needed
-      this.virtualDom.buildView(arr, frameElement);
-      return;
-    }
+    console.log(arr)
+    // if (this.virtualDom) {
+    //   this.virtualDom.buildView(arr, frameElement);
+    //   return;
+    // }
 
-    this.buildDateView(arr);
+    this.buildDateView(arr as WeekDateObject[]);
   }
 
-  append (parentElement: HTMLElement): void {
+  buildDateView(weeksArray: WeekDateObject[], frameElement: HTMLElement = this.frameElement) {
+    weeksArray.forEach(week => {
+      frameElement.innerHTML += week.week.reduce((acc:string, ado: AtomicDateObject) => {
+        acc += `<div class="weekday">${ado.viewString}</div>`
+        return acc
+      }, '')
+    })
+  }
+
+  append(parentElement: HTMLElement): void {
     this.initFrameView();
     this.frameElement.className = this.appendClassName("calendar");
     parentElement.appendChild(this.frameElement);

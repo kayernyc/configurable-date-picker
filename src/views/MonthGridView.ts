@@ -20,7 +20,7 @@ export default class MonthGridView extends DatePickerGridView
   }
 
   append (parentElement: HTMLElement): void {
-    this.frameElement = this.initFrameView();
+    this.initFrameView();
     this.frameElement.className += " date-picker-grid";
     parentElement.appendChild(this.frameElement)
     this.populateView()
