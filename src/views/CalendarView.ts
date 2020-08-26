@@ -6,10 +6,10 @@ import AtomicDateObject from "../models/AtomicDateObject";
 import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
 import DatePickerListView from "./DatePickerListView";
 
-export default class DateView extends DatePickerListView {
+export default class CalendarView extends DatePickerListView {
   continuousScroll: boolean;
 
-  constructor(model: DatePickerFactory, continuousScroll = true) {
+  constructor(model: DatePickerFactory, continuousScroll = false) {
     super(model, continuousScroll);
   }
 
@@ -24,11 +24,10 @@ export default class DateView extends DatePickerListView {
   }
 
   append (parentElement: HTMLElement): void {
-    this.initFrameView(true);
-    this.frameElement.className = this.appendClassName("");
+    this.initFrameView();
+    this.frameElement.className = this.appendClassName("calendar");
     parentElement.appendChild(this.frameElement);
     this.populateView();
-    this.populateView()
   }
 
   populateView(

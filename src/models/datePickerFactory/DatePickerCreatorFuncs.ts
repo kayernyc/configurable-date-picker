@@ -37,6 +37,34 @@ export const DatePickerCreatorFuncs = {
     };
   },
 
+  calendarHandlerCreator: (
+    format: DateTimeFormat,
+    date: Date = new Date()
+  ): AtomicDateObjectCreator => {
+    // sets series to 0/sunday
+    const dateTimeFormat = format;
+    const seedDate = new Date(date.getTime());
+
+    if (seedDate.getUTCDay() !== 0) {
+      const delta = seedDate.getDate() - seedDate.getDay();
+      const timeDifference = seedDate.getTimezoneOffset() / 60;
+
+      seedDate.setDate(delta);
+      seedDate.setHours(seedDate.getHours() - timeDifference);
+    }
+
+    const hander: AtomicDateObjectCreator = (
+      index: number
+    ): AtomicDateObject => {
+      const newDate = new Date(seedDate.getTime());
+
+      newDate.setDate(seedDate.getDate() + index);
+      return new AtomicDateObject(newDate, undefined, dateTimeFormat, index);
+    };
+
+    return hander;
+  },
+
   dayHandlerCreator: (
     format: DateTimeFormat,
     date: Date = new Date()

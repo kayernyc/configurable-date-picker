@@ -65,6 +65,10 @@ export default class DatePickerFactory {
     let format: DateTimeFormat;
 
     switch (dateType) {
+      case DateType.CALENDAR:
+        // each week, starting on sunday
+        format = { day: "numeric"};
+        return [format, DatePickerCreatorFuncs.calendarHandlerCreator(format)];
       case DateType.MONTH:
         // each month in on 1st day of month
         format = { month: "long" };

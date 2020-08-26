@@ -10,6 +10,7 @@ import Hour12View from "./views/Hour12View";
 import Hour24View from "./views/Hour24View";
 import MonthGridView from "./views/MonthGridView";
 import ViewType from "./enums/ViewType";
+import CalendarView from "./views/CalendarView";
 
 export default class DatePickerControl {
   datePickerModel: DatePickerModel;
@@ -84,6 +85,11 @@ export default class DatePickerControl {
 
         case dateType === DateType.MONTH && viewType === ViewType.GRID:
           view = new MonthGridView(viewModel);
+          break;
+
+        case dateType === DateType.CALENDAR && viewType === ViewType.LIST:
+        case dateType === DateType.CALENDAR && viewType === ViewType.GRID:
+          view = new CalendarView(viewModel);
           break;
 
         default:
