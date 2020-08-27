@@ -104,8 +104,13 @@ export default class ContinuousScrollHandler {
   }
 
   private firstElement(frameElement = this.frameElement): HTMLElement {
+<<<<<<< HEAD
     if (frameElement.children.length === 0) {
       throw new Error(" frameElement has no children");
+=======
+    if (frameElement.children.length < 1) {
+      throw Error("FrameElement has no children");
+>>>>>>> add calandar layout functionality
     }
 
     return frameElement.removeChild(frameElement.children[0]) as HTMLElement;

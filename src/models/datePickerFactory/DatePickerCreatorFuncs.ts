@@ -57,16 +57,17 @@ export const DatePickerCreatorFuncs = {
     const hander: AtomicDateObjectCreator = (
       index: number
     ): WeekDateObject => {
-      index = 7 * index
+      const DAYS_IN_MILLISECONDS = 86_400_000;
+
+      const startingIndex = 7 * index
       const newDate = new Date(seedDate.getTime());
+      newDate.setTime(seedDate.getTime() + (startingIndex * DAYS_IN_MILLISECONDS));
 
-      newDate.setDate(seedDate.getDate() + index);
-      console.log(newDate.getDate())
-      const newWeek: Date[] = []
+      const newWeek: Date[] = [];
+
       for (let i = 0; i < 7; i ++) {
-
         const weekDate = new Date(newDate.getTime())
-        weekDate.setDate(newDate.getDate() + i)
+        weekDate.setTime(newDate.getTime() + (i * DAYS_IN_MILLISECONDS))
         newWeek.push(weekDate)
       }
 

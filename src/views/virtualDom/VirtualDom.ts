@@ -14,6 +14,7 @@ import BuildConfiguration from "./BuildConfiguration";
 import ContinuousScrollHandler from "./ContinuousScrollHandler";
 
 import { addElement } from "./VirtualDomConst";
+import WeekDateObject from "../../models/WeekDateObject";
 
 // https://stackoverflow.com/questions/58036689/using-mutationobserver-to-detect-when-a-node-is-added-to-document
 // { (options?: ScrollToOptions): void; (x: number, y: number): void; }
@@ -116,9 +117,10 @@ export default class VirtualDom {
    * this is the initial build
    */
   buildView(
-    atomicDateObjectArr: AtomicDateObject[],
+    atomicDateObjectArr: AtomicDateObject[] | WeekDateObject[],
     containerElement?: HTMLElement,
-    frameElement: HTMLElement = this.frameElement
+    frameElement: HTMLElement = this.frameElement,
+    className?: string
   ) {
     // clear out previous children
     // TODO: remove event listeners
@@ -130,6 +132,10 @@ export default class VirtualDom {
       );
     } else if (containerElement) {
       this.containerHeight = containerElement.offsetHeight;
+    }
+
+    if (className) {
+      frameElement.className += ` ${className}`;
     }
 
     frameElement.innerHTML = "";
