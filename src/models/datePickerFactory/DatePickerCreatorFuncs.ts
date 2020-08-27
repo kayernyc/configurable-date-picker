@@ -11,11 +11,11 @@ export const DatePickerCreatorFuncs = {
     const dateTimeFormat = format;
     const seedDate = new Date(date.getTime());
 
-    return (index: number): AtomicDateObject => {
+    return (index: number): AtomicDateObject[] => {
       const newDate = new Date(seedDate.getTime());
       newDate.setDate(seedDate.getDate() + index);
 
-      return new AtomicDateObject(newDate, undefined, dateTimeFormat, index);
+      return [new AtomicDateObject(newDate, undefined, dateTimeFormat, index)];
     };
   },
 
@@ -31,10 +31,10 @@ export const DatePickerCreatorFuncs = {
       seedDate.setMonth(0);
     }
 
-    return (index: number): AtomicDateObject => {
+    return (index: number): AtomicDateObject[] => {
       const newDate = new Date(seedDate.getTime());
       newDate.setMonth(newDate.getMonth() + index);
-      return new AtomicDateObject(newDate, undefined, dateTimeFormat, index);
+      return [new AtomicDateObject(newDate, undefined, dateTimeFormat, index)];
     };
   },
 
@@ -54,9 +54,9 @@ export const DatePickerCreatorFuncs = {
       seedDate.setHours(seedDate.getHours() - timeDifference);
     }
 
-    const hander: AtomicDateObjectCreator = (
+    const handler: AtomicDateObjectCreator = (
       index: number
-    ): WeekDateObject => {
+    ): WeekDateObject[] => {
       const DAYS_IN_MILLISECONDS = 86_400_000;
 
       const startingIndex = 7 * index
@@ -71,10 +71,10 @@ export const DatePickerCreatorFuncs = {
         newWeek.push(weekDate)
       }
 
-      return new WeekDateObject(newWeek, undefined, dateTimeFormat, index);
+      return [new WeekDateObject(newWeek, undefined, dateTimeFormat, index)];
     };
 
-    return hander;
+    return handler;
   },
 
   dayHandlerCreator: (
@@ -93,16 +93,16 @@ export const DatePickerCreatorFuncs = {
       seedDate.setHours(seedDate.getHours() - timeDifference);
     }
 
-    const hander: AtomicDateObjectCreator = (
+    const handler: AtomicDateObjectCreator = (
       index: number
-    ): AtomicDateObject => {
+    ): AtomicDateObject[] => {
       const newDate = new Date(seedDate.getTime());
 
       newDate.setDate(seedDate.getDate() + index);
-      return new AtomicDateObject(newDate, undefined, dateTimeFormat, index);
+      return [new AtomicDateObject(newDate, undefined, dateTimeFormat, index)];
     };
 
-    return hander;
+    return handler;
   },
 
   yearHandlerCreator: (
@@ -116,15 +116,15 @@ export const DatePickerCreatorFuncs = {
     seedDate.setMonth(0);
     seedDate.setDate(1);
 
-    const hander: AtomicDateObjectCreator = (
+    const handler: AtomicDateObjectCreator = (
       index: number
-    ): AtomicDateObject => {
+    ): AtomicDateObject[] => {
       const newDate = new Date(seedDate.getTime());
       newDate.setFullYear(seedDate.getFullYear() + index);
-      return new AtomicDateObject(newDate, undefined, dateTimeFormat, index);
+      return [new AtomicDateObject(newDate, undefined, dateTimeFormat, index)];
     };
 
-    return hander;
+    return handler;
   },
 
   hourHandlerCreator: (
@@ -138,10 +138,10 @@ export const DatePickerCreatorFuncs = {
     seedDate.setHours(0);
     seedDate.setMinutes(1);
 
-    return (index: number): AtomicDateObject => {
+    return (index: number): AtomicDateObject[] => {
       const newDate = new Date(seedDate.getTime());
       newDate.setHours(seedDate.getHours() + index);
-      return new AtomicDateObject(newDate, undefined, dateTimeFormat, index);
+      return [new AtomicDateObject(newDate, undefined, dateTimeFormat, index)];
     };
   },
 };

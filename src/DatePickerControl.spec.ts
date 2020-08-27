@@ -4,6 +4,9 @@ import DateType from "./enums/DateType";
 import ViewType from "./enums/ViewType";
 import ViewConfiguration from "./enums/ViewConfiguration";
 
+import ContinuousScrollHandler from "./views/virtualDom/ContinuousScrollHandler"
+jest.mock("./views/virtualDom/ContinuousScrollHandler");
+
 const seedViewConfiguration: ViewConfiguration = {
   dateType: DateType.CALENDAR,
   viewType: ViewType.LIST,
@@ -24,10 +27,11 @@ class ViewConfigurationAdapter {
 function createDatePickerControl(): DatePickerControl {
   const model = new DatePickerModel();
   const el = document.createElement("div");
-  return new DatePickerControl(model, el, "month");
+  el.style.height = '50px'
+  return new DatePickerControl(model, el, "hour");
 }
 
-describe("DatePickerControl exists", () => {
+describe("DatePickerControl", () => {
   it("exists", () => {
     const datePickerControl = createDatePickerControl()
     expect(datePickerControl).toBeTruthy();

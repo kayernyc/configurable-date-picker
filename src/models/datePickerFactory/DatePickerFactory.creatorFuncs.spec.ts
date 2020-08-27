@@ -32,7 +32,7 @@ describe("dateHandlerCreator function", () => {
       it(`returns August ${
         counter + i
       } when initialized with a seed date and passed an index`, () => {
-        const testDay = dateFunction(i);
+        const testDay = dateFunction(i)[0];
         counter++;
         expect(typeof testDay).toBe("object");
         expect(testDay.date.getDate()).toBe(counter);
@@ -51,7 +51,7 @@ describe("dayHandlerCreator function", () => {
 
     for (let i = 0; i < 7; i++) {
       it(`returns ${i} when initialized with a seed date and passed an index`, () => {
-        const testDay = dayFunction(i);
+        const testDay = dayFunction(i)[0];
         expect(typeof testDay).toBe("object");
         expect(testDay.date.getDay()).toBe(i);
       });
@@ -64,7 +64,7 @@ describe("dayHandlerCreator function", () => {
 
     for (let i = 0; i < 7; i++) {
       it(`returns ${i} when passed an index`, () => {
-        const testDay = dayFunction(i);
+        const testDay = dayFunction(i)[0];
         expect(typeof testDay).toBe("object");
         expect(testDay.date.getDay()).toBe(i);
       });
@@ -83,7 +83,7 @@ describe("hourHandlerCreator function", () => {
 
     for (let i = 0; i < 24; i++) {
       it(`returns August ${i} when initialized with a seed date and passed an index`, () => {
-        const testDay = hourFunction(i);
+        const testDay = hourFunction(i)[0];
         expect(typeof testDay).toBe("object");
         expect(testDay.date.getHours()).toBe((24 + i) % 24);
       });
@@ -102,7 +102,7 @@ describe("hourHandlerCreator function", () => {
 
     for (let i = 0; i < 24; i++) {
       it(`returns August ${i} when initialized with a seed date and passed an index`, () => {
-        const testDay = hourFunction(i);
+        const testDay = hourFunction(i)[0];
         expect(typeof testDay).toBe("object");
         expect(testDay.date.getHours()).toBe(i % 24);
       });
@@ -120,7 +120,7 @@ describe("monthHandlerCreator function", () => {
 
     for (let i = 0; i < 12; i++) {
       it(`returns ${i} when initialized with a seed date and passed an index`, () => {
-        const testDay = monthFunction(i);
+        const testDay = monthFunction(i)[0];
         expect(typeof testDay).toBe("object");
         expect(testDay.date.getMonth()).toBe(i);
       });
@@ -139,7 +139,7 @@ describe("monthHandlerCreator function", () => {
 
     for (let i = 0; i < 12; i++) {
       it(`returns ${i} when initialized with a seed date and passed an index`, () => {
-        const testDay = monthFunction(i);
+        const testDay = monthFunction(i)[0];
         expect(typeof testDay).toBe("object");
         expect(testDay.date.getMonth()).toBe(i);
       });
@@ -159,7 +159,7 @@ describe("yearHandlerCreator function", () => {
       it(`returns ${
         1975 + i
       } when initialized with a seed date and passed an index`, () => {
-        const testDay = yearFunction(i);
+        const testDay = yearFunction(i)[0];
         expect(typeof testDay).toBe("object");
         expect(testDay.date.getFullYear()).toBe(1975 + i);
       });

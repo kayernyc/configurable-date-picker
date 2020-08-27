@@ -109,17 +109,17 @@ export default class DatePickerFactory {
   dateArray(quantity: number = 1): AtomicDateObject[] {
     quantity = Math.max(quantity, 1);
 
-    const returnValue = [];
+    let returnValue = [];
 
     for (let i = 0; i < quantity; i++) {
-      const newADO = this.atomicDateObjectFunction(i);
-      returnValue.push(newADO);
+      const newAdoArr = this.atomicDateObjectFunction(i);
+      returnValue = [...returnValue, ...newAdoArr];
     }
 
     return returnValue;
   }
 
-  getAtomicDateObjectByIndex(index: number): AtomicDateObject {
+  getAtomicDateObjectByIndex(index: number): AtomicDateObject[] {
     return this.atomicDateObjectFunction(index);
   }
 }

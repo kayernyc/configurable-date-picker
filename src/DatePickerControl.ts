@@ -32,7 +32,6 @@ export default class DatePickerControl {
     this.viewContainer = viewContainer;
     // check that views are viewConfigurations
     const vcArr = this.vcAdapter.sanitizeConfigObj(viewConfigurations);
-
     this.views = this.initViewContainer(viewContainer, vcArr);
     this.toggleView(open);
   }

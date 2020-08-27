@@ -62,6 +62,7 @@ export default class ContinuousScrollHandler {
   ): { [id: string]: AtomicDateObject } {
     const adoElementDictionary: { [id: string]: AtomicDateObject } = {};
     const { dataArray, frameElement, looping, model, targetHeight } = config;
+    console.log({ targetHeight })
 
     let index = 0;
     while (frameElement.offsetHeight < targetHeight) {
@@ -70,8 +71,13 @@ export default class ContinuousScrollHandler {
           throw new Error("Looping view doesn't have enough dates");
         }
         const newIndex = dataArray[dataArray.length - 1].index + 1;
-        const newAdo = model.getAtomicDateObjectByIndex(newIndex);
-        dataArray.push(newAdo);
+        const newAdos = model.getAtomicDateObjectByIndex(newIndex);
+
+        for (let i = 0; i < newAdos.length; i++) {
+          const newAdo = newAdos[i];
+          dataArray.push(newAdo);
+        }
+
       }
 
       const ado = dataArray[index];
@@ -104,13 +110,8 @@ export default class ContinuousScrollHandler {
   }
 
   private firstElement(frameElement = this.frameElement): HTMLElement {
-<<<<<<< HEAD
-    if (frameElement.children.length === 0) {
-      throw new Error(" frameElement has no children");
-=======
     if (frameElement.children.length < 1) {
       throw Error("FrameElement has no children");
->>>>>>> add calandar layout functionality
     }
 
     return frameElement.removeChild(frameElement.children[0]) as HTMLElement;
@@ -129,22 +130,25 @@ export default class ContinuousScrollHandler {
   private continuousScroll(valence: boolean, frameElement = this.frameElement): number {
     // true = need a new first element
     // false = need a new last element
-    const tailElement = valence ? this.frameElement.firstChild as HTMLElement : this.frameElement.lastChild as HTMLElement
-    const key = tailElement.getAttribute(DATA_TAG_STRING)
-    const tailAdo = this.adoElementDictionary[key]
+    const tailEl = valence ? this.frameElement.firstChild as HTMLElement : this.frameElement.lastChild as HTMLElement
+    const key = tailEl.getAttribute(DATA_TAG_STRING)
+    const tailAdo = this.adoElDictionary[key]
+    let adoArr: AtomicDateObject[]
     let newAdo: AtomicDateObject
     let newElement: HTMLElement
 
     if (valence) {
       if (tailAdo.prev === undefined) {
-        tailAdo.prev = this.model.getAtomicDateObjectByIndex(tailAdo.index - 1)
+        adoArr = this.model.getAtomicDateObjectByIndex(tailAdo.index - 1)
+        tailAdo.prev = adoArr[adoArr.length - 1]
         tailAdo.prev.next = tailAdo
       }
       newAdo = tailAdo.prev
       newElement = this.lastElement()
     } else {
       if (tailAdo.next === undefined) {
-        tailAdo.next = this.model.getAtomicDateObjectByIndex(tailAdo.index + 1)
+        adoArr = this.model.getAtomicDateObjectByIndex(tailAdo.index + 1)
+        tailAdo.next = adoArr[0]
         tailAdo.next.prev = tailAdo
       }
       newAdo = tailAdo.next
