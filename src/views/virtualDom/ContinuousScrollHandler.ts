@@ -62,7 +62,6 @@ export default class ContinuousScrollHandler {
   ): { [id: string]: AtomicDateObject } {
     const adoElementDictionary: { [id: string]: AtomicDateObject } = {};
     const { dataArray, frameElement, looping, model, targetHeight } = config;
-    console.log({ targetHeight })
 
     let index = 0;
     while (frameElement.offsetHeight < targetHeight) {
