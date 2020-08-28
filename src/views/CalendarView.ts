@@ -25,7 +25,7 @@ export default class CalendarView extends DatePickerListView {
 
   buildDateView(weeksArray: WeekDateObject[], frameElement: HTMLElement = this.frameElement) {
     weeksArray.forEach(week => {
-      frameElement.innerHTML += week.viewString
+      frameElement.innerHTML += week.viewString;
     })
   }
 

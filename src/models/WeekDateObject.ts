@@ -28,11 +28,11 @@ export default class WeekDateObject implements AtomicDateObject {
         const adoMonth = ado.date.getMonth();
         acc += month === adoMonth ?
           `<div class="weekday" data-ado-index=${index}>${ado.viewString}</div>` :
-          `<div class="weekday" ></div>`
+          `<div class="weekday" ></div>`;
         return acc;
       }
 
-      acc += `<div class="weekday" data-ado-index=${index}>${ado.viewString}</div>`
+      acc += `<div class="weekday" data-ado-index=${index}>${ado.viewString}</div>`;
       return acc;
     }, '');
   }
@@ -59,7 +59,7 @@ export default class WeekDateObject implements AtomicDateObject {
     let month = this.month.getMonth()
 
     if (latter) {
-      month = (month + 1) % 12
+      month = (month + 1) % 12;
     }
 
 
@@ -76,7 +76,7 @@ export default class WeekDateObject implements AtomicDateObject {
           month = date;
         }
       }
-      return new AtomicDateObject(date, locale, { day: "numeric" }, index)
+      return new AtomicDateObject(date, locale, { day: "numeric" }, index);
     })
 
     return [adoWeek, month, split];

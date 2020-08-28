@@ -137,17 +137,17 @@ export default class ContinuousScrollHandler {
 
     if (valence) {
       if (tailAdo.prev === undefined) {
-        adoArr = this.model.getAtomicDateObjectByIndex(tailAdo.index - 1)
-        tailAdo.prev = adoArr[adoArr.length - 1]
-        tailAdo.prev.next = tailAdo
+        adoArr = this.model.getAtomicDateObjectByIndex(tailAdo.index - 1);
+        tailAdo.prev = adoArr[adoArr.length - 1];
+        tailAdo.prev.next = tailAdo;
       }
       newAdo = tailAdo.prev
       newElement = this.lastElement()
     } else {
       if (tailAdo.next === undefined) {
-        adoArr = this.model.getAtomicDateObjectByIndex(tailAdo.index + 1)
-        tailAdo.next = adoArr[0]
-        tailAdo.next.prev = tailAdo
+        adoArr = this.model.getAtomicDateObjectByIndex(tailAdo.index + 1);
+        tailAdo.next = adoArr[0];
+        tailAdo.next.prev = tailAdo;
       }
       newAdo = tailAdo.next
       newElement = this.firstElement()

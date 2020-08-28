@@ -30,7 +30,7 @@ export default abstract class DatePickerBaseView {
    *
    * @param continuousScroll
    */
-  protected initFrameView(continuousScroll = this.continuousScroll, optionalClass='bob'): HTMLElement {
+  protected initFrameView(continuousScroll = this.continuousScroll): HTMLElement {
     this.frameElement = document.createElement("div");
 
     if (continuousScroll) {

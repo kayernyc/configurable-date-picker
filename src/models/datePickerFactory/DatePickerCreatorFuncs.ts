@@ -67,19 +67,19 @@ export const DatePickerCreatorFuncs = {
       const newWeek: Date[] = [];
 
       for (let i = 0; i < 7; i++) {
-        const weekDate = new Date(newDate.getTime())
-        weekDate.setTime(newDate.getTime() + (i * DAYS_IN_MILLISECONDS))
-        newWeek.push(weekDate)
+        const weekDate = new Date(newDate.getTime());
+        weekDate.setTime(newDate.getTime() + (i * DAYS_IN_MILLISECONDS));
+        newWeek.push(weekDate);
       }
 
-      const weekObj = new WeekDateObject(newWeek, undefined, dateTimeFormat, index)
+      const weekObj = new WeekDateObject(newWeek, undefined, dateTimeFormat, index);
 
       if (grouped && weekObj.split) {
         weekObj.splitWeek(false);
         const weekObj2 = new WeekDateObject(newWeek, undefined, dateTimeFormat, index);
         weekObj2.splitWeek(true);
-        weekObj2.next = weekObj2
-        weekObj2.prev = weekObj
+        weekObj2.next = weekObj2;
+        weekObj2.prev = weekObj;
         return [weekObj, weekObj2];
       }
 
