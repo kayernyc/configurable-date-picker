@@ -15,6 +15,7 @@ class ViewConfiguration {
   maxDate?: Date;
   minDate?: Date;
   looping?: boolean;
+  grouped?: boolean;
 
   constructor(config: ViewConfiguration) {
     Object.assign(this, config)

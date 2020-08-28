@@ -40,7 +40,8 @@ export const DatePickerCreatorFuncs = {
 
   calendarHandlerCreator: (
     format: DateTimeFormat,
-    date: Date = new Date()
+    date: Date = new Date(),
+    grouped: boolean = false
   ): AtomicDateObjectCreator => {
     // sets series to 0/sunday
     const dateTimeFormat = format;
@@ -65,13 +66,24 @@ export const DatePickerCreatorFuncs = {
 
       const newWeek: Date[] = [];
 
-      for (let i = 0; i < 7; i ++) {
+      for (let i = 0; i < 7; i++) {
         const weekDate = new Date(newDate.getTime())
         weekDate.setTime(newDate.getTime() + (i * DAYS_IN_MILLISECONDS))
         newWeek.push(weekDate)
       }
 
-      return [new WeekDateObject(newWeek, undefined, dateTimeFormat, index)];
+      const weekObj = new WeekDateObject(newWeek, undefined, dateTimeFormat, index)
+
+      if (weekObj.split) {
+        weekObj.splitWeek(false);
+        const weekObj2 = new WeekDateObject(newWeek, undefined, dateTimeFormat, index);
+        weekObj2.splitWeek(true);
+        weekObj2.next = weekObj2
+        weekObj2.prev = weekObj
+        return [weekObj, weekObj2];
+      }
+
+      return [weekObj];
     };
 
     return handler;

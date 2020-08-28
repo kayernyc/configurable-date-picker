@@ -76,7 +76,6 @@ export default class ContinuousScrollHandler {
           const newAdo = newAdos[i];
           dataArray.push(newAdo);
         }
-
       }
 
       const ado = dataArray[index];

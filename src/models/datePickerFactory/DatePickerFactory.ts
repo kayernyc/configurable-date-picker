@@ -44,16 +44,18 @@ export default class DatePickerFactory {
   private dateType: DateType;
   private maxDate?: Date;
   private minDate?: Date;
+  private grouped?: boolean;
   dateTimeFormat: DateTimeFormat;
   private atomicDateObjectFunction: AtomicDateObjectCreator;
 
   private configurationMap: Map<DateType, any> = new Map();
 
   constructor(config: ViewConfiguration) {
-    const { dateType, maxDate, minDate } = config;
+    const { dateType, maxDate, minDate, grouped } = config;
     this.dateType = dateType;
     this.maxDate = maxDate;
     this.minDate = minDate;
+    this.grouped = grouped;
     this.looping = config.looping || dataTypeDefaultLooping[dateType];
 
     [this.dateTimeFormat, this.atomicDateObjectFunction] = this.setFormats();
@@ -68,7 +70,7 @@ export default class DatePickerFactory {
       case DateType.CALENDAR:
         // each week, starting on sunday
         format = { day: "numeric"};
-        return [format, DatePickerCreatorFuncs.calendarHandlerCreator(format)];
+        return [format, DatePickerCreatorFuncs.calendarHandlerCreator(format, undefined, this.grouped)];
       case DateType.MONTH:
         // each month in on 1st day of month
         format = { month: "long" };

@@ -15,14 +15,23 @@ export default class WeekDateObject implements AtomicDateObject {
   prev?: AtomicDateObject;
   viewString: string;
 
+  split: boolean = false;
   week: AtomicDateObject[];
   innerHTML: string;
   month: Date;
 
   private dateTypeFormat: DateTypeFormat
 
-  static createInnerHTML = (week: AtomicDateObject[]): string => {
+  static createInnerHTML = (week: AtomicDateObject[], split = false, month?: number): string => {
     return week.reduce((acc: string, ado: AtomicDateObject, index: number) => {
+      if (split && month !== undefined) {
+        const adoMonth = ado.date.getMonth();
+        acc += month === adoMonth ?
+          `<div class="weekday" data-ado-index=${index}>${ado.viewString}</div>` :
+          `<div class="weekday" ></div>`
+        return acc;
+      }
+
       acc += `<div class="weekday" data-ado-index=${index}>${ado.viewString}</div>`
       return acc;
     }, '');
@@ -38,21 +47,38 @@ export default class WeekDateObject implements AtomicDateObject {
     this.date = week[0];
     this.dateTypeFormat = options;
 
-    const [adoWeek, adoMonth] = this.configureWeek(week, locale)
-    this.week = adoWeek
-    this.month = adoMonth
-    this.viewString = WeekDateObject.createInnerHTML(this.week)
+    const [adoWeek, adoMonth, split] = this.configureWeek(week, locale)
+    this.week = adoWeek;
+    this.month = adoMonth;
+    this.split = split;
+    this.viewString = WeekDateObject.createInnerHTML(this.week, split);
   }
 
-  private configureWeek = (week: Date[], locale: string[], options: DateTypeFormat = this.dateTypeFormat): [AtomicDateObject[], Date] => {
+  public splitWeek(latter = false) {
+    this.month = new Date(this.date.getTime())
+    let month = this.month.getMonth()
+
+    if (latter) {
+      month = (month + 1) % 12
+    }
+
+
+    this.viewString = WeekDateObject.createInnerHTML(this.week, this.split, month);
+  }
+
+  private configureWeek = (week: Date[], locale: string[], options: DateTypeFormat = this.dateTypeFormat): [AtomicDateObject[], Date, boolean] => {
     let month = week[0]
+    let split = false;
     const adoWeek = week.map((date, index) => {
-      if (index > 2 && date.getDate() === 1) {
-        month = date
+      if (index > 0 && date.getDate() === 1) {
+        split = true
+        if (index > 2) {
+          month = date;
+        }
       }
-      return new AtomicDateObject(date, locale, { day: "numeric"}, index)
+      return new AtomicDateObject(date, locale, { day: "numeric" }, index)
     })
 
-    return [adoWeek, month]
+    return [adoWeek, month, split];
   }
 }
