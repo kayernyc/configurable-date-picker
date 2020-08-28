@@ -74,7 +74,7 @@ export const DatePickerCreatorFuncs = {
 
       const weekObj = new WeekDateObject(newWeek, undefined, dateTimeFormat, index)
 
-      if (weekObj.split) {
+      if (grouped && weekObj.split) {
         weekObj.splitWeek(false);
         const weekObj2 = new WeekDateObject(newWeek, undefined, dateTimeFormat, index);
         weekObj2.splitWeek(true);
