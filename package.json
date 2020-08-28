@@ -6,7 +6,7 @@
   "baseUrl": "./",
   "scripts": {
     "build": "webpack --config ./webpack.config.js",
-    "lint": "./node_modules/.bin/ESLint -c .eslintrc.js",
+    "lint": "eslint . --ext .ts,.js",
     "start": "cross-env NODE_ENV=development webpack-dev-server --hot --config webpack.config.js",
     "test": "jest --coverage"
   },

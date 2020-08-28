@@ -24,7 +24,18 @@ module.exports = {
     "plugin:unicorn/recommended",
   ],
   parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: `./tsconfig.json`,
+  },
   plugins: ["@typescript-eslint", "jsdoc", "import", "prefer-arrow", "unicorn"],
+  settings: {
+    "import/resolver": {
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+        paths: ["./src"],
+      },
+    },
+  },
   rules: {
     "unicorn/filename-case": [
       "warn",
