@@ -5,8 +5,8 @@
  * The week starts on Gregorian Sunday
  */
 
-import AtomicDateObject from "./AtomicDateObject";
-import DateTypeFormat from "../enums/DateTimeFormat";
+import AtomicDateObject from './AtomicDateObject';
+import DateTypeFormat from '../enums/DateTimeFormat';
 
 export default class WeekDateObject implements AtomicDateObject {
   date: Date;
@@ -15,7 +15,7 @@ export default class WeekDateObject implements AtomicDateObject {
   prev?: AtomicDateObject;
   viewString: string;
 
-  split: boolean = false;
+  split = false;
   week: AtomicDateObject[];
   innerHTML: string;
   month: Date;
@@ -23,23 +23,27 @@ export default class WeekDateObject implements AtomicDateObject {
   private dateTypeFormat: DateTypeFormat
 
   static createInnerHTML = (week: AtomicDateObject[], split = false, month?: number): string => {
-    return week.reduce((acc: string, ado: AtomicDateObject, index: number) => {
+    return week.reduce((accumulator: string, ado: AtomicDateObject, index: number) => {
+      let newElement = `<div class="weekday" data-ado-index=${index}>${ado.viewString}</div>`;
+      /**
+       * When the week is split (some days belong to one month and the rest belong to
+       * another month) only some of the days are filled.
+       * The ones that don't belong to the current month are empty.
+       */
       if (split && month !== undefined) {
-        const adoMonth = ado.date.getMonth();
-        acc += month === adoMonth ?
-          `<div class="weekday" data-ado-index=${index}>${ado.viewString}</div>` :
-          `<div class="weekday" ></div>`;
-        return acc;
+        if (ado.date.getMonth() !== month) {
+          newElement = '<div class="weekday"></div>';
+        }
       }
 
-      acc += `<div class="weekday" data-ado-index=${index}>${ado.viewString}</div>`;
-      return acc;
+      accumulator += newElement;
+      return accumulator;
     }, '');
   }
 
   constructor(
     week: Date[],
-    locale: string[] = ["en-US"],
+    locale: string[] = ['en-US'],
     options: DateTypeFormat,
     index: number
   ) {
@@ -76,7 +80,7 @@ export default class WeekDateObject implements AtomicDateObject {
           month = date;
         }
       }
-      return new AtomicDateObject(date, locale, { day: "numeric" }, index);
+      return new AtomicDateObject(date, locale, { day: 'numeric' }, index);
     })
 
     return [adoWeek, month, split];

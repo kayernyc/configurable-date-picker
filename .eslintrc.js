@@ -29,6 +29,10 @@ module.exports = {
     createDefaultProgram: true,
   },
   plugins: ["@typescript-eslint", "jsdoc", "import", "prefer-arrow", "unicorn"],
+  parserOptions: {
+    project: "./tsconfig.json",
+    createDefaultProgram: true,
+  },
   settings: {
     "import/resolver": {
       node: {

@@ -1,7 +1,7 @@
-import AtomicDateObject from "../AtomicDateObject";
-import { AtomicDateObjectCreator } from "./DatePickerFactoryTypes";
-import DateTimeFormat from "../../enums/DateTimeFormat";
-import WeekDateObject from "../WeekDateObject";
+import AtomicDateObject from '../AtomicDateObject';
+import { AtomicDateObjectCreator } from './DatePickerFactoryTypes';
+import DateTimeFormat from '../../enums/DateTimeFormat';
+import WeekDateObject from '../WeekDateObject';
 
 export const DatePickerCreatorFuncs = {
   dateHandlerCreator: (
@@ -41,7 +41,7 @@ export const DatePickerCreatorFuncs = {
   calendarHandlerCreator: (
     format: DateTimeFormat,
     date: Date = new Date(),
-    grouped: boolean = false
+    grouped = false
   ): AtomicDateObjectCreator => {
     // sets series to 0/sunday
     const dateTimeFormat = format;
@@ -72,18 +72,19 @@ export const DatePickerCreatorFuncs = {
         newWeek.push(weekDate);
       }
 
-      const weekObj = new WeekDateObject(newWeek, undefined, dateTimeFormat, index);
+      const weekObject = new WeekDateObject(newWeek, undefined, dateTimeFormat, index);
 
-      if (grouped && weekObj.split) {
-        weekObj.splitWeek(false);
-        const weekObj2 = new WeekDateObject(newWeek, undefined, dateTimeFormat, index);
-        weekObj2.splitWeek(true);
-        weekObj2.next = weekObj2;
-        weekObj2.prev = weekObj;
-        return [weekObj, weekObj2];
+      if (grouped && weekObject.split) {
+        weekObject.splitWeek(false);
+        const weekObject2 = new WeekDateObject(newWeek, undefined, dateTimeFormat, index);
+        weekObject2.splitWeek(true);
+
+        weekObject.next = weekObject2;
+        weekObject2.prev = weekObject;
+        return [weekObject, weekObject2];
       }
 
-      return [weekObj];
+      return [weekObject];
     };
 
     return handler;

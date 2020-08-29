@@ -2,9 +2,9 @@
  * Only months in a grid
  */
 
-import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
-import DatePickerGridView from "./DatePickerGridView";
-import DatePickerView from "./DatePickerViewInterface";
+import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';
+import DatePickerGridView from './DatePickerGridView';
+import DatePickerView from './DatePickerViewInterface';
 
 export default class MonthGridView extends DatePickerGridView
   implements DatePickerView {
@@ -21,8 +21,8 @@ export default class MonthGridView extends DatePickerGridView
 
   append (parentElement: HTMLElement): void {
     this.initFrameView();
-    this.frameElement.className += " date-picker-grid";
-    parentElement.appendChild(this.frameElement)
+    this.frameElement.className += ' date-picker-grid';
+    parentElement.append(this.frameElement)
     this.populateView()
   }
 
@@ -30,14 +30,14 @@ export default class MonthGridView extends DatePickerGridView
     model: DatePickerFactory = this.model,
     frameElement: HTMLElement = this.frameElement
   ) {
-    const arr = model.dateArray(12);
+    const array = model.dateArray(12);
 
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
-      this.virtualDom.buildView(arr, frameElement);
+      this.virtualDom.buildView(array, frameElement);
       return
     }
 
-    this.buildDateView(arr);
+    this.buildDateView(array);
   }
 }

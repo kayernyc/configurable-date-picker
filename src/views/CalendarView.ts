@@ -2,10 +2,10 @@
  * Owns both the top nav (AM/PM) and the list
  */
 
-import AtomicDateObject from "../models/AtomicDateObject";
-import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
-import DatePickerListView from "./DatePickerListView";
-import WeekDateObject from "../models/WeekDateObject";
+import AtomicDateObject from '../models/AtomicDateObject';
+import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';
+import DatePickerListView from './DatePickerListView';
+import WeekDateObject from '../models/WeekDateObject';
 
 export default class CalendarView extends DatePickerListView {
   continuousScroll: boolean;
@@ -14,16 +14,16 @@ export default class CalendarView extends DatePickerListView {
     super(model, continuousScroll);
   }
 
-  updateView(arr: AtomicDateObject[], frameElement = this.frameElement) {
+  updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
     if (this.virtualDom) {
-      this.virtualDom.buildView(arr, frameElement, undefined, 'calendar');
+      this.virtualDom.buildView(array, frameElement, undefined, 'calendar');
       return;
     }
 
-    this.buildDateView(arr as WeekDateObject[]);
+    this.buildDateView(array as WeekDateObject[]);
   }
 
-  buildDateView(weeksArray: WeekDateObject[], frameElement: HTMLElement = this.frameElement) {
+  buildDateView(weeksArray: WeekDateObject[], frameElement: HTMLElement = this.frameElement): void {
     weeksArray.forEach(week => {
       frameElement.innerHTML += week.viewString;
     })
@@ -32,16 +32,16 @@ export default class CalendarView extends DatePickerListView {
   append(parentElement: HTMLElement): void {
     this.initFrameView();
 
-    this.frameElement.className = this.appendClassName("");
-    parentElement.appendChild(this.frameElement);
+    this.frameElement.className = this.appendClassName('');
+    parentElement.append(this.frameElement);
     this.populateView();
   }
 
   populateView(
     model: DatePickerFactory = this.model,
     frameElement: HTMLElement = this.frameElement
-  ) {
-    const arr = model.dateArray(3);
-    this.updateView(arr, frameElement);
+  ): void {
+    const array = model.dateArray(3);
+    this.updateView(array, frameElement);
   }
 }

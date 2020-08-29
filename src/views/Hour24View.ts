@@ -2,9 +2,9 @@
  * Owns both the top nav (AM/PM) and the list
  */
 
-import AtomicDateObject from "../models/AtomicDateObject";
-import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
-import DatePickerListView from "./DatePickerListView";
+import AtomicDateObject from '../models/AtomicDateObject';
+import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';
+import DatePickerListView from './DatePickerListView';
 
 export default class Hour24View extends DatePickerListView {
   continuousScroll: boolean;
@@ -20,13 +20,13 @@ export default class Hour24View extends DatePickerListView {
     model: DatePickerFactory = this.model,
     frameElement: HTMLElement = this.frameElement
   ) {
-    const arr = model.dateArray(24);
+    const array = model.dateArray(24);
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
-      this.virtualDom.buildView(arr, frameElement);
+      this.virtualDom.buildView(array, frameElement);
       return;
     }
 
-    this.buildDateView(arr);
+    this.buildDateView(array);
   }
 }

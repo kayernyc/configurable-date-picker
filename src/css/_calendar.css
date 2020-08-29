@@ -6,7 +6,7 @@
 .calendar > div {
   display: flex;
   flex-grow: 1;
-  height: 24px;;
+  height: 24px;
   width: 100%;
 }
 
@@ -15,4 +15,3 @@
   text-align: center;
   width: 14.2%;
 }
-

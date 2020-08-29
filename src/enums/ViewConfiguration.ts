@@ -1,5 +1,5 @@
-import DateType from "./DateType";
-import ViewType from "./ViewType";
+import DateType from './DateType';
+import ViewType from './ViewType';
 
 interface ViewConfiguration {
   dateType: DateType;

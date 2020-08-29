@@ -1,16 +1,16 @@
-import DatePickerModel from "./models/DatePickerModel";
-import DatePickerFactory from "./models/datePickerFactory/DatePickerFactory";
-import DatePickerBaseView from "./views/DatePickerBaseView";
-import DatePickerListView from "./views/DatePickerListView";
-import ViewConfiguration from "./enums/ViewConfiguration";
-import ViewConfigurationAdapter from "./models/ViewConfigurationAdapter";
-import DateView from "./views/DateView";
-import DateType from "./enums/DateType";
-import Hour12View from "./views/Hour12View";
-import Hour24View from "./views/Hour24View";
-import MonthGridView from "./views/MonthGridView";
-import ViewType from "./enums/ViewType";
-import CalendarView from "./views/CalendarView";
+import DatePickerModel from './models/DatePickerModel';
+import DatePickerFactory from './models/datePickerFactory/DatePickerFactory';
+import DatePickerBaseView from './views/DatePickerBaseView';
+import DatePickerListView from './views/DatePickerListView';
+import ViewConfiguration from './enums/ViewConfiguration';
+import ViewConfigurationAdapter from './models/ViewConfigurationAdapter';
+import DateView from './views/DateView';
+import DateType from './enums/DateType';
+import Hour12View from './views/Hour12View';
+import Hour24View from './views/Hour24View';
+import MonthGridView from './views/MonthGridView';
+import ViewType from './enums/ViewType';
+import CalendarView from './views/CalendarView';
 
 export default class DatePickerControl {
   datePickerModel: DatePickerModel;
@@ -31,18 +31,18 @@ export default class DatePickerControl {
     this.datePickerModel = model;
     this.viewContainer = viewContainer;
     // check that views are viewConfigurations
-    const vcArr = this.vcAdapter.sanitizeConfigObj(viewConfigurations);
-    this.views = this.initViewContainer(viewContainer, vcArr);
+    const vcArray = this.vcAdapter.sanitizeConfigObj(viewConfigurations);
+    this.views = this.initViewContainer(viewContainer, vcArray);
     this.toggleView(open);
   }
 
   // Container - do this with CSS later
   private openView() {
-    this.viewContainer.className = "date-picker date-picker-open";
+    this.viewContainer.className = 'date-picker date-picker-open';
   }
 
   private closeView() {
-    this.viewContainer.className = "date-picker date-picker-close";
+    this.viewContainer.className = 'date-picker date-picker-close';
   }
 
   // // generic enum type sanitizer - move to static utilities
@@ -59,7 +59,7 @@ export default class DatePickerControl {
     container: HTMLElement,
     viewConfigurations: ViewConfiguration[]
   ): DatePickerBaseView[] {
-    container.className = "date-picker";
+    container.className = 'date-picker';
 
     return viewConfigurations.map((viewConfiguration: ViewConfiguration) => {
       const { dateType, viewType } = viewConfiguration;
@@ -102,7 +102,7 @@ export default class DatePickerControl {
 
   // API
   // tslint:disable-next-line: no-empty
-  updateViews(views: string[]) {}
+  updateViews(views: string[]): void { }
 
   toggleView(desiredState: boolean): boolean {
     if (desiredState !== this.viewOpenState) {

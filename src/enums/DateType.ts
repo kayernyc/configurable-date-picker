@@ -8,7 +8,7 @@
   Hour24 is military time
   Calendar is year/month/date
 */
-
+/* eslint-disable @typescript-eslint/naming-convention */
 enum DateType {
   MONTH,
   DATE,

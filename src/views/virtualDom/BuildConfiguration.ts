@@ -1,4 +1,4 @@
-import AtomicDateObject from "../../models/AtomicDateObject";
+import AtomicDateObject from '../../models/AtomicDateObject';
 
 export default interface BuildConfiguration {
   buffer: number;

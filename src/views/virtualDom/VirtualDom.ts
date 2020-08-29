@@ -9,12 +9,12 @@
 
 type EventListenerFunction = (evt: MouseEvent) => void;
 
-import AtomicDateObject from "../../models/AtomicDateObject";
-import BuildConfiguration from "./BuildConfiguration";
-import ContinuousScrollHandler from "./ContinuousScrollHandler";
+import AtomicDateObject from '../../models/AtomicDateObject';
+import BuildConfiguration from './BuildConfiguration';
+import ContinuousScrollHandler from './ContinuousScrollHandler';
 
-import { addElement } from "./VirtualDomConst";
-import WeekDateObject from "../../models/WeekDateObject";
+import { addElement } from './VirtualDomConst';
+import WeekDateObject from '../../models/WeekDateObject';
 
 // https://stackoverflow.com/questions/58036689/using-mutationobserver-to-detect-when-a-node-is-added-to-document
 // { (options?: ScrollToOptions): void; (x: number, y: number): void; }
@@ -22,8 +22,8 @@ import WeekDateObject from "../../models/WeekDateObject";
 export default class VirtualDom {
   // If a class type can have more than the
   // limit, then there may still be a default virtual dom.
-  static last<T>(arr: T[]): T {
-    return arr[arr.length - 1];
+  static last<T>(array: T[]): T {
+    return array[array.length - 1];
   }
 
   private buffer = 20;
@@ -41,13 +41,11 @@ export default class VirtualDom {
     this.continuousScrollHandler = continuousScrollHandler;
   }
 
-  private wheelHander = (evt: WheelEvent) => {
-    const childrenArr = Array.from(this.frameElement.children) as HTMLElement[];
-    const lastElementHeight = VirtualDom.last(childrenArr).offsetHeight;
+  private wheelHander = (event: WheelEvent) => {
+    const childrenArray = Array.from(this.frameElement.children) as HTMLElement[];
+    const top = Number.parseInt(this.frameElement.style.top || '0px', 10);
 
-    const top = parseInt(this.frameElement.style.top || "0px", 10);
-
-    let { deltaY } = evt;
+    let { deltaY } = event;
     const valence = Math.abs(deltaY) / deltaY;
     deltaY = Math.min(Math.abs(deltaY), 3) * valence;
     let newTop = top + deltaY;
@@ -58,26 +56,25 @@ export default class VirtualDom {
       newTop += this.continuousScrollHandler.push();
     }
 
-    this.frameElement.style.top = newTop + "px";
+    this.frameElement.style.top = newTop + 'px';
   };
 
   private initializeListeners = (
     frameElement: HTMLElement = this.frameElement
   ) => {
-    frameElement.addEventListener("wheel", this.wheelHander, { passive: true });
+    frameElement.addEventListener('wheel', this.wheelHander, { passive: true });
   };
 
   private initVirtualDomFrameElement() {
-    this.vdFrameElement = document.createElement("div");
-    this.vdFrameElement.style.top = "0px";
-    this.vdFrameElement.className = "vd-container";
+    this.vdFrameElement = document.createElement('div');
+    this.vdFrameElement.style.top = '0px';
+    this.vdFrameElement.className = 'vd-container';
   }
 
   private initNormalScroll(config: BuildConfiguration) {
     const { dataArray, frameElement, targetHeight } = config;
-    for (let i = 0; i < dataArray.length; i++) {
-      const ado = dataArray[i];
-      frameElement.appendChild(addElement(ado, i));
+    for (const [i, ado] of dataArray.entries()) {
+      frameElement.append(addElement(ado, i));
       if (frameElement.offsetHeight > targetHeight) {
         break;
       }
@@ -85,10 +82,10 @@ export default class VirtualDom {
   }
 
   /**
-   *
    * @param arr
    *
    * builds initial set of containers.
+   * @param config
    */
   private buildElementSetForVirtualDom = (config: BuildConfiguration) => {
     if (!config.continuousScroll) {
@@ -109,15 +106,24 @@ export default class VirtualDom {
   }
 
   /**
-   *
    * @param dataArray AtomicDateObject[]
+   * @param atomicDateObjectArr
+   * @param atomicDateObjectArray
+   * @param containerElement
+   * @param atomicDateObjectArr
+   * @param containerElement
+   * @param atomicDateObjectArr
+   * @param containerElement
    * @param frameElement HTMLElement
    *
    * When the view scrolls continuously
    * this is the initial build
+   * @param className
+   * @param className
+   * @param className
    */
   buildView(
-    atomicDateObjectArr: AtomicDateObject[] | WeekDateObject[],
+    atomicDateObjectArray: AtomicDateObject[] | WeekDateObject[],
     containerElement?: HTMLElement,
     frameElement: HTMLElement = this.frameElement,
     className?: string
@@ -128,7 +134,7 @@ export default class VirtualDom {
 
     if (!containerElement && this.containerHeight === undefined) {
       throw new Error(
-        "BuildView called without initialization. Initialize container element first."
+        'BuildView called without initialization. Initialize container element first.'
       );
     } else if (containerElement) {
       this.containerHeight = containerElement.offsetHeight;
@@ -138,10 +144,10 @@ export default class VirtualDom {
       frameElement.className += ` ${className}`;
     }
 
-    frameElement.innerHTML = "";
+    frameElement.innerHTML = '';
     const config: BuildConfiguration = {
       buffer,
-      dataArray: atomicDateObjectArr,
+      dataArray: atomicDateObjectArray,
       continuousScroll: true,
       frameElement,
       targetHeight: containerElement.offsetHeight + 2 * buffer,

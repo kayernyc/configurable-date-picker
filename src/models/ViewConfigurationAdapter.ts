@@ -1,6 +1,6 @@
-import ViewConfiguration from "../enums/ViewConfiguration";
-import ViewType from "../enums/ViewType";
-import DateType from "../enums/DateType";
+import ViewConfiguration from '../enums/ViewConfiguration';
+import ViewType from '../enums/ViewType';
+import DateType from '../enums/DateType';
 
 const seedViewConfiguration: ViewConfiguration = {
   dateType: DateType.CALENDAR,
@@ -14,37 +14,38 @@ export default class ViewConfigurationAdapter {
     this.configDefaults = configDefaults;
   }
 
-  sanitizeConfigObj(configObj: any): ViewConfiguration[] {
+  sanitizeConfigObj(configObject: any): ViewConfiguration[] {
     // convert all incoming to valid configObj arrays
 
     switch (true) {
-      case this.matchObjectToViewConfiguration(configObj):
-        return [configObj];
+      case this.matchObjectToViewConfiguration(configObject):
+        return [configObject];
 
-      case Array.isArray(configObj):
-        const arrCandidate: ViewConfiguration[] = configObj.reduce(
-          (acc: ViewConfiguration[], obj: any) => {
-            return [...acc, ...this.sanitizeConfigObj(obj)];
+      case Array.isArray(configObject):
+        const arrayCandidate: ViewConfiguration[] = configObject.reduce(
+          (accumulator: ViewConfiguration[], object: any) => {
+            return [...accumulator, ...this.sanitizeConfigObj(object)];
           },
           []
         );
-        if (arrCandidate.length < 1) {
+        if (arrayCandidate.length === 0) {
           throw new Error(
             `: ${JSON.stringify(
-              configObj
+              configObject
             )} is not an acceptable configuration parameter.`
           );
         }
 
-        return arrCandidate;
+        return arrayCandidate;
 
-      case typeof configObj === "string":
-        const vC = this.convertStringToViewConfiguration(configObj);
+      case typeof configObject === 'string': {
+        const vC = this.convertStringToViewConfiguration(configObject);
         return [vC];
+      }
       default:
         throw new Error(
           `: ${JSON.stringify(
-            configObj
+            configObject
           )} is not an acceptable configuration parameter.`
         );
     }
@@ -52,12 +53,12 @@ export default class ViewConfigurationAdapter {
 
   // TODO: Abstract and move to utilities
 
-  matchObjectToViewConfiguration(obj: ViewConfiguration): boolean {
-    const objKeys = Object.keys(obj);
-    const vCKeys = ["dateType", "viewType"];
+  matchObjectToViewConfiguration(object: ViewConfiguration): boolean {
+    const objectKeys = Object.keys(object);
+    const vCKeys = ['dateType', 'viewType'];
 
     const keysMissing = vCKeys.some((key) => {
-      return !objKeys.includes(key);
+      return !objectKeys.includes(key);
     });
 
     if (keysMissing) {
@@ -66,10 +67,10 @@ export default class ViewConfigurationAdapter {
 
     if (
       // tslint:disable: no-string-literal
-      obj["dateType"] !== undefined &&
-      [0, 1, 2, 3, 4, 5, 6, 7].includes(obj["dateType"]) &&
-      obj["viewType"] !== undefined &&
-      [0, 1, 2, 3, 4, 5, 6, 7].includes(obj["viewType"])
+      object.dateType !== undefined &&
+      [0, 1, 2, 3, 4, 5, 6, 7].includes(object.dateType) &&
+      object.viewType !== undefined &&
+      [0, 1, 2, 3, 4, 5, 6, 7].includes(object.viewType)
       // tslint:enable: no-string-literal
     ) {
       return true;
@@ -83,7 +84,7 @@ export default class ViewConfigurationAdapter {
     configView?: ViewType,
     defaultDateType: DateType = this.configDefaults.dateType,
     // tslint:disable-next-line: no-string-literal
-    defaultViewType: ViewType = this.configDefaults["viewType"]
+    defaultViewType: ViewType = this.configDefaults.viewType
   ): ViewConfiguration {
     return new ViewConfiguration({
       dateType: configDate === undefined ? defaultDateType : configDate,
