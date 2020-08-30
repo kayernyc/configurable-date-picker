@@ -4,6 +4,10 @@
 @import "./_toggleSwitch.css";
 @import "./_virtualDOM.css";
 
+.date-picker {
+  overscroll-behavior: none;
+}
+
 .date-picker-view {
   background-color: yellow;
 }
@@ -30,4 +34,3 @@
 .date-picker-grid > * {
   display: flex;
 }
-
