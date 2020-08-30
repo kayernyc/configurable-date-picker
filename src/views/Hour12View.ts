@@ -21,7 +21,7 @@ export default class Hour12View extends DatePickerListView
     this.amPmToggleSwitch.proxy = this;
   }
 
-  selectValue(index: number, value: string): boolean {
+  selectValue(index: number): boolean {
     if (this.currentSet !== index) {
       this.currentSet = index;
       index === 0 ? this.updateView(this.amArr) : this.updateView(this.pmArr);
@@ -29,21 +29,21 @@ export default class Hour12View extends DatePickerListView
     return true;
   }
 
-  updateView(array: AtomicDateObject[], frameElement = this.frameElement) {
+  updateView(adoArray: AtomicDateObject[], frameElement = this.frameElement): void {
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
-      this.virtualDom.buildView(array, frameElement);
+      this.virtualDom.buildView(adoArray, frameElement);
       return;
     }
 
-    this.buildDateView(array);
+    this.buildDateView(adoArray);
   }
 
   append(parentElement: HTMLElement): void {
     // attach switch
     this.amPmToggleSwitch.append(parentElement);
-    this.initFrameView();
-    this.frameElement.className = this.appendClassName('');
+    this.initFrameView(true);
+    this.frameElement.className = this.appendClassName("");
     parentElement.append(this.frameElement);
     this.populateView();
   }
@@ -51,10 +51,10 @@ export default class Hour12View extends DatePickerListView
   populateView(
     model: DatePickerFactory = this.model,
     frameElement: HTMLElement = this.frameElement
-  ) {
-    const array = model.dateArray(24);
-    this.amArr = array.slice(0, 12);
-    this.pmArr = array.slice(12);
+  ): void {
+    const adoArray = model.dateArray(24);
+    this.amArr = adoArray.slice(0, 12);
+    this.pmArr = adoArray.slice(12);
     this.updateView(this.amArr, frameElement);
   }
 }
