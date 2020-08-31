@@ -73,9 +73,9 @@ export default class VirtualDom {
   }
 
   private initNormalScroll(config: BuildConfiguration) {
-    const { dataArr, frameElement, targetHeight } = config;
-    for (let i = 0; i < dataArr.length; i++) {
-      const ado = dataArr[i];
+    const { dataArray, frameElement, targetHeight } = config;
+    for (let i = 0; i < dataArray.length; i++) {
+      const ado = dataArray[i];
       frameElement.appendChild(addElement(ado, i));
       if (frameElement.offsetHeight > targetHeight) {
         break;
@@ -109,7 +109,7 @@ export default class VirtualDom {
 
   /**
    *
-   * @param dataArr AtomicDateObject[]
+   * @param dataArray AtomicDateObject[]
    * @param frameElement HTMLElement
    *
    * When the view scrolls continuously
@@ -135,7 +135,7 @@ export default class VirtualDom {
     frameElement.innerHTML = "";
     const config: BuildConfiguration = {
       buffer,
-      dataArr: atomicDateObjectArr,
+      dataArray: atomicDateObjectArr,
       continuousScroll: true,
       frameElement,
       targetHeight: containerElement.offsetHeight + 2 * buffer,

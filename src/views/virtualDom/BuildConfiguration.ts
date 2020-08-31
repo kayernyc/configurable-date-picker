@@ -2,8 +2,8 @@ import AtomicDateObject from "../../models/AtomicDateObject";
 
 export default interface BuildConfiguration {
   buffer: number;
-  dataArr: AtomicDateObject[];
+  dataArray: AtomicDateObject[];
   continuousScroll: boolean;
-  frameElement:HTMLElement;
+  frameElement: HTMLElement;
   targetHeight: number;
 }
