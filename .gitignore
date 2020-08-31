@@ -112,3 +112,4 @@ dist
 
 # Random files
 .DS_Store
+.vscode/
