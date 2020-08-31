@@ -4,6 +4,7 @@
 
 .vd-container {
   background-color: tomato;
+  overscroll-behavior: none;
   position: relative;
   top: 0;
 }
