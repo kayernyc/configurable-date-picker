@@ -130,7 +130,7 @@ export default class ContinuousScrollHandler {
     // false = need a new last element
     const tailElement = valence ? this.frameElement.firstChild as HTMLElement : this.frameElement.lastChild as HTMLElement;
     const key = tailElement.getAttribute(DATA_TAG_STRING);
-    const tailAdo = this.adoElDictionary[key];
+    const tailAdo = this.adoElementDictionary[key];
     let adoArray: AtomicDateObject[];
     let newAdo: AtomicDateObject;
     let newElement: HTMLElement;
@@ -154,7 +154,7 @@ export default class ContinuousScrollHandler {
       newElement = this.firstElement();
     }
 
-    this.adoElDictionary[newElement.getAttribute(DATA_TAG_STRING)] = newAdo;
+    this.adoElementDictionary[newElement.getAttribute(DATA_TAG_STRING)] = newAdo;
     newElement.innerHTML = newAdo.viewString;
 
     valence ? frameElement.prepend(newElement) : frameElement.appendChild(newElement);
@@ -170,19 +170,19 @@ export default class ContinuousScrollHandler {
       currentElement = frameElement.children[0] as HTMLElement;
       // last el goes to beginning
       newElement = this.lastElement();
-      newAdo = this.adoElDictionary[currentElement.getAttribute(DATA_TAG_STRING)]
+      newAdo = this.adoElementDictionary[currentElement.getAttribute(DATA_TAG_STRING)]
         .prev;
     } else {
       currentElement = frameElement.children[
         frameElement.children.length - 1
       ] as HTMLElement;
       // first el goes to end
-      newAdo = this.adoElDictionary[currentElement.getAttribute(DATA_TAG_STRING)]
+      newAdo = this.adoElementDictionary[currentElement.getAttribute(DATA_TAG_STRING)]
         .next;
       newElement = this.firstElement();
     }
 
-    this.adoElDictionary[newElement.getAttribute(DATA_TAG_STRING)] = newAdo;
+    this.adoElementDictionary[newElement.getAttribute(DATA_TAG_STRING)] = newAdo;
     newElement.innerHTML = newAdo.viewString;
     valence ? frameElement.prepend(newElement) : frameElement.appendChild(newElement);
     return newElement.offsetHeight;
