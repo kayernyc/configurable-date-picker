@@ -14,6 +14,7 @@ Happy linting! 💖
 module.exports = {
   root: true,
   extends: [
+    "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -28,6 +29,10 @@ module.exports = {
     createDefaultProgram: true,
   },
   plugins: ["@typescript-eslint", "jsdoc", "import", "prefer-arrow", "unicorn"],
+  parserOptions: {
+    project: "./tsconfig.json",
+    createDefaultProgram: true,
+  },
   settings: {
     "import/resolver": {
       node: {

@@ -1,5 +1,8 @@
-const stringCandidates = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_";
+const stringCandidates = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_';
 
+/**
+ * @param length
+ */
 export function RandomString(length = 10): string {
   let rando = ''
 

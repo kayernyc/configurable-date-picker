@@ -1,5 +1,5 @@
-import DateType from "./DateType";
-import ViewType from "./ViewType";
+import DateType from './DateType';
+import ViewType from './ViewType';
 
 interface ViewConfiguration {
   dateType: DateType;
@@ -15,6 +15,7 @@ class ViewConfiguration {
   maxDate?: Date;
   minDate?: Date;
   looping?: boolean;
+  grouped?: boolean;
 
   constructor(config: ViewConfiguration) {
     Object.assign(this, config)

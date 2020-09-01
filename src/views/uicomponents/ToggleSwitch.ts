@@ -1,4 +1,4 @@
-import { RandomString } from "../../utils/RandomString";
+import { RandomString } from '../../utils/RandomString';
 
 interface ToggleSwitchProxy {
   selectValue: (index: number, value: string) => boolean;
@@ -20,7 +20,7 @@ export default class ToggleSwitch {
     this.valuesArray = valuesArray;
   }
 
-  private select(evt: MouseEvent) {
+  private select(event: MouseEvent) {
     const context = (this as unknown) as ValueContext;
     const { index, value, proxy } = context;
     if (proxy) {
@@ -33,30 +33,30 @@ export default class ToggleSwitch {
     value: string,
     formName: string
   ): [HTMLInputElement, HTMLLabelElement] {
-    const radioButton = document.createElement("input");
-    radioButton.type = "radio";
+    const radioButton = document.createElement('input');
+    radioButton.type = 'radio';
     radioButton.id = value;
     radioButton.name = formName;
     radioButton.hidden = true;
     radioButton.value = value;
-    radioButton.className = "toggle-switch-value";
+    radioButton.className = 'toggle-switch-value';
 
-    const radioLabel = document.createElement("label");
+    const radioLabel = document.createElement('label');
     radioLabel.htmlFor = value;
     radioLabel.innerHTML = value;
-    radioLabel.onmousedown = this.select.bind({
+    radioLabel.addEventListener('mousedown', this.select.bind({
       index,
       value,
       proxy: this.proxy,
-    });
+    }));
 
     return [radioButton, radioLabel];
   }
 
   append(parentElement: HTMLElement, startIndex = 0, formName?: string): void {
-    const frame = document.createElement("form");
+    const frame = document.createElement('form');
     const _formName = formName || RandomString(10);
-    frame.className = "toggle-switch";
+    frame.className = 'toggle-switch';
     startIndex = Math.min(this.valuesArray.length, startIndex);
 
     for (const [index, value] of this.valuesArray.entries()) {
@@ -70,10 +70,10 @@ export default class ToggleSwitch {
         radioButton.checked = true;
       }
 
-      frame.appendChild(radioButton);
-      frame.appendChild(radioLabel);
+      frame.append(radioButton);
+      frame.append(radioLabel);
     }
 
-    parentElement.appendChild(frame);
+    parentElement.append(frame);
   }
 }

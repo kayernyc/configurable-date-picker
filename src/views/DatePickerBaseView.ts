@@ -1,10 +1,10 @@
 /*
  These views only present dates, not navigation
  */
-import AtomicDateObject from "../models/AtomicDateObject";
-import ContinuousScrollHandler from "./virtualDom/ContinuousScrollHandler";
-import DatePickerFactory from "../models/datePickerFactory/DatePickerFactory";
-import VirtualDom from "./virtualDom/VirtualDom";
+import AtomicDateObject from '../models/AtomicDateObject';
+import ContinuousScrollHandler from './virtualDom/ContinuousScrollHandler';
+import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';
+import VirtualDom from './virtualDom/VirtualDom';
 
 export default abstract class DatePickerBaseView {
   continuousScroll: boolean;
@@ -20,9 +20,9 @@ export default abstract class DatePickerBaseView {
   }
 
   protected appendClassName(className: string): string {
-    const classNames = className.split(" ");
+    const classNames = className.split(' ');
     classNames.push(this.frameElementClassName);
-    return classNames.join(" ");
+    return classNames.join(' ');
   }
 
   /**
@@ -30,15 +30,15 @@ export default abstract class DatePickerBaseView {
    *
    * @param continuousScroll
    */
-  protected initFrameView(continuousScroll = true): HTMLElement {
-    this.frameElement = document.createElement("div");
+  protected initFrameView(continuousScroll = this.continuousScroll): HTMLElement {
+    this.frameElement = document.createElement('div');
 
     if (continuousScroll) {
       // init ContinuousScrollHandler
       this.virtualDom = new VirtualDom(
         new ContinuousScrollHandler(this.model, this.frameElement)
       );
-      this.frameElement.appendChild(this.virtualDom.frameElement);
+      this.frameElement.append(this.virtualDom.frameElement);
     }
 
     return this.frameElement;
@@ -47,9 +47,9 @@ export default abstract class DatePickerBaseView {
   append(parentElement: HTMLElement): void {
     this.frameElement = this.initFrameView(this.continuousScroll);
     this.frameElement.className = this.appendClassName(this.frameElement.className)
-    parentElement.appendChild(this.frameElement);
+    parentElement.append(this.frameElement);
 
-    if (this.populateView && typeof this.populateView === "function") {
+    if (this.populateView && typeof this.populateView === 'function') {
       this.populateView(this.model, this.frameElement);
     }
   }
@@ -60,8 +60,9 @@ export default abstract class DatePickerBaseView {
   ): void;
 
   /**
-   *
    * @param arr AtomicDateObject[]
+   * @param atomicDateObjectArr
+   * @param atomicDateObjectArray
    * @param frameElement
    *
    * When the list view does not continuously scroll
@@ -69,13 +70,13 @@ export default abstract class DatePickerBaseView {
    * appends the elements directly to the dom.
    */
   protected buildDateView(
-    atomicDateObjectArr: AtomicDateObject[],
+    atomicDateObjectArray: AtomicDateObject[],
     frameElement: HTMLElement = this.frameElement
   ) {
-    atomicDateObjectArr.forEach((date: AtomicDateObject) => {
-      const el = document.createElement("div");
-      el.innerHTML = date.viewString;
-      frameElement.appendChild(el);
+    atomicDateObjectArray.forEach((date: AtomicDateObject) => {
+      const element = document.createElement('div');
+      element.innerHTML = date.viewString;
+      frameElement.append(element);
     });
   }
 

@@ -1,7 +1,7 @@
-import DatePickerFactory from "./DatePickerFactory";
-import ViewConfiguration from "../../enums/ViewConfiguration";
-import DateType from "../../enums/DateType";
-import ViewType from "../../enums/ViewType";
+import DatePickerFactory from './DatePickerFactory';
+import ViewConfiguration from '../../enums/ViewConfiguration';
+import DateType from '../../enums/DateType';
+import ViewType from '../../enums/ViewType';
 
 const configs = [
   {
@@ -38,22 +38,22 @@ const configs = [
   }
 ]
 
-describe("DatePickerFactory exists", () => {
+describe('DatePickerFactory exists', () => {
   configs.forEach(config => {
-    it("exists", () => {
+    it('exists', () => {
       const datePickerFactory = new DatePickerFactory(config);
       expect(datePickerFactory).toBeTruthy();
     });
   })
 });
 
-describe("DatePickerFactory dateArray", () => {
+describe('DatePickerFactory dateArray', () => {
   configs.forEach(config => {
-    it("should return an array", () => {
+    it('should return an array', () => {
       const datePickerFactory = new DatePickerFactory(config);
-      const arr = datePickerFactory.dateArray(1);
+      const array = datePickerFactory.dateArray(1);
 
-      expect(Array.isArray(arr)).toBe(true);
+      expect(Array.isArray(array)).toBe(true);
     });
   })
 });

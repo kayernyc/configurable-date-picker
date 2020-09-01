@@ -21,12 +21,12 @@
  * Calendar is year/month/date
  */
 
-import DateType from "../../enums/DateType";
-import ViewConfiguration from "../../enums/ViewConfiguration";
-import DateTimeFormat from "../../enums/DateTimeFormat";
-import AtomicDateObject from "../AtomicDateObject";
-import { AtomicDateObjectCreator } from "./DatePickerFactoryTypes";
-import { DatePickerCreatorFuncs } from "./DatePickerCreatorFuncs";
+import DateType from '../../enums/DateType';
+import ViewConfiguration from '../../enums/ViewConfiguration';
+import DateTimeFormat from '../../enums/DateTimeFormat';
+import AtomicDateObject from '../AtomicDateObject';
+import { AtomicDateObjectCreator } from './DatePickerFactoryTypes';
+import { DatePickerCreatorFuncs } from './DatePickerCreatorFuncs';
 
 const dataTypeDefaultLooping = {
   [DateType.CALENDAR]: false,
@@ -44,16 +44,18 @@ export default class DatePickerFactory {
   private dateType: DateType;
   private maxDate?: Date;
   private minDate?: Date;
+  private grouped?: boolean;
   dateTimeFormat: DateTimeFormat;
   private atomicDateObjectFunction: AtomicDateObjectCreator;
 
   private configurationMap: Map<DateType, any> = new Map();
 
   constructor(config: ViewConfiguration) {
-    const { dateType, maxDate, minDate } = config;
+    const { dateType, maxDate, minDate, grouped } = config;
     this.dateType = dateType;
     this.maxDate = maxDate;
     this.minDate = minDate;
+    this.grouped = grouped;
     this.looping = config.looping || dataTypeDefaultLooping[dateType];
 
     [this.dateTimeFormat, this.atomicDateObjectFunction] = this.setFormats();
@@ -65,57 +67,61 @@ export default class DatePickerFactory {
     let format: DateTimeFormat;
 
     switch (dateType) {
+      case DateType.CALENDAR:
+        // each week, starting on sunday
+        format = { day: 'numeric'};
+        return [format, DatePickerCreatorFuncs.calendarHandlerCreator(format, undefined, this.grouped)];
       case DateType.MONTH:
         // each month in on 1st day of month
-        format = { month: "long" };
+        format = { month: 'long' };
         return [format, DatePickerCreatorFuncs.monthHandlerCreator(format)];
       case DateType.DATE:
-        format = { day: "numeric", month: "long", year: "numeric" };
+        format = { day: 'numeric', month: 'long', year: 'numeric' };
         return [format, DatePickerCreatorFuncs.dateHandlerCreator(format)];
       case DateType.DAY:
         // returns days of the week, starts always with 0
-        format = { weekday: "long" };
+        format = { weekday: 'long' };
         return [format, DatePickerCreatorFuncs.dayHandlerCreator(format)];
       case DateType.YEAR:
         // returns year plus offset, year has to set to jan 1
-        format = { year: "numeric" };
+        format = { year: 'numeric' };
         return [format, DatePickerCreatorFuncs.monthHandlerCreator(format)];
       case DateType.WEEK:
         // returns seed date - ...6
-        format = { weekday: "long", day: "numeric", month: "long" };
+        format = { weekday: 'long', day: 'numeric', month: 'long' };
         return [
-          { weekday: "long", day: "numeric", month: "long" },
+          { weekday: 'long', day: 'numeric', month: 'long' },
           DatePickerCreatorFuncs.dateHandlerCreator(format),
         ];
       case DateType.HOUR:
       case DateType.HOUR24:
-        format = { hour: "numeric" };
+        format = { hour: 'numeric' };
         return [format, DatePickerCreatorFuncs.hourHandlerCreator(format)];
       default:
-        format = { day: "numeric", month: "numeric", year: "numeric" };
+        format = { day: 'numeric', month: 'numeric', year: 'numeric' };
         return [format, DatePickerCreatorFuncs.dateHandlerCreator(format)];
     }
   };
 
   // API
   /**
-   *
    * @param quantity: number
+   * @param quantity
    */
-  dateArray(quantity: number = 1): AtomicDateObject[] {
+  dateArray(quantity = 1): AtomicDateObject[] {
     quantity = Math.max(quantity, 1);
 
-    const returnValue = [];
+    let returnValue = [];
 
     for (let i = 0; i < quantity; i++) {
-      const newADO = this.atomicDateObjectFunction(i);
-      returnValue.push(newADO);
+      const newAdoArray = this.atomicDateObjectFunction(i);
+      returnValue = [...returnValue, ...newAdoArray];
     }
 
     return returnValue;
   }
 
-  getAtomicDateObjectByIndex(index: number): AtomicDateObject {
+  getAtomicDateObjectByIndex(index: number): AtomicDateObject[] {
     return this.atomicDateObjectFunction(index);
   }
 }

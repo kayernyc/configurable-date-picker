@@ -1,8 +1,8 @@
-import AtomicDateObject from "../../models/AtomicDateObject";
-import DatePickerFactory from "../../models/datePickerFactory/DatePickerFactory";
-import BuildConfiguration from "./BuildConfiguration";
+import AtomicDateObject from '../../models/AtomicDateObject';
+import DatePickerFactory from '../../models/datePickerFactory/DatePickerFactory';
+import BuildConfiguration from './BuildConfiguration';
 
-import { DATA_TAG_STRING, addElement } from "./VirtualDomConst";
+import { DATA_TAG_STRING, addElement } from './VirtualDomConst';
 
 type ScrollHandlingFunction = (valence: boolean) => number;
 
@@ -56,6 +56,7 @@ export default class ContinuousScrollHandler {
    * @param dataArray
    * @param frameElement
    * @param buffer
+   * @param config
    */
   static initAdoElDictionary(
     config: AdoElDictionaryFactoryConfig
@@ -70,8 +71,11 @@ export default class ContinuousScrollHandler {
           throw new Error("Looping view doesn't have enough dates");
         }
         const newIndex = dataArray[dataArray.length - 1].index + 1;
-        const newAdo = model.getAtomicDateObjectByIndex(newIndex);
-        dataArray.push(newAdo);
+        const newAdos = model.getAtomicDateObjectByIndex(newIndex);
+
+        for (const newAdo of newAdos) {
+          dataArray.push(newAdo);
+        }
       }
 
       const ado = dataArray[index];
@@ -105,7 +109,7 @@ export default class ContinuousScrollHandler {
 
   private firstElement(frameElement = this.frameElement): HTMLElement {
     if (frameElement.children.length === 0) {
-      throw new Error(" frameElement has no children");
+      throw new Error('FrameElement has no children');
     }
 
     return frameElement.removeChild(frameElement.children[0]) as HTMLElement;
@@ -124,65 +128,69 @@ export default class ContinuousScrollHandler {
   private continuousScroll(valence: boolean, frameElement = this.frameElement): number {
     // true = need a new first element
     // false = need a new last element
-    const tailElement = valence ? this.frameElement.firstChild as HTMLElement : this.frameElement.lastChild as HTMLElement
-    const key = tailElement.getAttribute(DATA_TAG_STRING)
-    const tailAdo = this.adoElementDictionary[key]
-    let newAdo: AtomicDateObject
-    let newElement: HTMLElement
+    const tailElement = valence ? this.frameElement.firstChild as HTMLElement : this.frameElement.lastChild as HTMLElement;
+    const key = tailElement.getAttribute(DATA_TAG_STRING);
+    const tailAdo = this.adoElementDictionary[key];
+    let adoArray: AtomicDateObject[];
+    let newAdo: AtomicDateObject;
+    let newElement: HTMLElement;
 
     if (valence) {
       if (tailAdo.prev === undefined) {
-        tailAdo.prev = this.model.getAtomicDateObjectByIndex(tailAdo.index - 1)
-        tailAdo.prev.next = tailAdo
+        adoArray = this.model.getAtomicDateObjectByIndex(tailAdo.index - 1);
+        tailAdo.prev = adoArray[adoArray.length - 1];
+        tailAdo.prev.next = tailAdo;
       }
-      newAdo = tailAdo.prev
-      newElement = this.lastElement()
+      newAdo = tailAdo.prev;
+      newElement = this.lastElement();
     } else {
       if (tailAdo.next === undefined) {
-        tailAdo.next = this.model.getAtomicDateObjectByIndex(tailAdo.index + 1)
-        tailAdo.next.prev = tailAdo
+        adoArray = this.model.getAtomicDateObjectByIndex(tailAdo.index + 1);
+        tailAdo.next = adoArray[0];
+        tailAdo.next.prev = tailAdo;
       }
-      newAdo = tailAdo.next
-      newElement = this.firstElement()
+      newAdo = tailAdo.next;
+      console.log(newAdo.next, 'next')
+      newElement = this.firstElement();
     }
 
     this.adoElementDictionary[newElement.getAttribute(DATA_TAG_STRING)] = newAdo;
     newElement.innerHTML = newAdo.viewString;
 
-    valence ? frameElement.prepend(newElement) : frameElement.append(newElement);
+    valence ? frameElement.prepend(newElement) : frameElement.appendChild(newElement);
     return newElement.offsetHeight;
   }
 
   private loop(valence: boolean, frameElement = this.frameElement): number {
-    let currentEl: HTMLElement;
+    let currentElement: HTMLElement;
     let newElement: HTMLElement;
     let newAdo: AtomicDateObject;
 
     if (valence) {
-      currentEl = frameElement.children[0] as HTMLElement;
+      currentElement = frameElement.children[0] as HTMLElement;
       // last el goes to beginning
       newElement = this.lastElement();
-      newAdo = this.adoElementDictionary[currentEl.getAttribute(DATA_TAG_STRING)]
+      newAdo = this.adoElementDictionary[currentElement.getAttribute(DATA_TAG_STRING)]
         .prev;
     } else {
-      currentEl = frameElement.children[
+      currentElement = frameElement.children[
         frameElement.children.length - 1
       ] as HTMLElement;
       // first el goes to end
-      newAdo = this.adoElementDictionary[currentEl.getAttribute(DATA_TAG_STRING)]
+      newAdo = this.adoElementDictionary[currentElement.getAttribute(DATA_TAG_STRING)]
         .next;
       newElement = this.firstElement();
     }
 
     this.adoElementDictionary[newElement.getAttribute(DATA_TAG_STRING)] = newAdo;
     newElement.innerHTML = newAdo.viewString;
-    valence ? frameElement.prepend(newElement) : frameElement.append(newElement);
+    valence ? frameElement.prepend(newElement) : frameElement.appendChild(newElement);
     return newElement.offsetHeight;
   }
 
   // API
 
-  addMember(ado: AtomicDateObject, append = true): void {
+  addMember(ado: AtomicDateObject, append = true) {
     if (this.looping) {
       throw new Error("can't modify looping set");
     }
