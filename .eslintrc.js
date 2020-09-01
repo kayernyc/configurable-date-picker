@@ -42,6 +42,7 @@ module.exports = {
     },
   },
   rules: {
+    "unicorn/prefer-node-remove": "off",
     "unicorn/filename-case": [
       "warn",
       {

@@ -4,7 +4,7 @@ import BuildConfiguration from './BuildConfiguration';
 
 import { DATA_TAG_STRING, addElement } from './VirtualDomConst';
 
-type ScrollHandlingFunction = (valence: boolean) => number;
+type ScrollHandlingFunction = (valence: boolean, frameElement?: HTMLElement) => number;
 
 interface AdoElDictionaryFactoryConfig {
   buffer: number;
@@ -20,7 +20,6 @@ export default class ContinuousScrollHandler {
   private frameElement: HTMLElement;
   private model: DatePickerFactory;
 
-  private continuous: boolean;
   private looping = false;
   private handler: ScrollHandlingFunction;
 
@@ -96,7 +95,7 @@ export default class ContinuousScrollHandler {
     continuous = true
   ) {
     if (model.looping) {
-      this.handler = this.loop.bind(this);
+      this.handler = this.loop.bind(this) as ScrollHandlingFunction;
       this.looping = model.looping;
       return;
     }
@@ -104,7 +103,7 @@ export default class ContinuousScrollHandler {
     // only hold a reference to the model if
     // it's needed
     this.model = model;
-    this.handler = this.continuousScroll.bind(this);
+    this.handler = this.continuousScroll.bind(this) as ScrollHandlingFunction;
   }
 
   private firstElement(frameElement = this.frameElement): HTMLElement {
@@ -150,14 +149,13 @@ export default class ContinuousScrollHandler {
         tailAdo.next.prev = tailAdo;
       }
       newAdo = tailAdo.next;
-      console.log(newAdo.next, 'next')
       newElement = this.firstElement();
     }
 
     this.adoElementDictionary[newElement.getAttribute(DATA_TAG_STRING)] = newAdo;
     newElement.innerHTML = newAdo.viewString;
 
-    valence ? frameElement.prepend(newElement) : frameElement.appendChild(newElement);
+    valence ? frameElement.prepend(newElement) : frameElement.append(newElement);
     return newElement.offsetHeight;
   }
 
@@ -184,13 +182,13 @@ export default class ContinuousScrollHandler {
 
     this.adoElementDictionary[newElement.getAttribute(DATA_TAG_STRING)] = newAdo;
     newElement.innerHTML = newAdo.viewString;
-    valence ? frameElement.prepend(newElement) : frameElement.appendChild(newElement);
+    valence ? frameElement.prepend(newElement) : frameElement.append(newElement);
     return newElement.offsetHeight;
   }
 
   // API
 
-  addMember(ado: AtomicDateObject, append = true) {
+  addMember(ado: AtomicDateObject, append = true): void {
     if (this.looping) {
       throw new Error("can't modify looping set");
     }
