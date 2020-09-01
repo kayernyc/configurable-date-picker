@@ -20,7 +20,7 @@ export default class ToggleSwitch {
     this.valuesArray = valuesArray;
   }
 
-  private select(event: MouseEvent) {
+  private select() {
     const context = (this as unknown) as ValueContext;
     const { index, value, proxy } = context;
     if (proxy) {
@@ -44,19 +44,23 @@ export default class ToggleSwitch {
     const radioLabel = document.createElement('label');
     radioLabel.htmlFor = value;
     radioLabel.innerHTML = value;
-    radioLabel.addEventListener('mousedown', this.select.bind({
+    radioLabel.addEventListener("click", this.select.bind({
       index,
       value,
       proxy: this.proxy,
-    }));
+    }), { passive: true });
+    radioLabel.addEventListener("touchstart", this.select.bind({
+      index,
+      value,
+      proxy: this.proxy,
+    }), { passive: true });
 
     return [radioButton, radioLabel];
   }
 
   append(parentElement: HTMLElement, startIndex = 0, formName?: string): void {
-    const frame = document.createElement('form');
-    const _formName = formName || RandomString(10);
-    frame.className = 'toggle-switch';
+    const frame = document.createElement("form");
+    frame.className = "toggle-switch";
     startIndex = Math.min(this.valuesArray.length, startIndex);
 
     for (const [index, value] of this.valuesArray.entries()) {
