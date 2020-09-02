@@ -48,8 +48,6 @@ export default class DatePickerFactory {
   dateTimeFormat: DateTimeFormat;
   private atomicDateObjectFunction: AtomicDateObjectCreator;
 
-  private configurationMap: Map<DateType, any> = new Map();
-
   constructor(config: ViewConfiguration) {
     const { dateType, maxDate, minDate, grouped } = config;
     this.dateType = dateType;
@@ -69,7 +67,7 @@ export default class DatePickerFactory {
     switch (dateType) {
       case DateType.CALENDAR:
         // each week, starting on sunday
-        format = { day: 'numeric'};
+        format = { day: 'numeric' };
         return [format, DatePickerCreatorFuncs.calendarHandlerCreator(format, undefined, this.grouped)];
       case DateType.MONTH:
         // each month in on 1st day of month
@@ -111,7 +109,7 @@ export default class DatePickerFactory {
   dateArray(quantity = 1): AtomicDateObject[] {
     quantity = Math.max(quantity, 1);
 
-    let returnValue = [];
+    let returnValue: AtomicDateObject[] = [];
 
     for (let i = 0; i < quantity; i++) {
       const newAdoArray = this.atomicDateObjectFunction(i);
