@@ -43,6 +43,7 @@ module.exports = {
   },
   rules: {
     "unicorn/prefer-node-remove": "off",
+    "unicorn/prefer-spread": "off",
     "unicorn/filename-case": [
       "warn",
       {
@@ -53,5 +54,9 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ["*.spec.ts", "webpack.config.js"],
+  ignorePatterns: [
+    "*.spec.ts",
+    "webpack.config.js",
+    "src/models/ViewConfigurationAdapter.ts",
+  ],
 };

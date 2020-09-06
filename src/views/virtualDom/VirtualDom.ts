@@ -42,6 +42,7 @@ export default class VirtualDom {
   }
 
   private wheelHander = (event: WheelEvent) => {
+    // unicorn-disable-line: unicorn/prefer-spread
     const childrenArray = Array.from(this.frameElement.children) as HTMLElement[];
     const top = Number.parseInt(this.frameElement.style.top || '0px', 10);
 
@@ -56,7 +57,7 @@ export default class VirtualDom {
       newTop += this.continuousScrollHandler.push();
     }
 
-    this.frameElement.style.top = newTop + 'px';
+    this.frameElement.style.top = `${newTop}px`;
   };
 
   private initializeListeners = (
