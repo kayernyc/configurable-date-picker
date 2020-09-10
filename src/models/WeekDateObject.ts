@@ -22,12 +22,12 @@ export default class WeekDateObject implements AtomicDateObject {
 
   private dateTypeFormat: DateTypeFormat
 
-  static createInnerHTML = (week: AtomicDateObject[], split = false, month?: number): string => {
+  static createInnerHTML = (week: AtomicDateObject[], splitWeek = false, month?: number): string => {
     let innerHTML = ''
 
     week.forEach((ado: AtomicDateObject, index: number) => {
       let newElement = `<div class="weekday" data-ado-index=${index}>${ado.viewString}</div>`;
-      if (split && month !== undefined) {
+      if (splitWeek && month !== undefined) {
         if (ado.date.getMonth() !== month) {
           newElement = '<div class="weekday"></div>';
         }
