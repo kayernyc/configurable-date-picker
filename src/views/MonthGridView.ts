@@ -5,6 +5,7 @@
 import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';
 import DatePickerGridView from './DatePickerGridView';
 import DatePickerView from './DatePickerViewInterface';
+import WeekDateObject from '../models/WeekDateObject';
 
 export default class MonthGridView extends DatePickerGridView
   implements DatePickerView {
@@ -12,14 +13,19 @@ export default class MonthGridView extends DatePickerGridView
 
   constructor(model: DatePickerFactory, continuousScroll = true) {
     super(model, (continuousScroll = true));
-
-    if (this.virtualDom) {
-      // DatePickerBaseView determines if a virtualDom is needed
-      this.buildDateView = this.virtualDom.buildView.bind(this.virtualDom)
-    }
   }
 
-  append (parentElement: HTMLElement): void {
+  updateView(array: WeekDateObject[], frameElement = this.frameElement) {
+    if (this.virtualDom) {
+      // DatePickerBaseView has determined that a virtualDom is needed
+      this.virtualDom.buildView(array, frameElement);
+      return;
+    }
+
+    this.buildDateView(array);
+  }
+
+  append(parentElement: HTMLElement): void {
     this.initFrameView();
     this.frameElement.className += ' date-picker-grid';
     parentElement.append(this.frameElement)

@@ -22,23 +22,21 @@ export default class WeekDateObject implements AtomicDateObject {
 
   private dateTypeFormat: DateTypeFormat
 
-  static createInnerHTML = (week: AtomicDateObject[], split = false, month?: number): string => {
-    return week.reduce((accumulator: string, ado: AtomicDateObject, index: number) => {
+  static createInnerHTML = (week: AtomicDateObject[], splitWeek = false, month?: number): string => {
+    let innerHTML = ''
+
+    week.forEach((ado: AtomicDateObject, index: number) => {
       let newElement = `<div class="weekday" data-ado-index=${index}>${ado.viewString}</div>`;
-      /**
-       * When the week is split (some days belong to one month and the rest belong to
-       * another month) only some of the days are filled.
-       * The ones that don't belong to the current month are empty.
-       */
-      if (split && month !== undefined) {
+      if (splitWeek && month !== undefined) {
         if (ado.date.getMonth() !== month) {
           newElement = '<div class="weekday"></div>';
         }
       }
 
-      accumulator += newElement;
-      return accumulator;
-    }, '');
+      innerHTML += newElement
+    })
+
+    return innerHTML
   }
 
   constructor(
@@ -58,14 +56,13 @@ export default class WeekDateObject implements AtomicDateObject {
     this.viewString = WeekDateObject.createInnerHTML(this.week, split);
   }
 
-  public splitWeek(latter = false) {
+  public splitWeek(latter = false): void {
     this.month = new Date(this.date.getTime())
     let month = this.month.getMonth()
 
     if (latter) {
       month = (month + 1) % 12;
     }
-
 
     this.viewString = WeekDateObject.createInnerHTML(this.week, this.split, month);
   }
@@ -80,7 +77,7 @@ export default class WeekDateObject implements AtomicDateObject {
           month = date;
         }
       }
-      return new AtomicDateObject(date, locale, { day: 'numeric' }, index);
+      return new AtomicDateObject(date, locale, options, index);
     })
 
     return [adoWeek, month, split];
