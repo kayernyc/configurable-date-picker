@@ -42,6 +42,7 @@ module.exports = {
     },
   },
   rules: {
+    "@typescript-eslint/restrict-template-expressions": "off",
     "unicorn/prefer-node-remove": "off",
     "unicorn/prefer-spread": "off",
     "unicorn/filename-case": [
