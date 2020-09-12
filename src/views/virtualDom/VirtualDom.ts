@@ -32,18 +32,12 @@ export default class VirtualDom {
 
   private continuousScrollHandler: ContinuousScrollHandler;
 
-  static initNormalScroll(config: BuildConfiguration): boolean {
-
-    return true
-  }
-
   constructor(continuousScrollHandler: ContinuousScrollHandler) {
     this.continuousScrollHandler = continuousScrollHandler;
   }
 
   private wheelHander = (event: WheelEvent) => {
     // unicorn-disable-line: unicorn/prefer-spread
-    const childrenArray = Array.from(this.frameElement.children) as HTMLElement[];
     const top = Number.parseInt(this.frameElement.style.top || '0px', 10);
 
     let { deltaY } = event;
@@ -99,7 +93,7 @@ export default class VirtualDom {
   };
 
   // PUBLIC API
-  get frameElement() {
+  get frameElement(): HTMLElement {
     if (this.vdFrameElement === undefined) {
       this.initVirtualDomFrameElement();
     }
@@ -128,7 +122,7 @@ export default class VirtualDom {
     containerElement?: HTMLElement,
     frameElement: HTMLElement = this.frameElement,
     className?: string
-  ) {
+  ): void {
     // clear out previous children
     // TODO: remove event listeners
     const { buffer, buildElementSetForVirtualDom } = this;
@@ -157,7 +151,7 @@ export default class VirtualDom {
     buildElementSetForVirtualDom(config);
   }
 
-  deallocate() {
+  deallocate(): void {
     // clean up all listeners
   }
 }
