@@ -13,7 +13,7 @@ export default class DateView extends DatePickerListView {
     super(model, continuousScroll);
   }
 
-  updateView(array: AtomicDateObject[], frameElement = this.frameElement) {
+  updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
       this.virtualDom.buildView(array, frameElement);
@@ -23,7 +23,7 @@ export default class DateView extends DatePickerListView {
     this.buildDateView(array);
   }
 
-  append (parentElement: HTMLElement): void {
+  append(parentElement: HTMLElement): void {
     this.initFrameView(true);
     this.frameElement.className = this.appendClassName('');
     parentElement.append(this.frameElement);
@@ -34,7 +34,7 @@ export default class DateView extends DatePickerListView {
   populateView(
     model: DatePickerFactory = this.model,
     frameElement: HTMLElement = this.frameElement
-  ) {
+  ): void {
     const array = model.dateArray(3);
     this.updateView(array, frameElement);
   }
