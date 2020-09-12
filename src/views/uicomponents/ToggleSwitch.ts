@@ -1,5 +1,3 @@
-import { RandomString } from '../../utils/RandomString';
-
 interface ToggleSwitchProxy {
   selectValue: (index: number, value: string) => boolean;
 }
