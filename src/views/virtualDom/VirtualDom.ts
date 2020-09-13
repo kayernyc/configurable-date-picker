@@ -1,8 +1,8 @@
 /**
- * Continuous means there is no fixed first or last element
+ * continuousScroll means there is no fixed first or last element
  * Looping means that members pop or shift but the array doesn't get extended.
  *
- * If continuous (not looping) virtual dom insures there are enough points
+ * If continuousScroll (not looping) virtual dom insures there are enough points
  * above and below.
  * If looping, checks that full set is enough for looping.
  */

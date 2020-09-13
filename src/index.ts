@@ -13,6 +13,6 @@ const model = new DatePickerModel()
 const container = document.createElement('div')
 document.body.append(container)
 
-const datePickerControl = new DatePickerControl(model, container, [{ dateType: 7, viewType: 0, grouped: true }])
+const datePickerControl = new DatePickerControl(model, container, [{ dateType: 6, viewType: 0, grouped: true, looping: false }])
 
 window.datePickerControl = datePickerControl;

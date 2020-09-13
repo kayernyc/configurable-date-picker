@@ -1,5 +1,5 @@
 /**
- * if continuous scroll is true or number of dates is more than 12 init virtual dom.
+ * if continuousScroll is true or number of dates is more than 12 init virtual dom.
  * if there is a virtual dom, then normal scrolling is disabled.
  */
 import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';

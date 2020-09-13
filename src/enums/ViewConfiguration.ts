@@ -6,7 +6,9 @@ interface ViewConfiguration {
   viewType: ViewType;
   maxDate?: Date;
   minDate?: Date;
+  continuousScroll?: boolean;
   looping?: boolean;
+  grouped?: boolean;
 }
 
 class ViewConfiguration {
@@ -14,6 +16,7 @@ class ViewConfiguration {
   viewType: ViewType;
   maxDate?: Date;
   minDate?: Date;
+  continuousScroll?: boolean;
   looping?: boolean;
   grouped?: boolean;
 

@@ -1,6 +1,7 @@
 /*
  These views only present dates, not navigation
  */
+
 import AtomicDateObject from '../models/AtomicDateObject';
 import ContinuousScrollHandler from './virtualDom/ContinuousScrollHandler';
 import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';
@@ -8,14 +9,16 @@ import VirtualDom from './virtualDom/VirtualDom';
 
 export default abstract class DatePickerBaseView {
   continuousScroll: boolean;
+  looping: boolean;
 
   protected frameElement: HTMLElement;
   protected frameElementClassName: string;
   protected model: DatePickerFactory;
   protected virtualDom: VirtualDom;
 
-  constructor(model: DatePickerFactory, continuousScroll = true) {
+  constructor(model: DatePickerFactory, continuousScroll = true, looping = false) {
     this.continuousScroll = continuousScroll;
+    this.looping = looping;
     this.model = model;
   }
 
@@ -36,7 +39,7 @@ export default abstract class DatePickerBaseView {
     if (continuousScroll) {
       // init ContinuousScrollHandler
       this.virtualDom = new VirtualDom(
-        new ContinuousScrollHandler(this.model, this.frameElement)
+        new ContinuousScrollHandler(this.model, this.looping)
       );
       this.frameElement.append(this.virtualDom.frameElement);
     }
