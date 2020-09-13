@@ -3,7 +3,6 @@ import DatePickerFactory from '../../models/datePickerFactory/DatePickerFactory'
 import BuildConfiguration from './BuildConfiguration';
 
 import { DATA_TAG_STRING, addElement } from './VirtualDomConst';
-import { LoaderOptionsPlugin } from 'webpack';
 
 type ScrollHandlingFunction = (valence: boolean, frameElement?: HTMLElement) => number;
 

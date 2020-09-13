@@ -36,7 +36,7 @@ export default class WeekView extends DatePickerBaseView
     });
   }
 
-  updateView(array: AtomicDateObject[], frameElement = this.frameElement) {
+  updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
       console.log('VIR')
@@ -50,7 +50,7 @@ export default class WeekView extends DatePickerBaseView
   populateView(
     model: DatePickerFactory = this.model,
     frameElement: HTMLElement = this.frameElement
-  ) {
+  ): void {
     const array = model.dateArray(7);
     if (this.continuousScroll) {
       array.unshift(this.model.getAtomicDateObjectByIndex(-1)[0])

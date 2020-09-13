@@ -135,9 +135,8 @@ export default class DatePickerControl {
   }
 
   // API
-  // tslint:disable-block: no-empty
   updateViews(views: string[]): void {
-    console.log(`deliberately empty`)
+    console.log(`deliberately empty ${views}`)
   }
 
   toggleView(desiredState: boolean): boolean {
