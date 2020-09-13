@@ -15,6 +15,6 @@ export default class DatePickerGridView extends DatePickerBaseView
     model: DatePickerFactory,
     frameElement: HTMLElement
   ): void {
-    throw new Error('Override populateView');
+    throw new Error(`Override populateView in DatePickerGridView model:${model} frameElement:${frameElement}`);
   }
 }
