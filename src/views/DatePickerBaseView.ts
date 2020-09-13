@@ -72,7 +72,7 @@ export default abstract class DatePickerBaseView {
   protected buildDateView(
     atomicDateObjectArray: AtomicDateObject[],
     frameElement: HTMLElement = this.frameElement
-  ) {
+  ): void {
     atomicDateObjectArray.forEach((date: AtomicDateObject) => {
       const element = document.createElement('div');
       element.innerHTML = date.viewString;
