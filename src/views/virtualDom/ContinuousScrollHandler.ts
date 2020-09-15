@@ -91,12 +91,10 @@ export default class ContinuousScrollHandler {
 
   constructor(
     model: DatePickerFactory,
-    frameElement: HTMLElement,
-    continuous = true
+    looping = false
   ) {
-    if (model.looping) {
+    if (looping) {
       this.handler = this.loop.bind(this) as ScrollHandlingFunction;
-      this.looping = model.looping;
       return;
     }
 
@@ -228,7 +226,7 @@ export default class ContinuousScrollHandler {
 
     this.frameElement = frameElement;
 
-    // for continuous, don't search the linked list
+    // for continuousScroll, don't search the linked list
     if (!this.looping) {
       this.firstAdo = this.dataArray[0];
       this.lastAdo = this.dataArray[this.dataArray.length - 1];

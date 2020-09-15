@@ -19,6 +19,22 @@ export const DatePickerCreatorFuncs = {
     };
   },
 
+  weekHandlerCreator: (
+    format: DateTimeFormat,
+    date: Date = new Date()
+  ): AtomicDateObjectCreator => {
+    const dateTimeFormat = format;
+    const seedDate = new Date(date.getTime());
+
+    return (index: number): AtomicDateObject[] => {
+      const newDate = new Date(seedDate.getTime());
+      const newCalendarDate = seedDate.getDate() + index;
+      newDate.setDate(newCalendarDate);
+
+      return [new AtomicDateObject(newDate, undefined, dateTimeFormat, index)];
+    };
+  },
+
   monthHandlerCreator: (
     format: DateTimeFormat,
     date: Date = new Date()

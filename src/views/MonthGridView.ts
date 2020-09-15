@@ -9,13 +9,12 @@ import WeekDateObject from '../models/WeekDateObject';
 
 export default class MonthGridView extends DatePickerGridView
   implements DatePickerView {
-  continuousScroll: boolean;
 
   constructor(model: DatePickerFactory, continuousScroll = true) {
-    super(model, (continuousScroll = true));
+    super(model, continuousScroll);
   }
 
-  updateView(array: WeekDateObject[], frameElement = this.frameElement) {
+  updateView(array: WeekDateObject[], frameElement = this.frameElement): void {
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
       this.virtualDom.buildView(array, frameElement);
@@ -35,7 +34,7 @@ export default class MonthGridView extends DatePickerGridView
   populateView(
     model: DatePickerFactory = this.model,
     frameElement: HTMLElement = this.frameElement
-  ) {
+  ): void {
     const array = model.dateArray(12);
 
     if (this.virtualDom) {

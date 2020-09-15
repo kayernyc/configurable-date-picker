@@ -4,18 +4,11 @@
  */
 
 /**
- * continuous is whether the view has a beginning or end
- * looping is whether the dates cycle. if looping is false
- * and the view is continuous, then dates are added to
- * the beginning or end
- */
-
-/**
  * Month is Jan, Feb, etc
  * Date is a series of days
  * Day is Monday, Tuesday, etc
  * Year is 1999, 2000, etc
- * Week is 7 days back from current date
+ * Week is 7 days forward from current date
  * Hour is Hour + AM/PM
  * Hour24 is military time
  * Calendar is year/month/date
@@ -28,19 +21,8 @@ import AtomicDateObject from '../AtomicDateObject';
 import { AtomicDateObjectCreator } from './DatePickerFactoryTypes';
 import { DatePickerCreatorFuncs } from './DatePickerCreatorFuncs';
 
-const dataTypeDefaultLooping = {
-  [DateType.CALENDAR]: false,
-  [DateType.DATE]: false,
-  [DateType.DAY]: true,
-  [DateType.HOUR]: true,
-  [DateType.HOUR24]: true,
-  [DateType.MONTH]: true,
-  [DateType.WEEK]: true,
-  [DateType.YEAR]: false
-}
 
 export default class DatePickerFactory {
-  looping: boolean;
   private dateType: DateType;
   private maxDate?: Date;
   private minDate?: Date;
@@ -54,7 +36,6 @@ export default class DatePickerFactory {
     this.maxDate = maxDate;
     this.minDate = minDate;
     this.grouped = grouped;
-    this.looping = config.looping || dataTypeDefaultLooping[dateType];
 
     [this.dateTimeFormat, this.atomicDateObjectFunction] = this.setFormats();
   }
@@ -102,6 +83,7 @@ export default class DatePickerFactory {
   };
 
   // API
+
   /**
    * @param quantity: number
    * @param quantity

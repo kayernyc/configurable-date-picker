@@ -11,6 +11,29 @@ import Hour24View from './views/Hour24View';
 import MonthGridView from './views/MonthGridView';
 import ViewType from './enums/ViewType';
 import CalendarView from './views/CalendarView';
+import WeekView from './views/WeekView';
+
+const dateTypeDefaultLooping = {
+  [DateType.CALENDAR]: false,
+  [DateType.DATE]: false,
+  [DateType.DAY]: true,
+  [DateType.HOUR]: true,
+  [DateType.HOUR24]: true,
+  [DateType.MONTH]: true,
+  [DateType.WEEK]: true,
+  [DateType.YEAR]: false
+}
+
+const dateTypeDefaultContinuous = {
+  [DateType.CALENDAR]: true,
+  [DateType.DATE]: true,
+  [DateType.DAY]: true,
+  [DateType.HOUR]: true,
+  [DateType.HOUR24]: true,
+  [DateType.MONTH]: false,
+  [DateType.WEEK]: false,
+  [DateType.YEAR]: true
+}
 
 export default class DatePickerControl {
   datePickerModel: DatePickerModel;
@@ -30,10 +53,17 @@ export default class DatePickerControl {
   ) {
     this.datePickerModel = model;
     this.viewContainer = viewContainer;
+
     // check that views are viewConfigurations
     const vcArray = this.vcAdapter.sanitizeConfigObj(viewConfigurations);
+
     this.views = this.initViewContainer(viewContainer, vcArray);
     this.toggleView(open);
+  }
+
+  private addDefaultsForLoopingAndContinuous = (config: ViewConfiguration): ViewConfiguration => {
+    const { dateType } = config;
+    return { looping: dateTypeDefaultLooping[dateType], continuousScroll: dateTypeDefaultContinuous[dateType], ...config }
   }
 
   // Container - do this with CSS later
@@ -45,15 +75,6 @@ export default class DatePickerControl {
     this.viewContainer.className = 'date-picker date-picker-close';
   }
 
-  // // generic enum type sanitizer - move to static utilities
-  // private sanitizeTypeArray = <T>(arr: string[], expectedEnum: T): any[] => {
-  //   // TODO all strings should be properly cased before they get here.
-  //   return arr
-  //     .map((caseString: string) => caseString.toUpperCase())
-  //     .filter((caseString: string) => caseString in expectedEnum)
-  //     .map((caseString: string) => expectedEnum[caseString]);
-  // };
-
   // Views - create factory injectable
   private initViewContainer(
     container: HTMLElement,
@@ -62,11 +83,24 @@ export default class DatePickerControl {
     container.className = 'date-picker';
 
     return viewConfigurations.map((viewConfiguration: ViewConfiguration) => {
-      const { dateType, viewType } = viewConfiguration;
+      viewConfiguration = this.addDefaultsForLoopingAndContinuous(viewConfiguration)
+      const { dateType, viewType, looping, continuousScroll } = viewConfiguration;
       const viewModel = new DatePickerFactory(viewConfiguration);
       let view: DatePickerBaseView;
 
       switch (true) {
+        case dateType === DateType.WEEK && viewType === ViewType.LIST:
+        case dateType === DateType.WEEK && viewType === ViewType.GRID:
+          if (looping) {
+            if (continuousScroll) {
+              console.warn('For week views, looping and continuous scrolling are incompatible. Week will fall back to non-continuous looping');
+            }
+            viewConfiguration.continuousScroll = false;
+          }
+
+          view = new WeekView(viewModel, viewConfiguration, (viewType === ViewType.GRID ? true : false));
+          break;
+
         case dateType === DateType.HOUR && viewType === ViewType.LIST:
         case dateType === DateType.HOUR && viewType === ViewType.GRID:
           view = new Hour12View(viewModel);
@@ -101,9 +135,8 @@ export default class DatePickerControl {
   }
 
   // API
-  // tslint:disable-block: no-empty
   updateViews(views: string[]): void {
-    console.log(`deliberately empty`)
+    console.log(`deliberately empty ${views}`)
   }
 
   toggleView(desiredState: boolean): boolean {
