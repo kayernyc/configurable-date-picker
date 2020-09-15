@@ -28,7 +28,8 @@ export const DatePickerCreatorFuncs = {
 
     return (index: number): AtomicDateObject[] => {
       const newDate = new Date(seedDate.getTime());
-      newDate.setDate(seedDate.getDate() + index);
+      const newCalendarDate = seedDate.getDate() + index;
+      newDate.setDate(newCalendarDate);
 
       return [new AtomicDateObject(newDate, undefined, dateTimeFormat, index)];
     };
