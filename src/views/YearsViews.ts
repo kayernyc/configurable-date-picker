@@ -19,7 +19,7 @@ export default class YearsView extends DatePickerBaseView implements DatePickerV
     // }
     super(model, continuousScroll);
 
-    grid ? this.frameElementClassName = 'date-picker-grid' : this.frameElementClassName = 'date-picker-list';
+    this.frameElementClassName = grid ? 'date-picker-grid' : 'date-picker-list';
   }
 
   updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {

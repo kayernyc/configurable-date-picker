@@ -22,7 +22,7 @@ export default class WeekView extends DatePickerBaseView
 
     super(model, continuousScroll, viewConfiguration.looping);
     this.continuousScroll = continuousScroll;
-    grid ? this.frameElementClassName = 'date-picker-grid' : this.frameElementClassName = 'date-picker-list';
+    this.frameElementClassName = grid ? 'date-picker-grid' : 'date-picker-list';
   }
 
   buildDateView(

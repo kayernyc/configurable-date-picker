@@ -101,13 +101,13 @@ export default class DatePickerControl {
             viewConfiguration.continuousScroll = false;
           }
 
-          view = new WeekView(viewModel, viewConfiguration, (viewType === ViewType.GRID ? true : false));
+          view = new WeekView(viewModel, viewConfiguration, (viewType === ViewType.GRID));
           break;
 
         case dateType === DateType.YEAR && viewType === ViewType.LIST:
         case dateType === DateType.YEAR && viewType === ViewType.GRID:
           // Looping is not possible with years until date ranges are implemented.
-          view = new YearsView(viewModel, viewConfiguration, (viewType === ViewType.GRID ? true : false));
+          view = new YearsView(viewModel, viewConfiguration, (viewType === ViewType.GRID));
           break;
 
         case dateType === DateType.HOUR && viewType === ViewType.LIST:
