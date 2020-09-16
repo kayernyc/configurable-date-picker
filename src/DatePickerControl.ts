@@ -4,13 +4,16 @@ import DatePickerBaseView from './views/DatePickerBaseView';
 import DatePickerListView from './views/DatePickerListView';
 import ViewConfiguration from './enums/ViewConfiguration';
 import ViewConfigurationAdapter from './models/ViewConfigurationAdapter';
+
+import CalendarView from './views/CalendarView';
 import DateView from './views/DateView';
 import DateType from './enums/DateType';
 import Hour12View from './views/Hour12View';
 import Hour24View from './views/Hour24View';
 import MonthGridView from './views/MonthGridView';
+import YearsView from './views/YearsViews';
+
 import ViewType from './enums/ViewType';
-import CalendarView from './views/CalendarView';
 import WeekView from './views/WeekView';
 
 const dateTypeDefaultLooping = {
@@ -98,7 +101,13 @@ export default class DatePickerControl {
             viewConfiguration.continuousScroll = false;
           }
 
-          view = new WeekView(viewModel, viewConfiguration, (viewType === ViewType.GRID ? true : false));
+          view = new WeekView(viewModel, viewConfiguration, (viewType === ViewType.GRID));
+          break;
+
+        case dateType === DateType.YEAR && viewType === ViewType.LIST:
+        case dateType === DateType.YEAR && viewType === ViewType.GRID:
+          // Looping is not possible with years until date ranges are implemented.
+          view = new YearsView(viewModel, viewConfiguration, (viewType === ViewType.GRID));
           break;
 
         case dateType === DateType.HOUR && viewType === ViewType.LIST:

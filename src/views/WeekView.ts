@@ -22,7 +22,7 @@ export default class WeekView extends DatePickerBaseView
 
     super(model, continuousScroll, viewConfiguration.looping);
     this.continuousScroll = continuousScroll;
-    grid ? this.frameElementClassName = 'date-picker-grid' : this.frameElementClassName = 'date-picker-list';
+    this.frameElementClassName = grid ? 'date-picker-grid' : 'date-picker-list';
   }
 
   buildDateView(
@@ -39,7 +39,6 @@ export default class WeekView extends DatePickerBaseView
   updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
-      console.log('VIR')
       this.virtualDom.buildView(array, frameElement);
       return;
     }
