@@ -39,7 +39,6 @@ export default class WeekView extends DatePickerBaseView
   updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
-      console.log('VIR')
       this.virtualDom.buildView(array, frameElement);
       return;
     }

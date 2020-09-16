@@ -61,10 +61,6 @@ export default class DatePickerFactory {
         // returns days of the week, starts always with 0
         format = { weekday: 'long' };
         return [format, DatePickerCreatorFuncs.dayHandlerCreator(format)];
-      case DateType.YEAR:
-        // returns year plus offset, year has to set to jan 1
-        format = { year: 'numeric' };
-        return [format, DatePickerCreatorFuncs.monthHandlerCreator(format)];
       case DateType.WEEK:
         // returns seed date - ...6
         format = { weekday: 'long', day: 'numeric', month: 'long' };
@@ -72,6 +68,10 @@ export default class DatePickerFactory {
           { weekday: 'long', day: 'numeric', month: 'long' },
           DatePickerCreatorFuncs.dateHandlerCreator(format),
         ];
+      case DateType.YEAR:
+        // returns year plus offset, year has to set to jan 1
+        format = { year: 'numeric' };
+        return [format, DatePickerCreatorFuncs.yearHandlerCreator(format)];
       case DateType.HOUR:
       case DateType.HOUR24:
         format = { hour: 'numeric' };
