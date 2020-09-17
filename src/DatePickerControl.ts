@@ -104,6 +104,18 @@ export default class DatePickerControl {
           view = new WeekView(viewModel, viewConfiguration, (viewType === ViewType.GRID));
           break;
 
+        case dateType === DateType.DAY && viewType === ViewType.LIST:
+        case dateType === DateType.DAY && viewType === ViewType.GRID:
+          if (looping) {
+            if (continuousScroll) {
+              console.warn('For week views, looping and continuous scrolling are incompatible. Week will fall back to non-continuous looping');
+            }
+            viewConfiguration.continuousScroll = false;
+          }
+
+          view = new WeekView(viewModel, viewConfiguration, (viewType === ViewType.GRID));
+          break;
+
         case dateType === DateType.YEAR && viewType === ViewType.LIST:
         case dateType === DateType.YEAR && viewType === ViewType.GRID:
           // Looping is not possible with years until date ranges are implemented.
