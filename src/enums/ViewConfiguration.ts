@@ -2,23 +2,25 @@ import DateType from './DateType';
 import ViewType from './ViewType';
 
 interface ViewConfiguration {
+  continuousScroll?: boolean;
   dateType: DateType;
-  viewType: ViewType;
+  grouped?: boolean;
+  looping?: boolean;
   maxDate?: Date;
   minDate?: Date;
-  continuousScroll?: boolean;
-  looping?: boolean;
-  grouped?: boolean;
+  seedDate?: Date;
+  viewType: ViewType;
 }
 
 class ViewConfiguration {
+  continuousScroll?: boolean;
   dateType: DateType;
-  viewType: ViewType;
+  grouped?: boolean;
+  looping?: boolean;
   maxDate?: Date;
   minDate?: Date;
-  continuousScroll?: boolean;
-  looping?: boolean;
-  grouped?: boolean;
+  seedDate?: Date;
+  viewType: ViewType;
 
   constructor(config: ViewConfiguration) {
     Object.assign(this, config)

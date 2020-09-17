@@ -10,6 +10,8 @@ const seedViewConfiguration: ViewConfiguration = {
 export default class ViewConfigurationAdapter {
   configDefaults: ViewConfiguration;
 
+  static sanitizedDate = (dateNumber: number): Date => new Date(dateNumber);
+
   constructor(configDefaults: ViewConfiguration = seedViewConfiguration) {
     this.configDefaults = configDefaults;
   }
@@ -53,6 +55,7 @@ export default class ViewConfigurationAdapter {
 
   // TODO: Abstract and move to utilities
 
+
   matchObjectToViewConfiguration(object: ViewConfiguration): boolean {
     const objectKeys = Object.keys(object);
     const vCKeys = ['dateType', 'viewType'];
@@ -65,12 +68,17 @@ export default class ViewConfigurationAdapter {
       return false;
     }
 
+    if (object.seedDate && typeof object.seedDate === 'number') {
+      const seedNumber: number = object.seedDate as number;
+      object.seedDate = ViewConfigurationAdapter.sanitizedDate(seedNumber)
+    }
+
     if (
       // tslint:disable: no-string-literal
       object.dateType !== undefined &&
       [0, 1, 2, 3, 4, 5, 6, 7].includes(object.dateType) &&
       object.viewType !== undefined &&
-      [0, 1, 2, 3, 4, 5, 6, 7].includes(object.viewType)
+      [0, 1].includes(object.viewType)
       // tslint:enable: no-string-literal
     ) {
       return true;
@@ -83,7 +91,6 @@ export default class ViewConfigurationAdapter {
     configDate?: DateType,
     configView?: ViewType,
     defaultDateType: DateType = this.configDefaults.dateType,
-    // tslint:disable-next-line: no-string-literal
     defaultViewType: ViewType = this.configDefaults.viewType
   ): ViewConfiguration {
     return new ViewConfiguration({
