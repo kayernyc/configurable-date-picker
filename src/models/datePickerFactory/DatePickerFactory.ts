@@ -26,22 +26,26 @@ export default class DatePickerFactory {
   private dateType: DateType;
   private maxDate?: Date;
   private minDate?: Date;
+  private seedDate: Date;
   private grouped?: boolean;
   dateTimeFormat: DateTimeFormat;
   private atomicDateObjectFunction: AtomicDateObjectCreator;
 
   constructor(config: ViewConfiguration) {
-    const { dateType, maxDate, minDate, grouped } = config;
+    const { dateType, maxDate, minDate, grouped, seedDate } = config;
     this.dateType = dateType;
     this.maxDate = maxDate;
     this.minDate = minDate;
     this.grouped = grouped;
+    this.seedDate = seedDate || new Date();
 
     [this.dateTimeFormat, this.atomicDateObjectFunction] = this.setFormats();
   }
 
   private setFormats = (
-    dateType: DateType = this.dateType
+    dateType: DateType = this.dateType,
+    seedDate: Date = this.seedDate,
+    grouped = false,
   ): [DateTimeFormat, AtomicDateObjectCreator] => {
     let format: DateTimeFormat;
 
@@ -49,36 +53,36 @@ export default class DatePickerFactory {
       case DateType.CALENDAR:
         // each week, starting on sunday
         format = { day: 'numeric' };
-        return [format, DatePickerCreatorFuncs.calendarHandlerCreator(format, undefined, this.grouped)];
+        return [format, DatePickerCreatorFuncs.calendarHandlerCreator(format, seedDate, grouped)];
       case DateType.MONTH:
         // each month in on 1st day of month
         format = { month: 'long' };
-        return [format, DatePickerCreatorFuncs.monthHandlerCreator(format)];
+        return [format, DatePickerCreatorFuncs.monthHandlerCreator(format, seedDate)];
       case DateType.DATE:
+
         format = { day: 'numeric', month: 'long', year: 'numeric' };
-        return [format, DatePickerCreatorFuncs.dateHandlerCreator(format)];
+        return [format, DatePickerCreatorFuncs.dateHandlerCreator(format, seedDate)];
       case DateType.DAY:
         // returns days of the week, starts always with 0
         format = { weekday: 'long' };
-        return [format, DatePickerCreatorFuncs.dayHandlerCreator(format)];
+        return [format, DatePickerCreatorFuncs.dayHandlerCreator(format, seedDate)];
       case DateType.WEEK:
-        // returns seed date - ...6
         format = { weekday: 'long', day: 'numeric', month: 'long' };
         return [
           { weekday: 'long', day: 'numeric', month: 'long' },
-          DatePickerCreatorFuncs.dateHandlerCreator(format),
+          DatePickerCreatorFuncs.dateHandlerCreator(format, seedDate),
         ];
       case DateType.YEAR:
         // returns year plus offset, year has to set to jan 1
         format = { year: 'numeric' };
-        return [format, DatePickerCreatorFuncs.yearHandlerCreator(format)];
+        return [format, DatePickerCreatorFuncs.yearHandlerCreator(format, seedDate)];
       case DateType.HOUR:
       case DateType.HOUR24:
         format = { hour: 'numeric' };
-        return [format, DatePickerCreatorFuncs.hourHandlerCreator(format)];
+        return [format, DatePickerCreatorFuncs.hourHandlerCreator(format, seedDate)];
       default:
         format = { day: 'numeric', month: 'numeric', year: 'numeric' };
-        return [format, DatePickerCreatorFuncs.dateHandlerCreator(format)];
+        return [format, DatePickerCreatorFuncs.dateHandlerCreator(format, seedDate)];
     }
   };
 
