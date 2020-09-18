@@ -20,6 +20,7 @@ export default abstract class DatePickerBaseView {
     this.continuousScroll = continuousScroll;
     this.looping = looping;
     this.model = model;
+
   }
 
   protected appendClassName(className: string): string {

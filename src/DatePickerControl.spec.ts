@@ -9,6 +9,7 @@ import ContinuousScrollHandler from './views/virtualDom/ContinuousScrollHandler'
 jest.mock('./views/virtualDom/ContinuousScrollHandler');
 
 const seedViewConfiguration: ViewConfiguration = {
+  initialCount: 1,
   dateType: DateType.CALENDAR,
   viewType: ViewType.LIST,
 };

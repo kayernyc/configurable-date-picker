@@ -94,6 +94,7 @@ export default class ContinuousScrollHandler {
     looping = false
   ) {
     if (looping) {
+      this.looping = looping;
       this.handler = this.loop.bind(this) as ScrollHandlingFunction;
       return;
     }
@@ -158,9 +159,9 @@ export default class ContinuousScrollHandler {
   }
 
   private loop(valence: boolean, frameElement = this.frameElement): number {
+    let newAdo: AtomicDateObject;
     let currentElement: HTMLElement;
     let newElement: HTMLElement;
-    let newAdo: AtomicDateObject;
 
     if (valence) {
       currentElement = frameElement.children[0] as HTMLElement;
@@ -173,12 +174,12 @@ export default class ContinuousScrollHandler {
         frameElement.children.length - 1
       ] as HTMLElement;
       // first el goes to end
+      newElement = this.firstElement();
       newAdo = this.adoElementDictionary[currentElement.getAttribute(DATA_TAG_STRING)]
         .next;
-      newElement = this.firstElement();
     }
-
     this.adoElementDictionary[newElement.getAttribute(DATA_TAG_STRING)] = newAdo;
+
     newElement.innerHTML = newAdo.viewString;
     valence ? frameElement.prepend(newElement) : frameElement.append(newElement);
     return newElement.offsetHeight;

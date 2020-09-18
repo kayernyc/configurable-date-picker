@@ -8,7 +8,6 @@ export const DatePickerCreatorFuncs = {
     format: DateTimeFormat,
     date: Date = new Date()
   ): AtomicDateObjectCreator => {
-    console.log(`DATE Handler ${date.getFullYear()}`)
     const dateTimeFormat = format;
     const seedDate = new Date(date.getTime());
 

@@ -6,11 +6,16 @@ import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';
 import DatePickerGridView from './DatePickerGridView';
 import DatePickerView from './DatePickerViewInterface';
 import WeekDateObject from '../models/WeekDateObject';
+import ViewConfiguration from '../enums/ViewConfiguration';
 
 export default class MonthGridView extends DatePickerGridView
   implements DatePickerView {
 
-  constructor(model: DatePickerFactory, continuousScroll = true) {
+  constructor(
+    model: DatePickerFactory,
+    viewConfiguration: ViewConfiguration
+  ) {
+    const { continuousScroll } = viewConfiguration
     super(model, continuousScroll);
   }
 
@@ -24,12 +29,7 @@ export default class MonthGridView extends DatePickerGridView
     this.buildDateView(array);
   }
 
-  append(parentElement: HTMLElement): void {
-    this.initFrameView();
-    this.frameElement.className += ' date-picker-grid';
-    parentElement.append(this.frameElement)
-    this.populateView()
-  }
+
 
   populateView(
     model: DatePickerFactory = this.model,

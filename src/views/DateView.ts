@@ -5,12 +5,15 @@
 import AtomicDateObject from '../models/AtomicDateObject';
 import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';
 import DatePickerListView from './DatePickerListView';
+import ViewConfiguration from '../enums/ViewConfiguration';
 
 export default class DateView extends DatePickerListView {
   continuousScroll: boolean;
 
-  constructor(model: DatePickerFactory, continuousScroll = true) {
+  constructor(model: DatePickerFactory, viewConfiguration: ViewConfiguration) {
+    const { continuousScroll } = viewConfiguration
     super(model, continuousScroll);
+    this.frameElementClassName = 'date-picker-list';
   }
 
   updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
