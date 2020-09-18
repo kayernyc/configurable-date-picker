@@ -17,7 +17,7 @@ const dateTypeDefaults: Record<DateType, [boolean, boolean, number]> = { // loop
   [DateType.DATE]: [false, true, 3],
   [DateType.DAY]: [true, true, 3],
   [DateType.HOUR]: [true, true, 12],
-  [DateType.HOUR24]: [true, false, 12],
+  [DateType.HOUR24]: [true, true, 12],
   [DateType.MONTH]: [true, false, 12],
   [DateType.WEEK]: [true, false, 7],
   [DateType.YEAR]: [false, true, 3]
@@ -81,7 +81,7 @@ export default class DatePickerControl {
 
       switch (true) {
         case dateType === DateType.CALENDAR:
-          viewConfiguration.initialCount = 3;
+          console.log(`view configuration ${viewConfiguration.grouped}`)
           view = new CalendarView(viewModel, viewConfiguration);
           break;
 
@@ -90,7 +90,6 @@ export default class DatePickerControl {
             if (continuousScroll) {
               console.warn('For day of week views, looping and continuous scrolling are incompatible. Day will fall back to non-continuous looping');
             }
-            viewConfiguration.initialCount = 3
             viewConfiguration.continuousScroll = false;
           }
 
@@ -106,7 +105,6 @@ export default class DatePickerControl {
             if (continuousScroll) {
               console.warn('For week views, looping and continuous scrolling are incompatible. Week will fall back to non-continuous looping');
             }
-            viewConfiguration.initialCount = 7;
             viewConfiguration.continuousScroll = false;
           }
 
@@ -115,7 +113,6 @@ export default class DatePickerControl {
 
         case dateType === DateType.YEAR:
           // Looping is not possible with years until date ranges are implemented.
-          viewConfiguration.initialCount = 12;
           view = new StandardView(viewModel, viewConfiguration, grid);
           break;
 
