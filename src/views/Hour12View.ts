@@ -3,22 +3,26 @@
  */
 
 import AtomicDateObject from '../models/AtomicDateObject';
+import DatePickerBaseView from './DatePickerBaseView';
 import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';
-import DatePickerListView from './DatePickerListView';
 import ToggleView, { ToggleSwitchProxy } from './uicomponents/ToggleSwitch';
+import ViewConfiguration from '../enums/ViewConfiguration';
 
-export default class Hour12View extends DatePickerListView
+export default class Hour12View extends DatePickerBaseView
   implements ToggleSwitchProxy {
   continuousScroll: boolean;
-  currentSet = 0;
+  currentSet: number;
   amArr: AtomicDateObject[];
   pmArr: AtomicDateObject[];
 
-  amPmToggleSwitch: ToggleView = new ToggleView(['AM', 'PM']);
+  amPmToggleSwitch: ToggleView;
 
-  constructor(model: DatePickerFactory, continuousScroll = true) {
-    super(model, continuousScroll);
+  constructor(model: DatePickerFactory, viewConfiguration: ViewConfiguration) {
+    const { continuousScroll, looping } = viewConfiguration
+    super(model, continuousScroll, looping);
+    this.amPmToggleSwitch = new ToggleView(['AM', 'PM']);
     this.amPmToggleSwitch.proxy = this;
+    this.frameElementClassName = 'date-picker-list';
   }
 
   selectValue(index: number): boolean {

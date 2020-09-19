@@ -8,7 +8,6 @@ export const DatePickerCreatorFuncs = {
     format: DateTimeFormat,
     date: Date = new Date()
   ): AtomicDateObjectCreator => {
-    console.log(`DATE Handler ${date.getFullYear()}`)
     const dateTimeFormat = format;
     const seedDate = new Date(date.getTime());
 
@@ -63,6 +62,7 @@ export const DatePickerCreatorFuncs = {
     // sets series to 0/sunday
     const dateTimeFormat = format;
     const seedDate = new Date(date.getTime());
+    console.log(`calendarHandlerCreator ${grouped}`)
 
     if (seedDate.getUTCDay() !== 0) {
       const delta = seedDate.getDate() - seedDate.getDay();

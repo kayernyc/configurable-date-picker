@@ -33,6 +33,7 @@ export default class DatePickerFactory {
 
   constructor(config: ViewConfiguration) {
     const { dateType, maxDate, minDate, grouped, seedDate } = config;
+
     this.dateType = dateType;
     this.maxDate = maxDate;
     this.minDate = minDate;
@@ -45,7 +46,7 @@ export default class DatePickerFactory {
   private setFormats = (
     dateType: DateType = this.dateType,
     seedDate: Date = this.seedDate,
-    grouped = false,
+    grouped = this.grouped,
   ): [DateTimeFormat, AtomicDateObjectCreator] => {
     let format: DateTimeFormat;
 

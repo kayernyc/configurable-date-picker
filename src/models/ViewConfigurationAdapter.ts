@@ -3,6 +3,7 @@ import ViewType from '../enums/ViewType';
 import DateType from '../enums/DateType';
 
 const seedViewConfiguration: ViewConfiguration = {
+  initialCount: 1,
   dateType: DateType.CALENDAR,
   viewType: ViewType.LIST,
 };
