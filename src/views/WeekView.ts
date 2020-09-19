@@ -21,17 +21,6 @@ export default class WeekView extends DatePickerBaseView
     this.frameElementClassName = grid ? 'date-picker-grid' : 'date-picker-list';
   }
 
-  // buildDateView(
-  //   atomicDateObjectArray: AtomicDateObject[],
-  //   frameElement: HTMLElement = this.frameElement
-  // ): void {
-  //   atomicDateObjectArray.forEach((date: AtomicDateObject) => {
-  //     const element = document.createElement('div');
-  //     element.innerHTML = date.viewString;
-  //     frameElement.append(element);
-  //   });
-  // }
-
   updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
@@ -55,10 +44,10 @@ export default class WeekView extends DatePickerBaseView
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
       this.virtualDom.buildView(array, frameElement);
-      return
+      return;
     }
 
-    this.adoArray = array
+    this.adoArray = array;
     this.buildDateView(array);
   }
 }

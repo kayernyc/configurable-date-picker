@@ -11,7 +11,7 @@ import WeekDateObject from '../models/WeekDateObject';
 import { addElement, DATA_TAG_STRING, DateElementHandlerFunction } from './virtualDom/VirtualDomConst';
 
 export default abstract class DatePickerBaseView {
-  protected adoArray?: AtomicDateObject[] | WeekDateObject[]
+  protected adoArray?: AtomicDateObject[] | WeekDateObject[];
   protected continuousScroll: boolean;
   protected frameElement: HTMLElement;
   protected frameElementClassName: string;

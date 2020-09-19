@@ -122,7 +122,7 @@ export default class ContinuousScrollHandler {
     } else {
       selectedDate = ado.date;
     }
-    console.log('continuous scroll', selectedDate)
+    console.log('continuous scroll', selectedDate);
     return true
   }
 

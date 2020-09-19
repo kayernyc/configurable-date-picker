@@ -81,7 +81,7 @@ export default class DatePickerControl {
 
       switch (true) {
         case dateType === DateType.CALENDAR:
-          view = new CalendarView(viewModel, viewConfiguration);
+          view = new CalendarView(viewModel);
           break;
 
         case dateType === DateType.DAY:

@@ -30,7 +30,7 @@ export default class StandardView extends DatePickerBaseView {
       this.virtualDom.buildView(array, frameElement);
       return;
     }
-    this.adoArray = array
+    this.adoArray = array;
     this.buildDateView(array);
   }
 }
