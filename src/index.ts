@@ -13,6 +13,5 @@ const model = new DatePickerModel()
 const container = document.createElement('div')
 document.body.append(container)
 
-const datePickerControl = new DatePickerControl(model, container, [{ dateType: 0, viewType: 1, grouped: true, looping: true, seedDate: new Date('December 17, 1995 03:24:00') }])
-
+const datePickerControl = new DatePickerControl(model, container, [{ dateType: 7, viewType: 0, grouped: true, continuousScroll: false, looping: false, seedDate: new Date('December 17, 1995 03:24:00') }])
 window.datePickerControl = datePickerControl;

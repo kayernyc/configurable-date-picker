@@ -12,8 +12,9 @@ export default class CalendarView extends DatePickerBaseView {
   continuousScroll: boolean;
 
   constructor(model: DatePickerFactory, viewConfiguration: ViewConfiguration) {
+    // when min/max is implemented, looping will be possible
     const { continuousScroll } = viewConfiguration
-    super(model, continuousScroll);
+    super(model, true, false);
     this.frameElementClassName = 'date-picker-list';
   }
 

@@ -17,10 +17,10 @@ const dateTypeDefaults: Record<DateType, [boolean, boolean, number]> = { // loop
   [DateType.DATE]: [false, true, 3],
   [DateType.DAY]: [true, true, 3],
   [DateType.HOUR]: [true, true, 12],
-  [DateType.HOUR24]: [true, true, 12],
+  [DateType.HOUR24]: [true, true, 24],
   [DateType.MONTH]: [true, false, 12],
   [DateType.WEEK]: [true, false, 7],
-  [DateType.YEAR]: [false, true, 3]
+  [DateType.YEAR]: [false, true, 10]
 }
 
 export default class DatePickerControl {
@@ -81,7 +81,6 @@ export default class DatePickerControl {
 
       switch (true) {
         case dateType === DateType.CALENDAR:
-          console.log(`view configuration ${viewConfiguration.grouped}`)
           view = new CalendarView(viewModel, viewConfiguration);
           break;
 

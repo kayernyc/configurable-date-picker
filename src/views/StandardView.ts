@@ -11,9 +11,9 @@ export default class StandardView extends DatePickerBaseView {
     viewConfiguration: ViewConfiguration,
     grid = false
   ) {
-    const { continuousScroll, initialCount } = viewConfiguration;
+    const { continuousScroll, initialCount, looping } = viewConfiguration;
 
-    super(model, continuousScroll);
+    super(model, continuousScroll, looping);
 
     this.initialCount = initialCount;
     this.frameElementClassName = grid ? 'date-picker-grid' : 'date-picker-list';
@@ -30,7 +30,7 @@ export default class StandardView extends DatePickerBaseView {
       this.virtualDom.buildView(array, frameElement);
       return;
     }
-
+    this.adoArray = array
     this.buildDateView(array);
   }
 }
