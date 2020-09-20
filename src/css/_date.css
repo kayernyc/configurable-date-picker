@@ -1,0 +1,8 @@
+.ado-date-view {
+  background-color: bisque;
+  padding: 1em;
+}
+
+.ado-date-view * {
+  pointer-events: none;
+}

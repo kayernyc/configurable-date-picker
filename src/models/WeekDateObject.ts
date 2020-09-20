@@ -7,6 +7,7 @@
 
 import AtomicDateObject from './AtomicDateObject';
 import DateTypeFormat from '../enums/DateTimeFormat';
+import { DATA_ADO_STRING } from '../views/virtualDom/VirtualDomConst';
 
 export default class WeekDateObject implements AtomicDateObject {
   date: Date;
@@ -26,7 +27,7 @@ export default class WeekDateObject implements AtomicDateObject {
     let innerHTML = ''
 
     week.forEach((ado: AtomicDateObject, index: number) => {
-      let newElement = `<div class="weekday" data-ado-index=${index}>${ado.viewString}</div>`;
+      let newElement = `<div class="weekday ado-date-view" ${DATA_ADO_STRING}=${index}>${ado.viewString}</div>`;
       if (splitWeek && month !== undefined) {
         if (ado.date.getMonth() !== month) {
           newElement = '<div class="weekday"></div>';

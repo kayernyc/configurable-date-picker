@@ -6,3 +6,8 @@
   overflow: hidden;
   width: 200px;
 }
+
+.date-picker-grid,
+.date-picker-list {
+  overflow: scroll;
+}

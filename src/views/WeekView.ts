@@ -14,26 +14,11 @@ export default class WeekView extends DatePickerBaseView
   continuousScroll: boolean;
 
   constructor(model: DatePickerFactory, viewConfiguration: ViewConfiguration, grid: boolean) {
-    let continuousScroll = true;
+    const { continuousScroll, looping } = viewConfiguration;
 
-    if (viewConfiguration.looping === true || viewConfiguration.continuousScroll === undefined) {
-      continuousScroll = false
-    }
-
-    super(model, continuousScroll, viewConfiguration.looping);
+    super(model, continuousScroll, looping);
     this.continuousScroll = continuousScroll;
     this.frameElementClassName = grid ? 'date-picker-grid' : 'date-picker-list';
-  }
-
-  buildDateView(
-    atomicDateObjectArray: AtomicDateObject[],
-    frameElement: HTMLElement = this.frameElement
-  ): void {
-    atomicDateObjectArray.forEach((date: AtomicDateObject) => {
-      const element = document.createElement('div');
-      element.innerHTML = date.viewString;
-      frameElement.append(element);
-    });
   }
 
   updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
@@ -59,9 +44,10 @@ export default class WeekView extends DatePickerBaseView
     if (this.virtualDom) {
       // DatePickerBaseView has determined that a virtualDom is needed
       this.virtualDom.buildView(array, frameElement);
-      return
+      return;
     }
 
+    this.adoArray = array;
     this.buildDateView(array);
   }
 }

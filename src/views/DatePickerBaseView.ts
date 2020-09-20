@@ -6,13 +6,16 @@ import AtomicDateObject from '../models/AtomicDateObject';
 import ContinuousScrollHandler from './virtualDom/ContinuousScrollHandler';
 import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';
 import VirtualDom from './virtualDom/VirtualDom';
+import WeekDateObject from '../models/WeekDateObject';
+
+import { addElement, DATA_TAG_STRING, DateElementHandlerFunction } from './virtualDom/VirtualDomConst';
 
 export default abstract class DatePickerBaseView {
-  continuousScroll: boolean;
-  looping: boolean;
-
+  protected adoArray?: AtomicDateObject[] | WeekDateObject[];
+  protected continuousScroll: boolean;
   protected frameElement: HTMLElement;
   protected frameElementClassName: string;
+  protected looping: boolean;
   protected model: DatePickerFactory;
   protected virtualDom: VirtualDom;
 
@@ -20,7 +23,6 @@ export default abstract class DatePickerBaseView {
     this.continuousScroll = continuousScroll;
     this.looping = looping;
     this.model = model;
-
   }
 
   protected appendClassName(className: string): string {
@@ -37,7 +39,7 @@ export default abstract class DatePickerBaseView {
   protected initFrameView(continuousScroll = this.continuousScroll, looping = this.looping): HTMLElement {
     this.frameElement = document.createElement('div');
 
-    if (continuousScroll) {
+    if (continuousScroll || looping) {
       // init ContinuousScrollHandler
       this.virtualDom = new VirtualDom(
         new ContinuousScrollHandler(this.model, looping)
@@ -63,6 +65,16 @@ export default abstract class DatePickerBaseView {
     frameElement: HTMLElement
   ): void;
 
+  protected dateElementHandlerFunction: DateElementHandlerFunction = (event: MouseEvent) => {
+    if (this.adoArray) {
+      const element: HTMLElement = event.target as HTMLElement;
+      const dataTag = element.getAttribute(DATA_TAG_STRING);
+      const ado = this.adoArray[dataTag] as AtomicDateObject
+      console.log(ado.date)
+    }
+    return true;
+  }
+
   /**
    * @param arr AtomicDateObject[]
    * @param atomicDateObjectArr
@@ -77,9 +89,9 @@ export default abstract class DatePickerBaseView {
     atomicDateObjectArray: AtomicDateObject[],
     frameElement: HTMLElement = this.frameElement
   ): void {
-    atomicDateObjectArray.forEach((date: AtomicDateObject) => {
-      const element = document.createElement('div');
-      element.innerHTML = date.viewString;
+    atomicDateObjectArray.forEach((ado: AtomicDateObject, index: number) => {
+      const element = addElement(ado, index, this.dateElementHandlerFunction);
+
       frameElement.append(element);
     });
   }

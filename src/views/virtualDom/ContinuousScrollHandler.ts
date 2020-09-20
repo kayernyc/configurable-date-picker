@@ -1,14 +1,16 @@
 import AtomicDateObject from '../../models/AtomicDateObject';
-import DatePickerFactory from '../../models/datePickerFactory/DatePickerFactory';
 import BuildConfiguration from './BuildConfiguration';
+import DatePickerFactory from '../../models/datePickerFactory/DatePickerFactory';
+import WeekDateObject from '../../models/WeekDateObject';
 
-import { DATA_TAG_STRING, addElement } from './VirtualDomConst';
+import { DATA_ADO_STRING, DATA_TAG_STRING, addElement, DateElementHandlerFunction } from './VirtualDomConst';
 
 type ScrollHandlingFunction = (valence: boolean, frameElement?: HTMLElement) => number;
 
 interface AdoElDictionaryFactoryConfig {
   buffer: number;
   dataArray: AtomicDateObject[];
+  dateElementHandlerFunction: DateElementHandlerFunction;
   frameElement: HTMLElement;
   looping: boolean;
   model: DatePickerFactory;
@@ -61,7 +63,7 @@ export default class ContinuousScrollHandler {
     config: AdoElDictionaryFactoryConfig
   ): { [id: string]: AtomicDateObject } {
     const adoElementDictionary: { [id: string]: AtomicDateObject } = {};
-    const { dataArray, frameElement, looping, model, targetHeight } = config;
+    const { dataArray, dateElementHandlerFunction, frameElement, looping, model, targetHeight } = config;
 
     let index = 0;
     while (frameElement.offsetHeight < targetHeight) {
@@ -78,7 +80,7 @@ export default class ContinuousScrollHandler {
       }
 
       const ado = dataArray[index];
-      const element = addElement(ado, index);
+      const element = addElement(ado, index, dateElementHandlerFunction);
       const key = element.getAttribute(DATA_TAG_STRING);
       adoElementDictionary[key] = ado;
 
@@ -103,6 +105,25 @@ export default class ContinuousScrollHandler {
     // it's needed
     this.model = model;
     this.handler = this.continuousScroll.bind(this) as ScrollHandlingFunction;
+  }
+
+  private dateElementHander: DateElementHandlerFunction = (event: MouseEvent) => {
+    let selectedDate: Date;
+
+    const element: HTMLElement = event.currentTarget as HTMLElement;
+    const dataTag = element.getAttribute(DATA_TAG_STRING);
+    const ado: AtomicDateObject | WeekDateObject = this.adoElementDictionary[dataTag];
+
+    if (ado instanceof WeekDateObject) {
+      const dateElement = event.target as HTMLElement;
+      const index = dateElement.getAttribute(DATA_ADO_STRING);
+      const dateAdo = ado.week[index] as AtomicDateObject;
+      selectedDate = dateAdo.date;
+    } else {
+      selectedDate = ado.date;
+    }
+    console.log('continuous scroll', selectedDate);
+    return true
   }
 
   private firstElement(frameElement = this.frameElement): HTMLElement {
@@ -218,6 +239,7 @@ export default class ContinuousScrollHandler {
       {
         buffer,
         dataArray: this.dataArray,
+        dateElementHandlerFunction: this.dateElementHander,
         frameElement,
         looping: this.looping,
         targetHeight,

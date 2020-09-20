@@ -4,6 +4,7 @@
 @import "./_toggleSwitch.css";
 @import "./_virtualDOM.css";
 @import "./_calendar.css";
+@import "./_date.css";
 
 .date-picker {
   overscroll-behavior: none;
