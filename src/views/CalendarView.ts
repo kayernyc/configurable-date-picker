@@ -7,14 +7,17 @@ import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';
 import WeekDateObject from '../models/WeekDateObject';
 import ViewConfiguration from '../enums/ViewConfiguration';
 import DatePickerBaseView from './DatePickerBaseView';
+import ViewHeader from './uicomponents/ViewHeader';
 
 export default class CalendarView extends DatePickerBaseView {
   continuousScroll: boolean;
+  viewHeader: ViewHeader;
 
-  constructor(model: DatePickerFactory) {
+  constructor(model: DatePickerFactory, viewConfiguration: ViewConfiguration) {
     // when min/max is implemented, looping will be possible
     super(model, true, false);
     this.frameElementClassName = 'date-picker-list';
+    this.viewHeader = new ViewHeader(viewConfiguration);
   }
 
   updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
@@ -33,6 +36,7 @@ export default class CalendarView extends DatePickerBaseView {
   }
 
   append(parentElement: HTMLElement): void {
+    this.viewHeader.append(parentElement)
     this.initFrameView();
 
     this.frameElement.className = this.appendClassName('');
