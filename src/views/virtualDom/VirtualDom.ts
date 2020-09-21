@@ -26,7 +26,7 @@ export default class VirtualDom {
     return array[array.length - 1];
   }
 
-  private buffer = 20;
+  private buffer = 10;
   private vdFrameElement: HTMLElement;
   private containerHeight: number;
 

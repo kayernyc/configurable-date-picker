@@ -22,19 +22,44 @@ export default class WeekDateObject implements AtomicDateObject {
   month: Date;
 
   private dateTypeFormat: DateTypeFormat
+  private today: Date
 
-  static createInnerHTML = (week: AtomicDateObject[], splitWeek = false, month?: number): string => {
+  static datesAreSameDay = (candidateDay: Date, today: Date): boolean => {
+    if ((candidateDay.getFullYear() !== today.getFullYear())
+      || (candidateDay.getMonth() !== today.getMonth())
+      || (candidateDay.getDate() !== today.getDate())) {
+      return false;
+    }
+
+    return true
+  }
+
+  createInnerHTML = (config: { week: AtomicDateObject[], splitWeek?: boolean, month?: number, today?: Date }): string => {
+    config = { ...{ today: this.today, splitWeek: false }, ...config };
+    const { week, splitWeek, month, today } = config;
     let innerHTML = ''
+    // (splitWeek && month !== undefined)
 
     week.forEach((ado: AtomicDateObject, index: number) => {
-      let newElement = `<div class="weekday ado-date-view" ${DATA_ADO_STRING}=${index}>${ado.viewString}</div>`;
-      if (splitWeek && month !== undefined) {
-        if (ado.date.getMonth() !== month) {
-          newElement = '<div class="weekday"></div>';
+      const classList = ['weekday'];
+      let contentString = ado.viewString;
+
+      if (!splitWeek || (month !== undefined && ado.date.getMonth() === month)) {
+        classList.push('ado-date-view')
+        if (WeekDateObject.datesAreSameDay(ado.date, today)) {
+          classList.push('date-today')
         }
       }
 
-      innerHTML += newElement
+      if (splitWeek && month !== undefined) {
+        if (ado.date.getMonth() !== month) {
+          contentString = '';
+        }
+      }
+
+      const classString = classList.join(' ')
+
+      innerHTML += `<div class="${classString}" ${DATA_ADO_STRING}=${index}>${contentString}</div>`;
     })
 
     return innerHTML
@@ -50,11 +75,14 @@ export default class WeekDateObject implements AtomicDateObject {
     this.date = week[0];
     this.dateTypeFormat = options;
 
+    this.today = new Date();
+    this.today.setHours(1);
+
     const [adoWeek, adoMonth, split] = this.configureWeek(week, locale)
     this.week = adoWeek;
     this.month = adoMonth;
     this.split = split;
-    this.viewString = WeekDateObject.createInnerHTML(this.week, split);
+    this.viewString = this.createInnerHTML({ week: this.week, splitWeek: split });
   }
 
   public splitWeek(latter = false): void {
@@ -65,7 +93,7 @@ export default class WeekDateObject implements AtomicDateObject {
       month = (month + 1) % 12;
     }
 
-    this.viewString = WeekDateObject.createInnerHTML(this.week, this.split, month);
+    this.viewString = this.createInnerHTML({ week: this.week, splitWeek: this.split, month });
   }
 
   private configureWeek = (week: Date[], locale: string[], options: DateTypeFormat = this.dateTypeFormat): [AtomicDateObject[], Date, boolean] => {
