@@ -8,10 +8,13 @@ import WeekDateObject from '../models/WeekDateObject';
 import ViewConfiguration from '../enums/ViewConfiguration';
 import DatePickerBaseView from './DatePickerBaseView';
 import ViewHeader from './uicomponents/ViewHeader';
+import TopItemObserver from './utilities/TopItemObserver';
+import VirtualDom from './virtualDom/VirtualDom';
 
 export default class CalendarView extends DatePickerBaseView {
   continuousScroll: boolean;
-  viewHeader: ViewHeader;
+  private viewHeader: ViewHeader;
+  private topItemObserver: TopItemObserver;
 
   constructor(model: DatePickerFactory, viewConfiguration: ViewConfiguration) {
     // when min/max is implemented, looping will be possible
@@ -38,6 +41,9 @@ export default class CalendarView extends DatePickerBaseView {
   append(parentElement: HTMLElement): void {
     this.viewHeader.append(parentElement)
     this.initFrameView();
+
+    const observed: VirtualDom | HTMLElement = this.virtualDom ? this.virtualDom : this.frameElement
+    this.topItemObserver = new TopItemObserver(observed)
 
     this.frameElement.className = this.appendClassName('');
     parentElement.append(this.frameElement);
