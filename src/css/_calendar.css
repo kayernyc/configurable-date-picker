@@ -16,10 +16,6 @@
   width: 14.2%;
 }
 
-.calendar .date-today {
-  border: solid pink 1px;
-}
-
 .calendar .ado-date-view {
   display: flex;
   flex-direction: column;
