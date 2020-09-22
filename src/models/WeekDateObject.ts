@@ -41,11 +41,10 @@ export default class WeekDateObject implements AtomicDateObject {
     // (splitWeek && month !== undefined)
 
     week.forEach((ado: AtomicDateObject, index: number) => {
-      const classList = ['weekday'];
+      const classList = ['weekday', 'ado-date-view'];
       let contentString = ado.viewString;
 
       if (!splitWeek || (month !== undefined && ado.date.getMonth() === month)) {
-        classList.push('ado-date-view')
         if (WeekDateObject.datesAreSameDay(ado.date, today)) {
           classList.push('date-today')
         }

@@ -11,7 +11,8 @@ declare global {
 
 const model = new DatePickerModel()
 const container = document.createElement('div')
+container.style.top = '100px';
 document.body.append(container)
 
-const datePickerControl = new DatePickerControl(model, container, [{ dateType: 7, viewType: 0, grouped: true, continuousScroll: false, looping: false, seedDate: new Date() }])
+const datePickerControl = new DatePickerControl(model, container, [{ dateType: 7, viewType: 1, grouped: true, continuousScroll: true, looping: true, seedDate: new Date() }])
 window.datePickerControl = datePickerControl;
