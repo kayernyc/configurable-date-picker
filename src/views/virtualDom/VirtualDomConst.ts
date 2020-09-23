@@ -4,6 +4,7 @@ import WeekDateObject from '../../models/WeekDateObject';
 const NUM_ELEMENTS_LIMIT = 12;
 const DATA_TAG_STRING = 'data-element-index';
 const DATA_ADO_STRING = 'data-ado-index';
+const OPEN_VIEW_HEIGHT = 100;
 
 type DateElementHandlerFunction = (event: MouseEvent) => boolean;
 
@@ -35,5 +36,6 @@ export {
   DATA_ADO_STRING,
   DATA_TAG_STRING,
   DateElementHandlerFunction,
-  NUM_ELEMENTS_LIMIT
+  NUM_ELEMENTS_LIMIT,
+  OPEN_VIEW_HEIGHT
 }
