@@ -24,15 +24,9 @@ export default class WeekDateObject implements AtomicDateObject {
   private dateTypeFormat: DateTypeFormat
   private today: Date
 
-  static datesAreSameDay = (candidateDay: Date, today: Date): boolean => {
-    if ((candidateDay.getFullYear() !== today.getFullYear())
-      || (candidateDay.getMonth() !== today.getMonth())
-      || (candidateDay.getDate() !== today.getDate())) {
-      return false;
-    }
-
-    return true
-  }
+  static datesAreSameDay = (candidateDay: Date, today: Date): boolean => (candidateDay.getFullYear() === today.getFullYear()
+    && candidateDay.getMonth() === today.getMonth()
+    && candidateDay.getDate() === today.getDate());
 
   createInnerHTML = (config: { week: AtomicDateObject[], splitWeek?: boolean, month?: number, today?: Date }): string => {
     config = { ...{ today: this.today, splitWeek: false }, ...config };
