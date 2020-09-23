@@ -13,7 +13,7 @@ import AtomicDateObject from '../../models/AtomicDateObject';
 import BuildConfiguration from './BuildConfiguration';
 import ContinuousScrollHandler from './ContinuousScrollHandler';
 
-import { addElement } from './VirtualDomConst';
+import { addElement, OPEN_VIEW_HEIGHT } from './VirtualDomConst';
 import WeekDateObject from '../../models/WeekDateObject';
 
 // https://stackoverflow.com/questions/58036689/using-mutationobserver-to-detect-when-a-node-is-added-to-document
@@ -45,9 +45,9 @@ export default class VirtualDom {
     deltaY = Math.min(Math.abs(deltaY), 3) * valence;
     let newTop = top + deltaY;
 
-    if (newTop > 0) {
+    if (newTop >= -(this.buffer * 0.5)) {
       newTop -= this.continuousScrollHandler.unshift();
-    } else if (newTop < -this.buffer) {
+    } else if (newTop < -(this.buffer * 2.1)) {
       newTop += this.continuousScrollHandler.push();
     }
 
@@ -132,7 +132,7 @@ export default class VirtualDom {
         'BuildView called without initialization. Initialize container element first.'
       );
     } else if (containerElement) {
-      this.containerHeight = containerElement.offsetHeight;
+      this.containerHeight = Math.max(containerElement.offsetHeight, OPEN_VIEW_HEIGHT)
     }
 
     if (className) {
@@ -145,7 +145,7 @@ export default class VirtualDom {
       dataArray: atomicDateObjectArray,
       continuousScroll: true,
       frameElement,
-      targetHeight: containerElement.offsetHeight + 2 * buffer,
+      targetHeight: this.containerHeight + (3 * buffer),
     };
 
     buildElementSetForVirtualDom(config);

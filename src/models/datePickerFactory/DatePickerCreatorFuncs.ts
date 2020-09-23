@@ -62,7 +62,6 @@ export const DatePickerCreatorFuncs = {
     // sets series to 0/sunday
     const dateTimeFormat = format;
     const seedDate = new Date(date.getTime());
-    console.log(`calendarHandlerCreator ${grouped}`)
 
     if (seedDate.getUTCDay() !== 0) {
       const delta = seedDate.getDate() - seedDate.getDay();

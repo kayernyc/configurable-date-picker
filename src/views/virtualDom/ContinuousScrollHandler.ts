@@ -66,7 +66,7 @@ export default class ContinuousScrollHandler {
     const { dataArray, dateElementHandlerFunction, frameElement, looping, model, targetHeight } = config;
 
     let index = 0;
-    while (frameElement.offsetHeight < targetHeight) {
+    while (frameElement.offsetHeight <= targetHeight) {
       if (index >= dataArray.length) {
         if (looping) {
           throw new Error("Looping view doesn't have enough dates");
