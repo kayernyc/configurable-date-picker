@@ -5,12 +5,12 @@ export default class ViewHeader {
 
   private createHeaderElement(): HTMLElement {
     const header = document.createElement('div');
-    header.className = 'view-header'
+    header.className = 'view-header';
     const mainText = document.createElement('div');
-    mainText.className = 'main-text'
+    mainText.className = 'main-text';
     mainText.innerHTML = 'placeholer';
-    this.mainText = mainText
-    header.append(mainText)
+    this.mainText = mainText;
+    header.append(mainText);
     return header;
   }
 
@@ -21,6 +21,6 @@ export default class ViewHeader {
   }
 
   updateMainText(text: string): void {
-    this.mainText.innerHTML = text
+    this.mainText.innerHTML = text;
   }
 }

@@ -5,9 +5,9 @@
  * The week starts on Gregorian Sunday
  */
 
-import AtomicDateObject from "./AtomicDateObject";
-import DateTypeFormat from "../enums/DateTimeFormat";
-import { DATA_ADO_STRING } from "../views/virtualDom/VirtualDomConst";
+import AtomicDateObject from './AtomicDateObject';
+import DateTypeFormat from '../enums/DateTimeFormat';
+import { DATA_ADO_STRING } from '../views/virtualDom/VirtualDomConst';
 
 export default class WeekDateObject implements AtomicDateObject {
   date: Date;
@@ -37,11 +37,11 @@ export default class WeekDateObject implements AtomicDateObject {
   }): string => {
     config = { ...{ today: this.today, splitWeek: false }, ...config };
     const { week, splitWeek, month, today } = config;
-    let innerHTML = "";
+    let innerHTML = '';
     // (splitWeek && month !== undefined)
 
     week.forEach((ado: AtomicDateObject, index: number) => {
-      const classList = ["weekday", "ado-date-view"];
+      const classList = ['weekday', 'ado-date-view'];
       let contentString = ado.viewString;
 
       if (
@@ -62,9 +62,9 @@ export default class WeekDateObject implements AtomicDateObject {
         }
       }
 
-      const classString = classList.join(" ");
+      const classString = classList.join(' ');
 
-      innerHTML += `<div class="${classString}" ${DATA_ADO_STRING}=${index}>${contentString}</div>`;
+      innerHTML += `<div class='${classString}' ${DATA_ADO_STRING}=${index}>${contentString}</div>`;
     });
 
     return innerHTML;
@@ -72,7 +72,7 @@ export default class WeekDateObject implements AtomicDateObject {
 
   constructor(
     week: Date[],
-    locale: string[] = ["en-US"],
+    locale: string[] = ['en-US'],
     options: DateTypeFormat,
     index: number
   ) {

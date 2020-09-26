@@ -1,6 +1,6 @@
-import ViewConfiguration from "../enums/ViewConfiguration";
-import ViewType from "../enums/ViewType";
-import DateType from "../enums/DateType";
+import ViewConfiguration from '../enums/ViewConfiguration';
+import ViewType from '../enums/ViewType';
+import DateType from '../enums/DateType';
 
 const seedViewConfiguration: ViewConfiguration = {
   initialCount: 1,
@@ -41,7 +41,7 @@ export default class ViewConfigurationAdapter {
 
         return arrayCandidate;
 
-      case typeof configObject === "string": {
+      case typeof configObject === 'string': {
         const vC = this.convertStringToViewConfiguration(configObject);
         return [vC];
       }
@@ -58,7 +58,7 @@ export default class ViewConfigurationAdapter {
 
   matchObjectToViewConfiguration(object: ViewConfiguration): boolean {
     const objectKeys = Object.keys(object);
-    const vCKeys = ["dateType", "viewType"];
+    const vCKeys = ['dateType', 'viewType'];
 
     const keysMissing = vCKeys.some((key) => {
       return !objectKeys.includes(key);
@@ -68,7 +68,7 @@ export default class ViewConfigurationAdapter {
       return false;
     }
 
-    if (object.seedDate && typeof object.seedDate === "number") {
+    if (object.seedDate && typeof object.seedDate === 'number') {
       const seedNumber: number = object.seedDate as number;
       object.seedDate = ViewConfigurationAdapter.sanitizedDate(seedNumber);
     }

@@ -23,8 +23,8 @@ export default class CalendarView extends DatePickerBaseView implements Intersec
   }
 
   updateIntersectedAdo(ado: AtomicDateObject | WeekDateObject): void {
-    const { date } = ado
-    this.viewHeader.updateMainText(date.toLocaleString(['en-US'], { month: 'long', year: 'numeric' }))
+    const { date } = ado;
+    this.viewHeader.updateMainText(date.toLocaleString(['en-US'], { month: 'long', year: 'numeric' }));
   }
 
   updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
@@ -44,7 +44,7 @@ export default class CalendarView extends DatePickerBaseView implements Intersec
   }
 
   append(parentElement: HTMLElement): void {
-    this.viewHeader.append(parentElement)
+    this.viewHeader.append(parentElement);
     this.initFrameView();
 
     this.frameElement.className = this.appendClassName('');
