@@ -8,23 +8,28 @@ import WeekDateObject from '../models/WeekDateObject';
 import ViewConfiguration from '../enums/ViewConfiguration';
 import DatePickerBaseView from './DatePickerBaseView';
 import ViewHeader from './uicomponents/ViewHeader';
-import TopItemObserver from './utilities/TopItemObserver';
-import VirtualDom from './virtualDom/VirtualDom';
 
-export default class CalendarView extends DatePickerBaseView {
+import { IntersectedAdo } from './virtualDom/VirtualDom';
+
+export default class CalendarView extends DatePickerBaseView implements IntersectedAdo {
   continuousScroll: boolean;
   private viewHeader: ViewHeader;
-  private topItemObserver: TopItemObserver;
 
   constructor(model: DatePickerFactory, viewConfiguration: ViewConfiguration) {
     // when min/max is implemented, looping will be possible
     super(model, true, false);
     this.frameElementClassName = 'date-picker-list';
-    this.viewHeader = new ViewHeader(viewConfiguration);
+    this.viewHeader = new ViewHeader();
+  }
+
+  updateIntersectedAdo(ado: AtomicDateObject | WeekDateObject): void {
+    const { date } = ado
+    this.viewHeader.updateMainText(date.toLocaleString(['en-US'], { month: 'long', year: 'numeric' }))
   }
 
   updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
     if (this.virtualDom) {
+      this.virtualDom.intersectedAdoProxy = this;
       this.virtualDom.buildView(array, frameElement, undefined, 'calendar');
       return;
     }
@@ -41,9 +46,6 @@ export default class CalendarView extends DatePickerBaseView {
   append(parentElement: HTMLElement): void {
     this.viewHeader.append(parentElement)
     this.initFrameView();
-
-    const observed: VirtualDom | HTMLElement = this.virtualDom ? this.virtualDom : this.frameElement
-    this.topItemObserver = new TopItemObserver(observed)
 
     this.frameElement.className = this.appendClassName('');
     parentElement.append(this.frameElement);

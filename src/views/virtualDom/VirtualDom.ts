@@ -7,7 +7,13 @@
  * If looping, checks that full set is enough for looping.
  */
 
-type EventListenerFunction = (evt: MouseEvent) => void;
+interface IntersectedAdo {
+  updateIntersectedAdo: (ado: AtomicDateObject | WeekDateObject) => void;
+}
+
+export { IntersectedAdo }
+
+// type EventListenerFunction = (evt: MouseEvent) => void;
 
 import AtomicDateObject from '../../models/AtomicDateObject';
 import BuildConfiguration from './BuildConfiguration';
@@ -30,6 +36,8 @@ export default class VirtualDom {
   private vdFrameElement: HTMLElement;
   private containerHeight: number;
 
+  private _intersectedAdoProxy?: IntersectedAdo;
+
   private continuousScrollHandler: ContinuousScrollHandler;
 
   constructor(continuousScrollHandler: ContinuousScrollHandler) {
@@ -43,12 +51,21 @@ export default class VirtualDom {
     let { deltaY } = event;
     const valence = Math.abs(deltaY) / deltaY;
     deltaY = Math.min(Math.abs(deltaY), 3) * valence;
+
+    let elementHeight: number
     let newTop = top + deltaY;
+    let newIntersectedAdo: AtomicDateObject | WeekDateObject
 
     if (newTop >= -(this.buffer * 0.5)) {
-      newTop -= this.continuousScrollHandler.unshift();
-    } else if (newTop < -(this.buffer * 2.1)) {
-      newTop += this.continuousScrollHandler.push();
+      [elementHeight, newIntersectedAdo] = this.continuousScrollHandler.unshift();
+    } else if (newTop < -(this.buffer * 2)) {
+      [elementHeight, newIntersectedAdo] = this.continuousScrollHandler.push();
+    }
+
+    newTop += elementHeight || 0;
+
+    if (this._intersectedAdoProxy && newIntersectedAdo) {
+      this._intersectedAdoProxy.updateIntersectedAdo(newIntersectedAdo);
     }
 
     this.frameElement.style.top = `${newTop}px`;
@@ -58,6 +75,9 @@ export default class VirtualDom {
     frameElement: HTMLElement = this.frameElement
   ) => {
     frameElement.addEventListener('wheel', this.wheelHander, { passive: true });
+    if (this._intersectedAdoProxy) {
+      this._intersectedAdoProxy.updateIntersectedAdo(this.continuousScrollHandler.headElement())
+    }
   };
 
   private initVirtualDomFrameElement() {
@@ -98,6 +118,11 @@ export default class VirtualDom {
       this.initVirtualDomFrameElement();
     }
     return this.vdFrameElement;
+  }
+
+  set intersectedAdoProxy(value: IntersectedAdo) {
+    //
+    this._intersectedAdoProxy = value;
   }
 
   /**

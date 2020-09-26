@@ -4,6 +4,5 @@ export default class TopItemObserver {
   private observed: HTMLElement | VirtualDom;
   constructor(observed: HTMLElement | VirtualDom) {
     this.observed = observed;
-    console.log(observed)
   }
 }

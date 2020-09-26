@@ -6,6 +6,7 @@ import WeekDateObject from '../../models/WeekDateObject';
 import { DATA_ADO_STRING, DATA_TAG_STRING, addElement, DateElementHandlerFunction } from './VirtualDomConst';
 
 type ScrollHandlingFunction = (valence: boolean, frameElement?: HTMLElement) => number;
+type AdoElementDictionary = { [id: string]: AtomicDateObject };
 
 interface AdoElDictionaryFactoryConfig {
   buffer: number;
@@ -28,7 +29,7 @@ export default class ContinuousScrollHandler {
   private firstAdo: AtomicDateObject;
   private lastAdo: AtomicDateObject;
 
-  private adoElementDictionary: { [id: string]: AtomicDateObject } = {};
+  private adoElementDictionary: AdoElementDictionary = {};
 
   static initDataArray(
     dataArray: AtomicDateObject[],
@@ -93,7 +94,7 @@ export default class ContinuousScrollHandler {
 
   constructor(
     model: DatePickerFactory,
-    looping = false
+    looping = false,
   ) {
     if (looping) {
       this.looping = looping;
@@ -207,6 +208,23 @@ export default class ContinuousScrollHandler {
   }
 
   // API
+  headElement(frameElement: HTMLElement = this.frameElement, adoElementDictionary: AdoElementDictionary = this.adoElementDictionary): AtomicDateObject | WeekDateObject {
+    // Each element adds its height until it becomes possitive.
+    let offset = frameElement.offsetTop;
+
+    const elements = Array.from(frameElement.children)
+    // teslint:disable-next-line: prefer-for-of
+    for (const element of elements) {
+      const htmlEL = element as HTMLElement;
+      const key = element.getAttribute(DATA_TAG_STRING);
+      if (offset > -(htmlEL.offsetHeight * 0.5)) {
+
+        return adoElementDictionary[key];
+      }
+
+      offset += htmlEL.offsetHeight;
+    }
+  }
 
   addMember(ado: AtomicDateObject, append = true): void {
     if (this.looping) {
@@ -227,7 +245,7 @@ export default class ContinuousScrollHandler {
 
   initFrame(config: BuildConfiguration): boolean {
     const { buffer, dataArray, frameElement, targetHeight } = config;
-    frameElement.style.top = `${-buffer}px`;
+    frameElement.style.top = `-${buffer}px`;
     // inits linked list
     this.dataArray = ContinuousScrollHandler.initDataArray(
       [...dataArray],
@@ -258,12 +276,16 @@ export default class ContinuousScrollHandler {
     return true;
   }
 
-  unshift(): number {
-    return this.handler(true);
+  unshift(): [number, AtomicDateObject] {
+    const newOffset = this.handler(true);
+    const newIntersectedAdo = this.headElement()
+    return [-newOffset, newIntersectedAdo]
   }
 
-  push(): number {
-    return this.handler(false);
+  push(): [number, AtomicDateObject] {
+    const newOffset = this.handler(false);
+    const newIntersectedAdo = this.headElement()
+    return [newOffset, newIntersectedAdo]
   }
 
   private newIndex(oldIndex: number): number {
