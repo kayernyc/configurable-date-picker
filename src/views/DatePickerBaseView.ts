@@ -70,7 +70,6 @@ export default abstract class DatePickerBaseView {
       const element: HTMLElement = event.target as HTMLElement;
       const dataTag = element.getAttribute(DATA_TAG_STRING);
       const ado = this.adoArray[dataTag] as AtomicDateObject
-      console.log(ado.date)
     }
     return true;
   }

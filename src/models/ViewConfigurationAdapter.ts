@@ -56,7 +56,6 @@ export default class ViewConfigurationAdapter {
 
   // TODO: Abstract and move to utilities
 
-
   matchObjectToViewConfiguration(object: ViewConfiguration): boolean {
     const objectKeys = Object.keys(object);
     const vCKeys = ['dateType', 'viewType'];
@@ -71,7 +70,7 @@ export default class ViewConfigurationAdapter {
 
     if (object.seedDate && typeof object.seedDate === 'number') {
       const seedNumber: number = object.seedDate as number;
-      object.seedDate = ViewConfigurationAdapter.sanitizedDate(seedNumber)
+      object.seedDate = ViewConfigurationAdapter.sanitizedDate(seedNumber);
     }
 
     if (
