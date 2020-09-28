@@ -8,7 +8,7 @@ export default class ViewHeader {
     header.className = 'view-header';
     const mainText = document.createElement('div');
     mainText.className = 'main-text';
-    mainText.innerHTML = 'placeholer';
+    mainText.innerHTML = 'placeholder';
     this.mainText = mainText;
     header.append(mainText);
     return header;

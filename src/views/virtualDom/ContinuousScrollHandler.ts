@@ -208,8 +208,9 @@ export default class ContinuousScrollHandler {
   }
 
   // API
-  headElement(frameElement: HTMLElement = this.frameElement, adoElementDictionary: AdoElementDictionary = this.adoElementDictionary): AtomicDateObject | WeekDateObject {
-    // Each element adds its height until it becomes possitive.
+  headElement(frameElement: HTMLElement = this.frameElement,
+    adoElementDictionary: AdoElementDictionary = this.adoElementDictionary): AtomicDateObject | WeekDateObject {
+    // Each element adds its height until it becomes positive.
     let offset = frameElement.offsetTop;
 
     const elements = Array.from(frameElement.children)
