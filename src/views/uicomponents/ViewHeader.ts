@@ -1,16 +1,36 @@
-import ViewConfiguration from "../../enums/ViewConfiguration";
+import DateSetterForm, { DateSetterFormProxy, DateSetterFormConfig } from '../uicomponents/DateSetterForm';
 
-export default class ViewHeader {
+export default class ViewHeader implements DateSetterFormProxy {
+  private dateSetterForm?: DateSetterForm;
   private mainText: HTMLElement;
+  private isForm = false;
 
-  private createHeaderElement(): HTMLElement {
+  constructor(dateSetterForm?: DateSetterForm) {
+    this.dateSetterForm = dateSetterForm;
+    // if (dateSetterForm) {
+    //   this.isForm = true;
+    // }
+  }
+
+  updateRepresentedDate(targetDate: Date): boolean {
+    console.log(`from ViewHeader ${targetDate}`);
+    return true;
+  }
+
+  private createHeaderElement(isForm = this.isForm): HTMLElement {
     const header = document.createElement('div');
     header.className = 'view-header';
-    const mainText = document.createElement('div');
-    mainText.className = 'main-text';
-    mainText.innerHTML = 'placeholder';
-    this.mainText = mainText;
-    header.append(mainText);
+
+    if (isForm) {
+      console.log('booyah')
+    } else {
+      const mainText = document.createElement('div');
+      mainText.className = 'main-text';
+      mainText.innerHTML = 'placeholder';
+      this.mainText = mainText;
+      header.append(mainText);
+    }
+
     return header;
   }
 
