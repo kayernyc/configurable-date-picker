@@ -15,11 +15,11 @@ export default class CalendarView extends DatePickerBaseView implements Intersec
   continuousScroll: boolean;
   private viewHeader: ViewHeader;
 
-  constructor(model: DatePickerFactory, viewConfiguration: ViewConfiguration) {
+  constructor(model: DatePickerFactory, viewConfiguration: ViewConfiguration, viewHeader?: ViewHeader) {
     // when min/max is implemented, looping will be possible
     super(model, true, false);
     this.frameElementClassName = 'date-picker-list';
-    this.viewHeader = new ViewHeader();
+    this.viewHeader = viewHeader || new ViewHeader();
   }
 
   updateIntersectedAdo(ado: AtomicDateObject | WeekDateObject): void {
