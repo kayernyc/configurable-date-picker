@@ -23,7 +23,6 @@ const datePickerControl = new DatePickerControl(model, container, [{
       formName: 'bob',
       id: 'bob1',
       initialValue: '10-1-2020',
-      labelText: `today's date`,
     }
   }
 }

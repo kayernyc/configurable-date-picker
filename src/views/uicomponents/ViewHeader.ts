@@ -7,13 +7,18 @@ export default class ViewHeader implements DateSetterFormProxy {
 
   constructor(dateSetterForm?: DateSetterForm) {
     this.dateSetterForm = dateSetterForm;
-    // if (dateSetterForm) {
-    //   this.isForm = true;
-    // }
+    if (dateSetterForm) {
+      this.isForm = true;
+    }
   }
 
-  updateRepresentedDate(targetDate: Date): boolean {
+  updateRepresentedDateString(targetDate: string): boolean {
     console.log(`from ViewHeader ${targetDate}`);
+    if (this.isForm) {
+      this.dateSetterForm.updateDateValue(targetDate);
+    } else {
+      this.mainText.innerHTML = targetDate;
+    }
     return true;
   }
 
@@ -22,7 +27,7 @@ export default class ViewHeader implements DateSetterFormProxy {
     header.className = 'view-header';
 
     if (isForm) {
-      console.log('booyah')
+      this.dateSetterForm.append(header);
     } else {
       const mainText = document.createElement('div');
       mainText.className = 'main-text';
