@@ -94,12 +94,11 @@ export default class DatePickerControl {
 
       let viewHeader: ViewHeader;
       if (viewConfiguration.header) {
-        viewHeader = DatePickerControl.viewHeader(viewConfiguration.header)
+        viewHeader = DatePickerControl.viewHeader(viewConfiguration.header);
       }
 
       switch (true) {
         case dateType === DateType.CALENDAR:
-          console.log(viewConfiguration);
           view = new CalendarView(viewModel, viewConfiguration, viewHeader);
           break;
 

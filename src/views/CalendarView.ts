@@ -13,18 +13,20 @@ import { IntersectedAdo } from './virtualDom/VirtualDom';
 
 export default class CalendarView extends DatePickerBaseView implements IntersectedAdo {
   continuousScroll: boolean;
-  private viewHeader: ViewHeader;
+  private viewHeader: ViewHeader | undefined;
 
   constructor(model: DatePickerFactory, viewConfiguration: ViewConfiguration, viewHeader?: ViewHeader) {
     // when min/max is implemented, looping will be possible
     super(model, true, false);
     this.frameElementClassName = 'date-picker-list';
-    this.viewHeader = viewHeader || new ViewHeader();
+    this.viewHeader = viewHeader;
   }
 
   updateIntersectedAdo(ado: AtomicDateObject | WeekDateObject): void {
     const { date } = ado;
-    this.viewHeader.updateMainText(date.toLocaleString(['en-US'], { month: 'long', year: 'numeric' }));
+    console.log(this.model.dateTimeFormat)
+
+    this.viewHeader.updateRepresentedDateString(date.toLocaleString(['es'], { year: 'numeric', month: 'long' }));
   }
 
   updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
