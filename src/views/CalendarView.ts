@@ -7,13 +7,15 @@ import DatePickerFactory from '../models/datePickerFactory/DatePickerFactory';
 import WeekDateObject from '../models/WeekDateObject';
 import ViewConfiguration from '../enums/ViewConfiguration';
 import DatePickerBaseView from './DatePickerBaseView';
-import ViewHeader from './uicomponents/ViewHeader';
+import ViewHeader from './uicomponents/ViewHeader/ViewHeader';
+import ViewHeaderModel from './uicomponents/ViewHeader/ViewHeaderModel';
 
 import { IntersectedAdo } from './virtualDom/VirtualDom';
 
 export default class CalendarView extends DatePickerBaseView implements IntersectedAdo {
   continuousScroll: boolean;
   private viewHeader: ViewHeader | undefined;
+  private viewHeaderModel: ViewHeaderModel | undefined;
 
   constructor(model: DatePickerFactory, viewConfiguration: ViewConfiguration, viewHeader?: ViewHeader) {
     // when min/max is implemented, looping will be possible
@@ -26,7 +28,7 @@ export default class CalendarView extends DatePickerBaseView implements Intersec
     const { date } = ado;
     console.log(this.model.dateTimeFormat)
 
-    this.viewHeader.updateRepresentedDateString(date.toLocaleString(['es'], { year: 'numeric', month: 'long' }));
+    this.viewHeader.updateRepresentedDateString(date.toLocaleString(['en-us'], { year: 'numeric', month: 'long' }));
   }
 
   updateView(array: AtomicDateObject[], frameElement = this.frameElement): void {
@@ -45,8 +47,16 @@ export default class CalendarView extends DatePickerBaseView implements Intersec
     })
   }
 
+  testFunction = (date: Date) => {
+    console.log(`I got this date ${date}`)
+  }
+
   append(parentElement: HTMLElement): void {
-    this.viewHeader.append(parentElement);
+    if (this.viewHeader) {
+      this.viewHeaderModel = new ViewHeaderModel()
+      this.viewHeader.append(parentElement, this.viewHeaderModel);
+      const unsubscribe = this.viewHeaderModel.subscribe(this.testFunction)
+    }
     this.initFrameView();
 
     this.frameElement.className = this.appendClassName('');

@@ -22,7 +22,6 @@ const datePickerControl = new DatePickerControl(model, container, [{
     form: {
       formName: 'bob',
       id: 'bob1',
-      initialValue: '10-1-2020',
     }
   }
 }

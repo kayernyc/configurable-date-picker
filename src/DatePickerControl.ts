@@ -10,7 +10,7 @@ import Hour12View from './views/Hour12View';
 import StandardView from './views/StandardView';
 import WeekView from './views/WeekView';
 
-import ViewHeader from './views/uicomponents/ViewHeader';
+import ViewHeader from './views/uicomponents/ViewHeader/ViewHeader';
 
 import ViewType from './enums/ViewType';
 import DateSetterForm from './views/uicomponents/DateSetterForm';

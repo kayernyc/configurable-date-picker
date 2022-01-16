@@ -1,4 +1,5 @@
-import DateSetterForm, { DateSetterFormProxy, DateSetterFormConfig } from '../uicomponents/DateSetterForm';
+import DateSetterForm, { DateSetterFormProxy, DateSetterFormConfig } from '../DateSetterForm';
+import ViewHeaderModel from './ViewHeaderModel';
 
 export default class ViewHeader implements DateSetterFormProxy {
   private dateSetterForm?: DateSetterForm;
@@ -40,7 +41,7 @@ export default class ViewHeader implements DateSetterFormProxy {
   }
 
   // API
-  append(parentElement: HTMLElement): void {
+  append(parentElement: HTMLElement, model?: ViewHeaderModel): void {
     const header = this.createHeaderElement();
     parentElement.append(header);
   }
