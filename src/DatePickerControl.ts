@@ -1,7 +1,7 @@
 import DatePickerModel from './models/DatePickerModel';
 import DatePickerFactory from './models/datePickerFactory/DatePickerFactory';
 import DatePickerBaseView from './views/DatePickerBaseView';
-import ViewConfiguration from './enums/ViewConfiguration';
+import ViewConfiguration, { ViewConfigurationHeader } from './enums/ViewConfiguration';
 import ViewConfigurationAdapter from './models/ViewConfigurationAdapter';
 
 import CalendarView from './views/CalendarView';
@@ -10,7 +10,10 @@ import Hour12View from './views/Hour12View';
 import StandardView from './views/StandardView';
 import WeekView from './views/WeekView';
 
+import ViewHeader from './views/uicomponents/ViewHeader/ViewHeader';
+
 import ViewType from './enums/ViewType';
+import DateSetterForm from './views/uicomponents/DateSetterForm';
 
 const dateTypeDefaults: Record<DateType, [boolean, boolean, number]> = { // looping, continuousScroll, initialCount
   [DateType.CALENDAR]: [false, true, 3],
@@ -33,10 +36,20 @@ export default class DatePickerControl {
 
   private vcAdapter: ViewConfigurationAdapter = new ViewConfigurationAdapter();
 
+  // Case functions
+  static viewHeader(config: ViewConfigurationHeader): ViewHeader {
+    let header: DateSetterForm;
+
+    if (config.form) {
+      header = new DateSetterForm(config.form)
+    }
+    return new ViewHeader(header)
+  }
+
   constructor(
     model: DatePickerModel,
     viewContainer: HTMLElement,
-    viewConfigurations: any[] | string,
+    viewConfigurations: unknown[] | string,
     open = true
   ) {
     this.datePickerModel = model;
@@ -79,9 +92,14 @@ export default class DatePickerControl {
       const grid = viewType === ViewType.GRID;
       let view: DatePickerBaseView;
 
+      let viewHeader: ViewHeader;
+      if (viewConfiguration.header) {
+        viewHeader = DatePickerControl.viewHeader(viewConfiguration.header);
+      }
+
       switch (true) {
         case dateType === DateType.CALENDAR:
-          view = new CalendarView(viewModel, viewConfiguration);
+          view = new CalendarView(viewModel, viewConfiguration, viewHeader);
           break;
 
         case dateType === DateType.DAY:

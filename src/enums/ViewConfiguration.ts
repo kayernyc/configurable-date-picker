@@ -1,10 +1,16 @@
 import DateType from './DateType';
 import ViewType from './ViewType';
+import { DateSetterFormConfig } from '../views/uicomponents/DateSetterForm'
+
+export interface ViewConfigurationHeader {
+  form: DateSetterFormConfig | undefined
+}
 
 interface ViewConfiguration {
   continuousScroll?: boolean;
   dateType: DateType;
   grouped?: boolean;
+  header?: ViewConfigurationHeader | undefined;
   initialCount?: number;
   looping?: boolean;
   maxDate?: Date;
